@@ -1,0 +1,22 @@
+{
+  "name": "escrow-experiment",
+  "version": "0.0.1",
+  "description": "An experiment to create an escrow platform with payment services",
+  "main": "index.js",
+  "repository": "https://github.com/javaniecampbell/escrow-experiment",
+  "author": "DevDaysAtWork LLC",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "services/*"
+  ],
+  "scripts": {
+    "dev": "yarn workspace @devdaysatwork/app dev",
+    "build": "yarn workspace @devdaysatwork/app build",
+    "start": "yarn workspace @devdaysatwork/app start",
+    "lint": "yarn workspace @devdaysatwork/app lint",
+    "test": "yarn workspace @devdaysatwork/app test"
+  }
+}
