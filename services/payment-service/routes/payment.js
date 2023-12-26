@@ -33,36 +33,7 @@ router.post('/create-checkout-session', async (req, res) => {
 router.post('/initiate-payment', async (req, res) => {
     try {
         const { milestoneId } = req.body;
-    
-        // Step 1: Fetch milestone details from the database
-        const milestone = await prisma.milestone.findUnique({
-          where: {
-            id: milestoneId,
-          },
-        });
-    
-        // Step 2: Implement Stripe Connect logic to initiate payment
-        // Replace the following line with your Stripe integration code
-        const paymentIntent = await stripe.paymentIntents.create({
-          amount: milestone.amount * 100, // Amount in cents
-          currency: 'usd',
-          // Other payment details...
-        });
-    
-        // Step 3: Return the payment intent client secret to the client
-        res.status(200).json({ clientSecret: paymentIntent.client_secret });
-      } catch (error) {
-        console.error('Error initiating payment:', error);
-        res.status(500).json({ error: 'Unable to initiate payment' });
-      }
-});
 
-router.post('/release-funds', async (req, res) => {
-    try {
-        const { milestoneId } = req.body;
-
-        
-        // Logic to release funds for the completed milestone
         // Step 1: Fetch milestone details from the database
         const milestone = await prisma.milestone.findUnique({
             where: {
@@ -80,13 +51,39 @@ router.post('/release-funds', async (req, res) => {
 
         // Step 3: Return the payment intent client secret to the client
         res.status(200).json({ clientSecret: paymentIntent.client_secret });
-
-        // res.status(200).send({ message: 'Funds released' });
     } catch (error) {
         console.error('Error initiating payment:', error);
         res.status(500).json({ error: 'Unable to initiate payment' });
     }
+});
 
+router.post('/release-funds', async (req, res) => {
+    try {
+        const { milestoneId } = req.body;
+
+        // Step 1: Update the milestone status in the database to "completed"
+        const updatedMilestone = await prisma.milestone.update({
+            where: {
+                id: milestoneId,
+            },
+            data: {
+                status: 'completed',
+            },
+        });
+
+        // Step 2: Implement logic to release funds to the service provider
+        // Replace the following line with your funds release logic
+        const fundsReleased = true;
+
+        if (fundsReleased) {
+            res.status(200).json({ message: 'Funds released successfully' });
+        } else {
+            res.status(500).json({ error: 'Unable to release funds' });
+        }
+    } catch (error) {
+        console.error('Error releasing funds:', error);
+        res.status(500).json({ error: 'Unable to release funds' });
+    }
 });
 
 module.exports = router;
