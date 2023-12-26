@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
+router.post('/', express.raw({ type: 'application/json' }), (request, response) => {
     let event = request.body;
 
     // Handle the event
