@@ -37,7 +37,7 @@
 		}
 	},
 	"remoteEnv": {
-		"LOCAL_WORKSPACE+FOLDER": "${localWorkspaceFolder}"
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
 	},
 	"portsAttributes": {
 		"8081": {

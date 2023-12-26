@@ -13,3 +13,5 @@ done
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 dapr uninstall # clean up any previous installs
 dapr init
+
+yarn install
