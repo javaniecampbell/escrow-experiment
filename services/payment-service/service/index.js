@@ -8,7 +8,7 @@ const blobService = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECT
 const containerClient = blobService.getContainerClient(AZURE_CONTAINER_NAME);
 // const blobService = azure.createBlobService();
 
-function generateExpiringLink(blobName, expireMinutes) {
+function generateExpiringLink(blobName, expireMinutes = 0) {
     const startDate = new Date();
     const expiryDate = new Date(startDate);
     expiryDate.setMinutes(startDate.getMinutes() + expireMinutes);
