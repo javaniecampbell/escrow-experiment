@@ -30,7 +30,8 @@
 				"ms-dotnettools.csharp",
 				"ms-python.python",
 				"Github.copilot",
-				"ms-azuretools.rad-vscode-bicep"
+				"ms-azuretools.rad-vscode-bicep",
+				"ms-dotnettools.csdevkit"
 			]
 		}
 	},
