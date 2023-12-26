@@ -28,6 +28,7 @@
 				"ms-azuretools.vscode-dapr",
 				"ms-azuretools.vscode-docker",
 				"ms-dotnettools.csharp",
+				"ms-dotnettools.vscode-dotnet-runtime",
 				"ms-python.python",
 				"Github.copilot",
 				"ms-azuretools.rad-vscode-bicep",
