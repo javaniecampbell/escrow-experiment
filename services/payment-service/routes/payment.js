@@ -31,9 +31,30 @@ router.post('/create-checkout-session', async (req, res) => {
 });
 
 router.post('/initiate-payment', async (req, res) => {
-    const { milestoneId } = req.body;
-    // Logic to create Stripe Checkout session for the milestone payment
-    res.status(200).send({ sessionId: session.id });
+    try {
+        const { milestoneId } = req.body;
+    
+        // Step 1: Fetch milestone details from the database
+        const milestone = await prisma.milestone.findUnique({
+          where: {
+            id: milestoneId,
+          },
+        });
+    
+        // Step 2: Implement Stripe Connect logic to initiate payment
+        // Replace the following line with your Stripe integration code
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount: milestone.amount * 100, // Amount in cents
+          currency: 'usd',
+          // Other payment details...
+        });
+    
+        // Step 3: Return the payment intent client secret to the client
+        res.status(200).json({ clientSecret: paymentIntent.client_secret });
+      } catch (error) {
+        console.error('Error initiating payment:', error);
+        res.status(500).json({ error: 'Unable to initiate payment' });
+      }
 });
 
 router.post('/release-funds', async (req, res) => {
