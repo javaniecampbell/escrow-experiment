@@ -7,7 +7,7 @@ function ProjectForm() {
       <h1>Create a New Project</h1>
       <form
         id="createProjectForm"
-        action="http://localhost:3000/api/create-project"
+        action="http://localhost:3000/api/projects/create-project"
         method="POST"
       >
         <label htmlFor="projectName">Project Name:</label>
