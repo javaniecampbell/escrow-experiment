@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,29 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model digitalassets {
+  assetid     Int         @id
+  milestoneid Int?
+  asseturl    String?     @db.VarChar(255)
+  expirydate  DateTime?   @db.Timestamp(6)
+  milestones  milestones? @relation(fields: [milestoneid], references: [milestoneid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model milestones {
+  milestoneid   Int             @id
+  projectid     Int?
+  milestonename String?         @db.VarChar(255)
+  amount        Decimal?        @db.Decimal(10, 2)
+  status        String?         @db.VarChar(50)
+  digitalassets digitalassets[]
+  projects      projects?       @relation(fields: [projectid], references: [projectid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model projects {
+  projectid   Int          @id
+  projectname String?      @db.VarChar(255)
+  totalamount Decimal?     @db.Decimal(10, 2)
+  milestones  milestones[]
 }
