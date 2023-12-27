@@ -1,6 +1,7 @@
 // ClientDashboard.js
 import React from 'react';
 import useStore from '@/shared/store';
+import ClientProjectOverview from './ClientProjectOverview';
 
 const ClientDashboard = () => {
   const { clientProjects } = useStore();
@@ -15,6 +16,9 @@ const ClientDashboard = () => {
               <h3 className="text-md font-semibold mb-2">{project.name}</h3>
               <p>Status: {project.status}</p>
               <p>Balance: ${project.balance.toFixed(2)}</p>
+              <p>Total in Escrow: ${project.inEscrow.toFixed(2)}</p>
+              <p>Total Payouts: ${project.totalPayouts.toFixed(2)}</p>
+              <p>Number of Milestones: {project.milestones.length}</p>
               <button className="px-4 py-1 mt-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                 View Details
               </button>
@@ -24,6 +28,7 @@ const ClientDashboard = () => {
       ) : (
         <p className="text-gray-700">You don't have any active projects.</p>
       )}
+       <ClientProjectOverview />
     </div>
   );
 };
