@@ -89,6 +89,15 @@ const useProjectStore = create((set) => ({
     },
 }));
 
+// Create a Zustand store for managing billing entries
+const useBillingStore = create((set) => ({
+    billingEntries: [],//initialBillingEntries, // Sample billing entries data
 
-export { useProjectStore };
+    // Function to add a new billing entry
+    addBillingEntry: (newBillingEntry) => {
+        set((state) => ({ billingEntries: [...state.billingEntries, newBillingEntry] }));
+    },
+}));
+
+export { useProjectStore, useBillingStore };
 export default useClientStore;
