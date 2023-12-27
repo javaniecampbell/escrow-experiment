@@ -1,7 +1,16 @@
 // store.js
-import create from 'zustand';
+import { create } from 'zustand';
 
-const useStore = create((set) => ({
+interface StoreState {
+  projects: any[];
+  milestones: any[];
+  selectedProject: any | null;
+  addProject: (project: any) => void;
+  addMilestone: (milestone: any) => void;
+  selectProject: (projectId: any) => void;
+}
+
+const useStore = create<StoreState>((set) => ({
   projects: [],
   milestones: [],
   selectedProject: null,
