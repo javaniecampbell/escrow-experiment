@@ -92,11 +92,18 @@ const useProjectStore = create((set) => ({
 // Create a Zustand store for managing billing entries
 const useBillingStore = create((set) => ({
     billingEntries: [],//initialBillingEntries, // Sample billing entries data
+    selectedBillingEntry: null, // Initialize selectedBillingEntry as null
 
     // Function to add a new billing entry
     addBillingEntry: (newBillingEntry) => {
         set((state) => ({ billingEntries: [...state.billingEntries, newBillingEntry] }));
     },
+
+    // Function to set the selected billing entry
+    setSelectedBillingEntry: (billingEntry) => set({ selectedBillingEntry: billingEntry }),
+
+    // Function to clear the selected billing entry
+    clearSelectedBillingEntry: () => set({ selectedBillingEntry: null }),
 }));
 
 export { useProjectStore, useBillingStore };
