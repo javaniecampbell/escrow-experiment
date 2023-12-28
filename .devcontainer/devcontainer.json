@@ -32,7 +32,8 @@
 				"ms-python.python",
 				"Github.copilot",
 				"ms-azuretools.rad-vscode-bicep",
-				"ms-dotnettools.csdevkit"
+				"ms-dotnettools.csdevkit",
+				"CucumberOpen.cucumber-official"
 			]
 		}
 	},

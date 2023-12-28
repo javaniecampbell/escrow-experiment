@@ -757,3 +757,6 @@ FodyWeavers.xsd
 # Will have to be specified manually as express app use the bin folder
 notification-service/bin/
 dotnet-install.sh
+
+# Radius Binaries
+radius/bin/
