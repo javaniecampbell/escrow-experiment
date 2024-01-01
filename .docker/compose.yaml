@@ -1,0 +1,34 @@
+name: escrow-platform
+services:
+  dashboard:
+    build:
+      context: ../apps/dashboard
+      dockerfile: Dockerfile
+    container_name: escrow-dashboard
+    ports:
+      - "8000:3000"
+    volumes:
+      - ../apps/dashboard:/app
+      - ../apps/dashboard/node_modules
+      - ../apps/dashboard/.next
+    environment:
+      - NODE_ENV=${ENVIRONMENT_STAGE}
+      - PORT=3000
+    depends_on:
+      - api
+  payment-service:
+    build:
+      context: ../services/payment-service
+      dockerfile: Dockerfile
+      target: ${ENVIRONMENT_STAGE}
+    container_name: escrow-payment-service
+    ports:
+      - "8001:3000"
+    volumes:
+      - ../apps/payment-service:/app
+      - ../apps/payment-service/node_modules
+    environment:
+      - NODE_ENV=${ENVIRONMENT_STAGE}
+      - PORT=3000
+    depends_on:
+      - api
