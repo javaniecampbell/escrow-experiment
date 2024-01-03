@@ -79,3 +79,18 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       # - POSTGRES_DB=escrow
+  flyway:
+    image: flyway/flyway:10.4-alpine
+    container_name: migration-runner
+    command: -connectRetries=60 migrate
+    volumes:
+      - ../.scripts/migrations:/flyway/sql
+    environment:
+      - FLYWAY_URL=jdbc:postgresql://database:5432/${DATABASE_NAME}
+      - FLYWAY_USER=${DATABASE_USER}
+      - FLYWAY_PASSWORD=${DATABASE_PASSWORD}
+      - FLYWAY_SCHEMAS=${DATABASE_SCHEMA}
+      - FLYWAY_LOCATIONS=filesystem:/flyway/sql
+      - FLYWAY_TABLE=schema_version
+    depends_on:
+      - database
