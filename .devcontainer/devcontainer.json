@@ -35,7 +35,8 @@
 				"ms-dotnettools.csdevkit",
 				"CucumberOpen.cucumber-official",
 				"ms-playwright.playwright",
-				"alexkrechik.cucumberautocomplete"
+				"alexkrechik.cucumberautocomplete",
+				"esbenp.prettier-vscode"
 			]
 		}
 	},
