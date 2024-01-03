@@ -7,6 +7,7 @@ router.post('/create-checkout-session', async (req, res) => {
     // Assume req.body contains amount and projectId
     const { amount, projectId } = req.body;
     try {
+        const origin = req.headers.origin ?? req.hostname ?? "http://localhost:3000";
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [{
@@ -20,11 +21,11 @@ router.post('/create-checkout-session', async (req, res) => {
                 quantity: 1,
             }],
             mode: 'payment',
-            success_url: 'your_success_url',
-            cancel_url: 'your_cancel_url',
+            success_url: `${req.protocol}://${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${req.protocol}://${origin}/cancel?session_id={CHECKOUT_SESSION_ID}`,
         });
 
-        res.json({ id: session.id });
+        res.json({ id: session.id, url: session.url });
     } catch (error) {
         res.status(500).send(error.toString());
     }
