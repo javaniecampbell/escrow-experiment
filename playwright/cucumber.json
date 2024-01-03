@@ -2,6 +2,7 @@
     "default": {
         "paths": ["tests/features/**/*.feature"],
         "require": ["tests/step_definitions/**/*.ts"],
+        "dryRun": true,
         "requireModule": ["ts-node/register"],
         "format": ["pretty", "summary", "progress-bar"],
         "formatOptions": {
