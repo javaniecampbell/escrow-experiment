@@ -32,3 +32,19 @@ services:
       - PORT=3000
     depends_on:
       - api
+  notification-service:
+    build:
+      context: ../services/notification-service
+      dockerfile: Dockerfile
+      target: ${ENVIRONMENT_STAGE}
+    container_name: escrow-notification-service
+    ports:
+      - "8002:3000"
+    volumes:
+      - ../apps/notification-service:/app
+      - ../apps/notification-service/node_modules
+    environment:
+      - NODE_ENV=${ENVIRONMENT_STAGE}
+      - PORT=3000
+    depends_on:
+      - api
