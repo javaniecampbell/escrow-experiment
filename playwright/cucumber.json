@@ -1,0 +1,13 @@
+{
+    "default": {
+        "paths": ["tests/features/**/*.feature"],
+        "require": ["tests/step_definitions/**/*.ts"],
+        "requireModule": ["ts-node/register"],
+        "format": ["pretty", "summary", "progress-bar"],
+        "formatOptions": {
+            "snippetInterface": "async-await"
+        },
+        "publishQuiet": true
+
+    }
+}

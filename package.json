@@ -10,7 +10,8 @@
   "workspaces": [
     "packages/*",
     "apps/*",
-    "services/*"
+    "services/*",
+    "playwright"
   ],
   "scripts": {
     "dev": "yarn workspace @devdaysatwork/app dev",
