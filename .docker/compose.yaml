@@ -17,28 +17,28 @@ services:
     depends_on:
       # - api
       - payment-service
-      - notification-service
-  # api:
-  #   build:
-  #     context: ../services/api
-  #     dockerfile: Dockerfile
-  #     target: ${ENVIRONMENT_STAGE}
-  #   container_name: escrow-api
-  #   ports:
-  #     - "8003:3000"
-  #   volumes:
-  #     - ../apps/api:/app
-  #     - ../apps/api/node_modules
-  #   environment:
-  #     - NODE_ENV=${ENVIRONMENT_STAGE}
-  #     - PORT=3000
-  #   depends_on:
-  #     - database
+      # - notification-service
+      # api:
+      #   build:
+      #     context: ../services/api
+      #     dockerfile: Dockerfile
+      #     target: ${ENVIRONMENT_STAGE}
+      #   container_name: escrow-api
+      #   ports:
+      #     - "8003:3000"
+      #   volumes:
+      #     - ../apps/api:/app
+      #     - ../apps/api/node_modules
+      #   environment:
+      #     - NODE_ENV=${ENVIRONMENT_STAGE}
+      #     - PORT=3000
+      #   depends_on:
+      #     - database
   payment-service:
     build:
       context: ../services/payment-service
       dockerfile: Dockerfile
-      target: ${ENVIRONMENT_STAGE}
+      target: dev
     container_name: escrow-payment-service
     ports:
       - "8001:3000"
@@ -47,27 +47,29 @@ services:
       - ../apps/payment-service/node_modules
     environment:
       - NODE_ENV=${ENVIRONMENT_STAGE}
+      - AZURE_STORAGE_CONNECTION_STRING=${AZURE_STORAGE_CONNECTION_STRING}
+      - AZURE_CONTAINER_NAME=${AZURE_CONTAINER_NAME}
       - PORT=3000
     depends_on:
       # - api
       - database
-  notification-service:
-    build:
-      context: ../services/notification-service
-      dockerfile: Dockerfile
-      target: ${ENVIRONMENT_STAGE}
-    container_name: escrow-notification-service
-    ports:
-      - "8002:3000"
-    volumes:
-      - ../apps/notification-service:/app
-      - ../apps/notification-service/node_modules
-    environment:
-      - NODE_ENV=${ENVIRONMENT_STAGE}
-      - PORT=3000
-    depends_on:
-      # - api
-      - database
+  # notification-service:
+  #   build:
+  #     context: ../services/notification-service
+  #     dockerfile: Dockerfile
+  #     target: ${ENVIRONMENT_STAGE}
+  #   container_name: escrow-notification-service
+  #   ports:
+  #     - "8002:3000"
+  #   volumes:
+  #     - ../apps/notification-service:/app
+  #     - ../apps/notification-service/node_modules
+  #   environment:
+  #     - NODE_ENV=${ENVIRONMENT_STAGE}
+  #     - PORT=3000
+  #   depends_on:
+  #     # - api
+  #     - database
   database:
     image: postgres:12.1-alpine
     container_name: escrow-database
