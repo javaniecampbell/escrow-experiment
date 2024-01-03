@@ -34,7 +34,8 @@
 				"ms-azuretools.rad-vscode-bicep",
 				"ms-dotnettools.csdevkit",
 				"CucumberOpen.cucumber-official",
-				"ms-playwright.playwright"
+				"ms-playwright.playwright",
+				"alexkrechik.cucumberautocomplete"
 			]
 		}
 	},
