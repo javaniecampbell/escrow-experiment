@@ -1,19 +1,19 @@
 // ClientPayments.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClientPayments = () => {
   const [payments, setPayments] = useState([
     {
       id: 1,
-      date: '2023-02-15',
+      date: "2023-02-15",
       amount: 1500,
-      description: 'Payment for Website Redesign',
+      description: "Payment for Website Redesign",
     },
     {
       id: 2,
-      date: '2023-01-10',
+      date: "2023-01-10",
       amount: 2500,
-      description: 'Payment for E-commerce Platform',
+      description: "Payment for E-commerce Platform",
     },
   ]);
 
@@ -32,7 +32,9 @@ const ClientPayments = () => {
           {payments.map((payment) => (
             <tr key={payment.id}>
               <td className="border border-gray-300 p-2">{payment.date}</td>
-              <td className="border border-gray-300 p-2">{payment.description}</td>
+              <td className="border border-gray-300 p-2">
+                {payment.description}
+              </td>
               <td className="border border-gray-300 p-2">${payment.amount}</td>
             </tr>
           ))}

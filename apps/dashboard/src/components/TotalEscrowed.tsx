@@ -1,6 +1,6 @@
 // TotalEscrowed.js
-import React from 'react';
-import useStore from '@/shared/store';
+import React from "react";
+import useStore from "@/shared/store";
 
 const TotalEscrowed = () => {
   const { selectedProject, milestones } = useStore();
@@ -15,7 +15,9 @@ const TotalEscrowed = () => {
       <h2 className="text-lg font-semibold mb-2">Total Escrowed</h2>
       {selectedProject ? (
         <>
-          <p className="text-gray-700">Total Escrowed Amount: ${totalEscrowed}</p>
+          <p className="text-gray-700">
+            Total Escrowed Amount: ${totalEscrowed}
+          </p>
           <div className="mt-2">
             <h3 className="text-md font-semibold">Milestones:</h3>
             <ul className="list-disc ml-4">
@@ -30,7 +32,9 @@ const TotalEscrowed = () => {
           </div>
         </>
       ) : (
-        <p className="text-gray-700">Select a project to view the total escrowed amount.</p>
+        <p className="text-gray-700">
+          Select a project to view the total escrowed amount.
+        </p>
       )}
     </div>
   );

@@ -1,9 +1,9 @@
 // ClientSettings.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClientSettings = () => {
-  const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [emailPreferences, setEmailPreferences] = useState(true);
 
   const handleChangePassword = () => {

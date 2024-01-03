@@ -1,16 +1,16 @@
 // ProjectList.js
-import React from 'react';
-import useStore from '@/shared/store';
+import React from "react";
+import useStore from "@/shared/store";
 
 const ProjectList = () => {
   const { projects, addProject, selectProject } = useStore();
 
   const handleAddProject = () => {
-    const newProject = { id: projects.length + 1, name: 'New Project' };
+    const newProject = { id: projects.length + 1, name: "New Project" };
     addProject(newProject);
   };
 
-const handleProjectClick = (projectId: number) => {
+  const handleProjectClick = (projectId: number) => {
     selectProject(projectId);
     // You can navigate to a detailed view of the selected project
   };

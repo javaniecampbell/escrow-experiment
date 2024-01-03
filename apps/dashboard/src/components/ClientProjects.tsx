@@ -1,22 +1,22 @@
 // ClientProjects.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClientProjects = () => {
   const [projects, setProjects] = useState([
     {
       id: 1,
-      name: 'Website Redesign',
-      status: 'In Progress',
+      name: "Website Redesign",
+      status: "In Progress",
     },
     {
       id: 2,
-      name: 'Mobile App Development',
-      status: 'Completed',
+      name: "Mobile App Development",
+      status: "Completed",
     },
     {
       id: 3,
-      name: 'E-commerce Platform',
-      status: 'In Progress',
+      name: "E-commerce Platform",
+      status: "In Progress",
     },
   ]);
 

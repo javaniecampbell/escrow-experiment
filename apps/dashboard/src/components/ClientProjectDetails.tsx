@@ -1,11 +1,11 @@
 // ClientProjectDetails.js
-import React, { useState } from 'react';
-import useStore from '@/shared/store';
+import React, { useState } from "react";
+import useStore from "@/shared/store";
 
 const ClientProjectDetails = () => {
   const { clientProjects, markMilestonePreviewed, releaseEscrow } = useStore();
-  const [selectedProject, setSelectedProject] = useState('');
-  const [selectedMilestone, setSelectedMilestone] = useState('');
+  const [selectedProject, setSelectedProject] = useState("");
+  const [selectedMilestone, setSelectedMilestone] = useState("");
   const [previewed, setPreviewed] = useState(false);
   const [released, setReleased] = useState(false);
 
@@ -72,21 +72,25 @@ const ClientProjectDetails = () => {
                 <div className="mb-4">
                   <button
                     className={`px-4 py-1 rounded ${
-                      selectedMilestone && !previewed ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'
+                      selectedMilestone && !previewed
+                        ? "bg-blue-500 text-white hover:bg-blue-600"
+                        : "bg-gray-400 cursor-not-allowed"
                     }`}
                     onClick={handlePreviewMilestone}
                     disabled={!selectedMilestone || previewed}
                   >
-                    {previewed ? 'Previewed' : 'Preview Milestone'}
+                    {previewed ? "Previewed" : "Preview Milestone"}
                   </button>
                   <button
                     className={`px-4 py-1 ml-4 rounded ${
-                      selectedMilestone && !released ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'
+                      selectedMilestone && !released
+                        ? "bg-green-500 text-white hover:bg-green-600"
+                        : "bg-gray-400 cursor-not-allowed"
                     }`}
                     onClick={handleReleaseEscrow}
                     disabled={!selectedMilestone || released}
                   >
-                    {released ? 'Released' : 'Release Escrow'}
+                    {released ? "Released" : "Release Escrow"}
                   </button>
                 </div>
               )}

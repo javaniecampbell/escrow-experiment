@@ -1,13 +1,13 @@
 // ClientProfile.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClientViewProfile = () => {
   const [clientInfo, setClientInfo] = useState({
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    phone: '+1 (123) 456-7890',
-    company: 'ABC Corp',
-    address: '123 Main St, City, Country',
+    name: "John Doe",
+    email: "johndoe@example.com",
+    phone: "+1 (123) 456-7890",
+    company: "ABC Corp",
+    address: "123 Main St, City, Country",
   });
 
   const handleEdit = () => {

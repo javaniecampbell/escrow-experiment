@@ -1,10 +1,10 @@
 // PreviewAsset.js
-import React, { useState } from 'react';
-import useStore from '@/shared/store';
+import React, { useState } from "react";
+import useStore from "@/shared/store";
 
 const PreviewAsset = () => {
   const { selectedProject, milestones, markMilestonePreviewed } = useStore();
-  const [selectedMilestone, setSelectedMilestone] = useState('');
+  const [selectedMilestone, setSelectedMilestone] = useState("");
   const [previewed, setPreviewed] = useState(false);
 
   // Handle marking a milestone as previewed
@@ -21,7 +21,9 @@ const PreviewAsset = () => {
       {selectedProject ? (
         <>
           <div className="mb-4">
-            <h3 className="text-md font-semibold">Select Milestone to Preview</h3>
+            <h3 className="text-md font-semibold">
+              Select Milestone to Preview
+            </h3>
             <select
               className="border rounded px-2 py-1 w-full"
               value={selectedMilestone}
@@ -31,7 +33,11 @@ const PreviewAsset = () => {
                 Select Milestone
               </option>
               {milestones
-                .filter((milestone) => milestone.projectId === selectedProject && !milestone.previewed)
+                .filter(
+                  (milestone) =>
+                    milestone.projectId === selectedProject &&
+                    !milestone.previewed
+                )
                 .map((milestone) => (
                   <option key={milestone.id} value={milestone.id}>
                     {milestone.name}
@@ -42,12 +48,14 @@ const PreviewAsset = () => {
           <div>
             <button
               className={`px-4 py-1 rounded ${
-                selectedMilestone && !previewed ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'
+                selectedMilestone && !previewed
+                  ? "bg-blue-500 text-white hover:bg-blue-600"
+                  : "bg-gray-400 cursor-not-allowed"
               }`}
               onClick={handlePreviewMilestone}
               disabled={!selectedMilestone || previewed}
             >
-              {previewed ? 'Previewed' : 'Preview'}
+              {previewed ? "Previewed" : "Preview"}
             </button>
           </div>
         </>

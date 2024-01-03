@@ -1,6 +1,6 @@
 // TotalPayouts.js
-import React from 'react';
-import useStore from '@/shared/store';
+import React from "react";
+import useStore from "@/shared/store";
 
 const TotalPayouts = () => {
   const { selectedProject, milestones } = useStore();
@@ -30,7 +30,9 @@ const TotalPayouts = () => {
           </div>
         </>
       ) : (
-        <p className="text-gray-700">Select a project to view the total payouts made.</p>
+        <p className="text-gray-700">
+          Select a project to view the total payouts made.
+        </p>
       )}
     </div>
   );

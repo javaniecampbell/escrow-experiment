@@ -1,6 +1,6 @@
 // ClientBilling.js
-import React from 'react';
-import useStore from '@/shared/store';
+import React from "react";
+import useStore from "@/shared/store";
 
 const ClientBilling = () => {
   const { clientBillingHistory } = useStore();
@@ -20,7 +20,9 @@ const ClientBilling = () => {
           {clientBillingHistory.map((entry) => (
             <tr key={entry.id}>
               <td className="border border-gray-300 p-2">{entry.date}</td>
-              <td className="border border-gray-300 p-2">{entry.description}</td>
+              <td className="border border-gray-300 p-2">
+                {entry.description}
+              </td>
               <td className="border border-gray-300 p-2">${entry.amount}</td>
             </tr>
           ))}

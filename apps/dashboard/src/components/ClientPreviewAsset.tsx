@@ -1,10 +1,10 @@
 // ClientPreviewAsset.js
-import React, { useState } from 'react';
-import useStore from '@shared/store';
+import React, { useState } from "react";
+import useStore from "@shared/store";
 
 const ClientPreviewAsset = () => {
   const { clientProjects, markMilestonePreviewed } = useStore();
-  const [selectedMilestone, setSelectedMilestone] = useState('');
+  const [selectedMilestone, setSelectedMilestone] = useState("");
   const [previewed, setPreviewed] = useState(false);
 
   // Handle marking a milestone as previewed
@@ -41,12 +41,14 @@ const ClientPreviewAsset = () => {
         <div className="mb-4">
           <button
             className={`px-4 py-1 rounded ${
-              selectedMilestone && !previewed ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'
+              selectedMilestone && !previewed
+                ? "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-gray-400 cursor-not-allowed"
             }`}
             onClick={handlePreviewMilestone}
             disabled={!selectedMilestone || previewed}
           >
-            {previewed ? 'Previewed' : 'Preview Milestone'}
+            {previewed ? "Previewed" : "Preview Milestone"}
           </button>
         </div>
       )}

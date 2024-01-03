@@ -1,16 +1,18 @@
 // ClientFiles.js
-import React from 'react';
-import useStore from '@/shared/store';
+import React from "react";
+import useStore from "@/shared/store";
 
 const ClientFiles = () => {
   const { clientProjects } = useStore();
-  const [selectedProject, setSelectedProject] = React.useState('');
-  const [selectedMilestone, setSelectedMilestone] = React.useState('');
+  const [selectedProject, setSelectedProject] = React.useState("");
+  const [selectedMilestone, setSelectedMilestone] = React.useState("");
 
   // Function to handle file download
   const handleDownload = (projectID, milestoneID, fileName) => {
     // Replace this with your actual file download logic
-    console.log(`Downloading ${fileName} for Project ${projectID}, Milestone ${milestoneID}`);
+    console.log(
+      `Downloading ${fileName} for Project ${projectID}, Milestone ${milestoneID}`
+    );
   };
 
   return (
@@ -63,7 +65,11 @@ const ClientFiles = () => {
               <button
                 className="text-blue-500 hover:underline"
                 onClick={() =>
-                  handleDownload(selectedProject, selectedMilestone, 'SampleFile.pdf')
+                  handleDownload(
+                    selectedProject,
+                    selectedMilestone,
+                    "SampleFile.pdf"
+                  )
                 }
               >
                 SampleFile.pdf
@@ -73,7 +79,11 @@ const ClientFiles = () => {
               <button
                 className="text-blue-500 hover:underline"
                 onClick={() =>
-                  handleDownload(selectedProject, selectedMilestone, 'ProjectDetails.docx')
+                  handleDownload(
+                    selectedProject,
+                    selectedMilestone,
+                    "ProjectDetails.docx"
+                  )
                 }
               >
                 ProjectDetails.docx

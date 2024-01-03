@@ -1,5 +1,5 @@
 // ClientNotifications.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClientNotifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -9,7 +9,7 @@ const ClientNotifications = () => {
     // Replace with your actual notification logic
     const newNotification = {
       id: Date.now(),
-      message: 'New milestone added to your project!',
+      message: "New milestone added to your project!",
     };
     setNotifications([...notifications, newNotification]);
   };

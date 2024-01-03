@@ -1,6 +1,6 @@
 // ClientRecentActivity.js
-import React from 'react';
-import useStore from '@/shared/store';
+import React from "react";
+import useStore from "@/shared/store";
 
 const ClientRecentActivity = () => {
   const { clientProjects } = useStore();

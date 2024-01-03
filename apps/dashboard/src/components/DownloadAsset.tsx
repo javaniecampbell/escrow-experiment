@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const DownloadAsset = () => {
-  const [assetLink, setAssetLink] = useState('');
+  const [assetLink, setAssetLink] = useState("");
 
   const handleDownload = async () => {
     try {
       // Make a GET request to retrieve the expiring asset link
-      const response = await fetch('/get-asset-link');
+      const response = await fetch("/get-asset-link");
       const data = await response.json();
       // Update the asset link state with the retrieved link
       setAssetLink(data.downloadLink);
     } catch (error) {
-      console.error('Error fetching asset link:', error);
+      console.error("Error fetching asset link:", error);
     }
   };
 

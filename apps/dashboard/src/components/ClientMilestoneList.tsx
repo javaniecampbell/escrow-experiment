@@ -1,10 +1,10 @@
 // ClientMilestoneList.js
-import React from 'react';
-import useStore from '@/shared/store';
+import React from "react";
+import useStore from "@/shared/store";
 
 const ClientMilestoneList = () => {
   const { clientProjects } = useStore();
-  const selectedProject = ''; // Set the selected project here
+  const selectedProject = ""; // Set the selected project here
 
   return (
     <div className="p-4 border border-gray-300 rounded">

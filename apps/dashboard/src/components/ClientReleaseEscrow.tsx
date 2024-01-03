@@ -1,10 +1,10 @@
 // ClientReleaseEscrow.js
-import React, { useState } from 'react';
-import useStore from '@/shared/store';
+import React, { useState } from "react";
+import useStore from "@/shared/store";
 
 const ClientReleaseEscrow = () => {
   const { clientProjects, releaseEscrow } = useStore();
-  const [selectedMilestone, setSelectedMilestone] = useState('');
+  const [selectedMilestone, setSelectedMilestone] = useState("");
   const [released, setReleased] = useState(false);
 
   // Handle releasing escrowed funds
@@ -41,12 +41,14 @@ const ClientReleaseEscrow = () => {
         <div className="mb-4">
           <button
             className={`px-4 py-1 rounded ${
-              selectedMilestone && !released ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'
+              selectedMilestone && !released
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-gray-400 cursor-not-allowed"
             }`}
             onClick={handleReleaseEscrow}
             disabled={!selectedMilestone || released}
           >
-            {released ? 'Released' : 'Release Escrow'}
+            {released ? "Released" : "Release Escrow"}
           </button>
         </div>
       )}

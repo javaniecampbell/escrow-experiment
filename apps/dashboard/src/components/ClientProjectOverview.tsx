@@ -1,22 +1,32 @@
 // ClientProjectOverview.js
-import React from 'react';
-import useStore from '@/shared/store';
+import React from "react";
+import useStore from "@/shared/store";
 
 const ClientProjectOverview = () => {
   const { clientProjects } = useStore();
 
   // Calculate project statistics
-  const totalInEscrow = clientProjects.reduce((total, project) => total + project.inEscrow, 0);
-  const totalPayouts = clientProjects.reduce((total, project) => total + project.totalPayouts, 0);
+  const totalInEscrow = clientProjects.reduce(
+    (total, project) => total + project.inEscrow,
+    0
+  );
+  const totalPayouts = clientProjects.reduce(
+    (total, project) => total + project.totalPayouts,
+    0
+  );
   const deliveredMilestones = clientProjects.reduce(
-    (total, project) => total + project.milestones.filter((milestone) => milestone.status === 'Delivered').length,
+    (total, project) =>
+      total +
+      project.milestones.filter((milestone) => milestone.status === "Delivered")
+        .length,
     0
   );
   const milestonesWithPreviews = clientProjects.reduce(
     (total, project) =>
       total +
       project.milestones.filter(
-        (milestone) => milestone.status === 'Delivered' && milestone.previewed === true
+        (milestone) =>
+          milestone.status === "Delivered" && milestone.previewed === true
       ).length,
     0
   );
@@ -24,7 +34,8 @@ const ClientProjectOverview = () => {
     (total, project) =>
       total +
       project.milestones.filter(
-        (milestone) => milestone.status === 'Delivered' && milestone.payoutDate >= new Date()
+        (milestone) =>
+          milestone.status === "Delivered" && milestone.payoutDate >= new Date()
       ).length,
     0
   );

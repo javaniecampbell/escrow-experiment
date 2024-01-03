@@ -1,14 +1,14 @@
 // ClientSupport.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClientSupportFormV2 = () => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const handleSendMessage = () => {
     // Implement sending the message to support
     // You can use an API call to send messages to support
     // Reset the message input field after sending
-    setMessage('');
+    setMessage("");
   };
 
   return (

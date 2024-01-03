@@ -1,18 +1,23 @@
 // ProjectActions.js
-import React, { useState } from 'react';
-import useStore from '@/shared/store';
+import React, { useState } from "react";
+import useStore from "@/shared/store";
 
 const ProjectActions = () => {
-  const { selectedProject, addMilestone, markMilestoneDelivered, requestPayout } = useStore();
-  const [milestoneName, setMilestoneName] = useState('');
-  const [milestoneAmount, setMilestoneAmount] = useState('');
+  const {
+    selectedProject,
+    addMilestone,
+    markMilestoneDelivered,
+    requestPayout,
+  } = useStore();
+  const [milestoneName, setMilestoneName] = useState("");
+  const [milestoneAmount, setMilestoneAmount] = useState("");
 
   // Handle creating a new milestone
   const handleCreateMilestone = () => {
     if (milestoneName && milestoneAmount) {
       addMilestone(selectedProject, milestoneName, parseFloat(milestoneAmount));
-      setMilestoneName('');
-      setMilestoneAmount('');
+      setMilestoneName("");
+      setMilestoneAmount("");
     }
   };
 

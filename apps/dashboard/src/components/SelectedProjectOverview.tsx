@@ -1,6 +1,6 @@
 // ProjectOverview.js
-import React from 'react';
-import useStore from '@/shared/store';
+import React from "react";
+import useStore from "@/shared/store";
 
 const ProjectOverview = () => {
   const { selectedProject, projects } = useStore();

@@ -1,22 +1,22 @@
 // ClientProfile.js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ClientProfile = () => {
-  const [fullName, setFullName] = useState('John Doe');
-  const [email, setEmail] = useState('johndoe@example.com');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [fullName, setFullName] = useState("John Doe");
+  const [email, setEmail] = useState("johndoe@example.com");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleUpdateProfile = () => {
     // Replace with your actual profile update logic
     if (password === confirmPassword) {
-      console.log('Updating profile...');
-      console.log('Full Name:', fullName);
-      console.log('Email:', email);
-      console.log('Password:', password);
+      console.log("Updating profile...");
+      console.log("Full Name:", fullName);
+      console.log("Email:", email);
+      console.log("Password:", password);
       // Update the user's profile
     } else {
-      console.error('Password and Confirm Password do not match.');
+      console.error("Password and Confirm Password do not match.");
     }
   };
 

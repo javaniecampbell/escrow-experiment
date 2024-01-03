@@ -1,11 +1,11 @@
 // ClientMessages.js
-import React, { useState } from 'react';
-import useStore from '@/shared/store';
+import React, { useState } from "react";
+import useStore from "@/shared/store";
 
 const ClientMessages = () => {
   const { clientProjects } = useStore();
-  const [selectedProject, setSelectedProject] = useState('');
-  const [message, setMessage] = useState('');
+  const [selectedProject, setSelectedProject] = useState("");
+  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
   // Handle sending a message
@@ -22,8 +22,8 @@ const ClientMessages = () => {
         return project;
       });
       setMessages([...messages, message]);
-      setSelectedProject('');
-      setMessage('');
+      setSelectedProject("");
+      setMessage("");
       // Update the state with the updated projects
       // Replace this line with your actual state management logic
     }

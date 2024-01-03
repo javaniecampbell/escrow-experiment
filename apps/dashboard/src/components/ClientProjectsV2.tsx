@@ -1,5 +1,5 @@
 // ClientProjects.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const ClientProjects = () => {
   const [projects, setProjects] = useState([]);
@@ -25,7 +25,9 @@ const ClientProjects = () => {
         <div key={project.id} className="mb-4">
           <h3 className="text-md font-semibold">{project.name}</h3>
           <p className="text-sm text-gray-600">Status: {project.status}</p>
-          <p className="text-sm text-gray-600">Milestones: {project.milestones}</p>
+          <p className="text-sm text-gray-600">
+            Milestones: {project.milestones}
+          </p>
           <button
             className="px-2 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 mt-2"
             onClick={() => openProjectDetails(project)}

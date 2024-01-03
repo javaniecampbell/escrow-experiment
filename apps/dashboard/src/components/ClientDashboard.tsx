@@ -1,10 +1,10 @@
 // ClientDashboard.js
-import React from 'react';
-import useStore from '@/shared/store';
-import ClientProjectOverview from './ClientProjectOverview';
-import ClientProjects from './ClientProjects';
-import ClientPayments from './ClientPayments';
-import ClientNotifications from './ClientNotifications';
+import React from "react";
+import useStore from "@/shared/store";
+import ClientProjectOverview from "./ClientProjectOverview";
+import ClientProjects from "./ClientProjects";
+import ClientPayments from "./ClientPayments";
+import ClientNotifications from "./ClientNotifications";
 
 const ClientDashboard = () => {
   const { clientProjects } = useStore();
@@ -31,8 +31,8 @@ const ClientDashboard = () => {
       ) : (
         <p className="text-gray-700">You don't have any active projects.</p>
       )}
-       <ClientProjectOverview />
-       <ClientProjects />
+      <ClientProjectOverview />
+      <ClientProjects />
       <ClientPayments />
       <ClientNotifications />
     </div>

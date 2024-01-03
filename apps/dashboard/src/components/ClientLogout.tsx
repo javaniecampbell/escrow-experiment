@@ -1,5 +1,5 @@
 // ClientLogout.js
-import React from 'react';
+import React from "react";
 
 const ClientLogout = () => {
   const handleLogout = () => {
