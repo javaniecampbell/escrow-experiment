@@ -38,7 +38,7 @@ services:
     build:
       context: ../services/payment-service
       dockerfile: Dockerfile
-      target: dev
+      # target: dev
     container_name: escrow-payment-service
     ports:
       - "8001:3000"
