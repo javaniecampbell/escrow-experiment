@@ -36,7 +36,8 @@
 				"CucumberOpen.cucumber-official",
 				"ms-playwright.playwright",
 				"alexkrechik.cucumberautocomplete",
-				"esbenp.prettier-vscode"
+				"esbenp.prettier-vscode",
+				"Prisma.prisma"
 			]
 		}
 	},
