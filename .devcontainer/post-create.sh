@@ -5,7 +5,7 @@ while (! kubectl cluster-info); do
 # Docker is not ready yet, wait a bit and try again
     echo "Waiting for docker to be ready..."
     k3d cluster delete
-    k3d cluster create -p '8081:80@loadbalancer' --k3s-arg '--disable=traefik@server:0'
+    k3d cluster create -p '8081:80@loadbalancer' --k3s-arg '--disable=traefik@server:0' --registry-create reciperegistry:51351
     sleep 1
 done
 
