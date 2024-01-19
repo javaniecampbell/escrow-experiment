@@ -21,7 +21,7 @@ router.post('/create-checkout-session', async (req, res) => {
                     product_data: {
                         name: 'Escrow Service Fee for' + projectId === undefined ? '' : projectId ?? 'Project',
                     },
-                    unit_amount: amount ?? 100 * 100, // example amount
+                    unit_amount: (amount ?? 100) * 100, // example amount
                 },
                 quantity: 1,
             }],

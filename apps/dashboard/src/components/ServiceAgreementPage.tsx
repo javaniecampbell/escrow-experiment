@@ -6,6 +6,8 @@ function ServiceAgreementPage() {
       action="http://localhost:3000/api/payments/create-checkout-session"
       method="POST"
     >
+      <input type="hidden" name="projectId" value="1" />
+      <input type="hidden" name="amount" value="100" />
       <input type="checkbox" id="agree" name="agree" required />
       <label htmlFor="agree">I agree to the Terms and Conditions</label>
       <button type="submit" className="bg-blue-500 text-white p-2">
