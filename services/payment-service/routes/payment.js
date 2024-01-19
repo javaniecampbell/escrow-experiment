@@ -1,5 +1,10 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const router = express.Router();
+
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+}
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -14,18 +19,22 @@ router.post('/create-checkout-session', async (req, res) => {
                 price_data: {
                     currency: 'usd',
                     product_data: {
-                        name: 'Escrow Service Fee for' + projectId,
+                        name: 'Escrow Service Fee for' + projectId === undefined ? '' : projectId ?? 'Project',
                     },
-                    unit_amount: amount, // example amount
+                    unit_amount: amount ?? 100 * 100, // example amount
                 },
                 quantity: 1,
             }],
             mode: 'payment',
-            success_url: `${req.protocol}://${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${req.protocol}://${origin}/cancel?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${req.protocol}://${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
+            cancel_url: `${req.protocol}://${origin}/cancel?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
         });
+        if (Boolean(process.env.SHOULD_REDIRECT_PAYMENT_SESSION) === true) {
+            res.redirect(303, session.url);
+        } else {
+            res.json({ id: session.id, url: session.url });
+        }
 
-        res.json({ id: session.id, url: session.url });
     } catch (error) {
         res.status(500).send(error.toString());
     }
