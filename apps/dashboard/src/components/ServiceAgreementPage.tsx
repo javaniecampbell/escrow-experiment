@@ -3,7 +3,7 @@ import React from "react";
 function ServiceAgreementPage() {
   return (
     <form
-      action="http://localhost:3000/api/create-checkout-session"
+      action="http://localhost:3000/api/payments/create-checkout-session"
       method="POST"
     >
       <input type="checkbox" id="agree" name="agree" required />
