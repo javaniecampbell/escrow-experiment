@@ -7,27 +7,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model digitalassets {
-  assetid     Int         @id
-  milestoneid Int?
-  asseturl    String?     @db.VarChar(255)
-  expirydate  DateTime?   @db.Timestamp(6)
-  milestones  milestones? @relation(fields: [milestoneid], references: [milestoneid], onDelete: NoAction, onUpdate: NoAction)
+model DigitalAsset {
+  assetId     Int        @id @map("assetid")
+  milestoneId Int?       @map("milestoneid")
+  assetUrl    String?    @map("asseturl") @db.VarChar(255)
+  expiryDate  DateTime?  @map("expirydate") @db.Timestamp(6)
+  milestone   Milestone? @relation(fields: [milestoneId], references: [milestoneId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("digitalassets")
 }
 
-model milestones {
-  milestoneid   Int             @id
-  projectid     Int?
-  milestonename String?         @db.VarChar(255)
-  amount        Decimal?        @db.Decimal(10, 2)
-  status        String?         @db.VarChar(50)
-  digitalassets digitalassets[]
-  projects      projects?       @relation(fields: [projectid], references: [projectid], onDelete: NoAction, onUpdate: NoAction)
+model Milestone {
+  milestoneId   Int            @id @map("milestoneid")
+  projectId     Int?           @map("projectid")
+  milestoneName String?        @map("milestonename") @db.VarChar(255)
+  amount        Decimal?       @db.Decimal(10, 2)
+  status        String?        @db.VarChar(50)
+  digitalAssets DigitalAsset[]
+  project       Project?       @relation(fields: [projectId], references: [projectId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("milestones")
 }
 
-model projects {
-  projectid   Int          @id
-  projectname String?      @db.VarChar(255)
-  totalamount Decimal?     @db.Decimal(10, 2)
-  milestones  milestones[]
+model Project {
+  projectId   Int         @id @map("projectid")
+  projectName String?     @map("projectname") @db.VarChar(255)
+  totalAmount Decimal?    @map("totalamount") @db.Decimal(10, 2)
+  milestones  Milestone[]
+
+  @@map("projects")
 }
