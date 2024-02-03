@@ -13,6 +13,7 @@ router.post('/create-checkout-session', async (req, res) => {
     const { amount, projectId } = req.body;
     try {
         const origin = req.headers.origin ?? req.hostname ?? "http://localhost:3000";
+        console.log(origin, req.protocol);
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [{
@@ -26,8 +27,10 @@ router.post('/create-checkout-session', async (req, res) => {
                 quantity: 1,
             }],
             mode: 'payment',
-            success_url: `${req.protocol}://${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
-            cancel_url: `${req.protocol}://${origin}/cancel?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
+            success_url: `${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
+            cancel_url: `${origin}/cancel?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
+            // success_url: `${req.protocol}://${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
+            // cancel_url: `${req.protocol}://${origin}/cancel?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
         });
         if (Boolean(process.env.SHOULD_REDIRECT_PAYMENT_SESSION) === true) {
             res.redirect(303, session.url);
