@@ -37,6 +37,7 @@ const initialMilestones = [{
   amount: 100,
   date: '2023-01-15',
   status: 'Active',
+  payout: 0,
   description: 'Milestone 1 description',
   digitalAssets: [{
     id: 1,
@@ -67,7 +68,7 @@ interface StoreState {
 const useStore = create<StoreState>((set) => ({
   projects: initialProjects ?? [],
   milestones: initialMilestones ?? [],
-  selectedProject: 1?? null,
+  selectedProject: 1 ?? null,
   addProject: (project) => set((state) => ({ projects: [...state.projects, project] })),
   addMilestone: (milestone) => set((state) => ({ milestones: [...state.milestones, milestone] })),
   selectProject: (projectId) => set({ selectedProject: projectId }),
