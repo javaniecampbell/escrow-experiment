@@ -37,6 +37,14 @@ interface ClientStoreState {
     billingHistory: BillingHistoryEntry[];
     supportMessages: SupportMessage[];
     selectedClient: Client | null;
+    selectClient: (clientId: number) => void;
+    clearSelectedClient: () => void;
+    addClient: (newClient: Client) => void;
+    addProject: (newProject: Project) => void;
+    addBillingHistoryEntry: (newBillingHistoryEntry: BillingHistoryEntry) => void;
+    addSupportMessage: (newSupportMessage: SupportMessage) => void;
+    markMilestonePreviewed: (milestoneId: number | string) => void;
+    releaseEscrow: (milestoneId: number | string) => void;
 }
 
 export type Client = {
@@ -48,7 +56,7 @@ export type Client = {
 export type Project = {
     id: number;
     title: string;
-    name: string;
+    name?: string;
     balance: number;
     inEscrow: number;
     totalPayouts: number;
@@ -134,6 +142,36 @@ const useClientStore = create<ClientStoreState>((set) => ({
     addSupportMessage: (newMessage: SupportMessage) => {
         set((state) => ({
             supportMessages: [...state.supportMessages, newMessage],
+        }));
+    },
+    markMilestonePreviewed: (milestoneId: number | string) => {
+        set((state) => ({
+            projects: state.projects.map((p) => {
+                if (p.id === milestoneId) {
+                    p.milestones.forEach((m) => {
+                        if (m.id === milestoneId) {
+                            m.status = 'Previewed';
+                        }
+                    });
+                }
+                return p;
+            }),
+        }));
+    },
+    releaseEscrow: (milestoneId: number | string) => {
+        set((state) => ({
+            projects: state.projects.map((p) => {
+                if (p.id === milestoneId) {
+                    p.milestones.forEach((m) => {
+                        if (m.id === milestoneId) {
+                            m.status = 'Completed';
+                            p.balance -= m.amount;
+                            p.totalPayouts += m.amount;
+                        }
+                    });
+                }
+                return p;
+            }),
         }));
     },
 }));
