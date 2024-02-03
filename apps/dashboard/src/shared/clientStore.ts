@@ -1,6 +1,7 @@
 // clientStore.js
 import { create } from 'zustand';
 
+
 // Sample data for clients
 const initialClients = [
     { id: 1, name: 'Client 1', email: 'client1@example.com' },
@@ -10,8 +11,8 @@ const initialClients = [
 
 // Sample data for projects
 const initialProjects = [
-    { id: 1, title: 'Project 1', status: 'Active', clientId: 1 },
-    { id: 2, title: 'Project 2', status: 'Completed', clientId: 2 },
+    { id: 1, title: 'Project 1', balance: 100, inEscrow: 1, totalPayouts: 0, milestones: [], status: 'Active', clientId: 1 },
+    { id: 2, title: 'Project 2', balance: 0, inEscrow: 0, totalPayouts: 100, milestones: [], status: 'Completed', clientId: 2 },
     // Add more projects as needed
 ];
 
@@ -29,81 +30,165 @@ const initialSupportMessages = [
     // Add more support messages as needed
 ];
 
+//
+interface ClientStoreState {
+  clients: Client[];
+  projects: Project[];
+  billingHistory: BillingHistoryEntry[];
+  supportMessages: SupportMessage[];
+  selectedClient: Client | null;
+}
+
+export type Client = {
+    id: number;
+    name: string;
+    email: string;
+};
+
+export type Project = {
+    id: number;
+    title: string;
+    balance: number;
+    inEscrow: number;
+    totalPayouts: number;
+    milestones: Milestone[];
+    status: string;
+    clientId: number;
+};
+
+export type Milestone = {
+    id: number;
+    projectId: number;
+    name: string;
+    amount: number;
+    date: string;
+    status: string;
+    payout: number;
+    description: string;
+    digitalAssets: DigitalAsset[];
+};
+
+export type DigitalAsset = {
+    id: number;
+    name: string;
+    url: string;
+    type: string;
+    milestoneId: number;
+    expiryDate: string;
+};
+
+export type BillingHistoryEntry = {
+    id: number;
+    date: string;
+    description: string;
+    amount: number;
+    status: string;
+    clientId: number;
+};
+
+export type SupportMessage = {
+    id: number;
+    date: string;
+    message: string;
+    clientId: number;
+};
+
+
 // Create a Zustand store for managing client data
-const useClientStore = create((set) => ({
-    clients: initialClients,
-    projects: initialProjects,
-    billingHistory: initialBillingHistory,
-    supportMessages: initialSupportMessages,
-    selectedClient: null,
+const useClientStore = create<ClientStoreState>((set) => ({
+  clients: initialClients,
+  projects: initialProjects,
+  billingHistory: initialBillingHistory,
+  supportMessages: initialSupportMessages,
+  selectedClient: null,
 
-    // Function to select a client
-    selectClient: (clientId) => {
-        set((state) => ({ selectedClient: state.clients.find((c) => c.id === clientId) }));
-    },
+  // Function to select a client
+  selectClient: (clientId: number) => {
+    set((state) => ({
+      selectedClient: state.clients.find((c) => c.id === clientId),
+    }));
+  },
 
-    // Function to clear the selected client
-    clearSelectedClient: () => {
-        set({ selectedClient: null });
-    },
+  // Function to clear the selected client
+  clearSelectedClient: () => {
+    set({ selectedClient: null });
+  },
 
-    // Function to add a new client
-    addClient: (newClient) => {
-        set((state) => ({ clients: [...state.clients, newClient] }));
-    },
+  // Function to add a new client
+  addClient: (newClient: Client) => {
+    set((state) => ({ clients: [...state.clients, newClient] }));
+  },
 
-    // Function to add a new project
-    addProject: (newProject) => {
-        set((state) => ({ projects: [...state.projects, newProject] }));
-    },
+  // Function to add a new project
+  addProject: (newProject: Project) => {
+    set((state) => ({ projects: [...state.projects, newProject] }));
+  },
 
-    // Function to add a billing history entry
-    addBillingHistoryEntry: (newEntry) => {
-        set((state) => ({ billingHistory: [...state.billingHistory, newEntry] }));
-    },
+  // Function to add a billing history entry
+  addBillingHistoryEntry: (newEntry: BillingHistoryEntry) => {
+    set((state) => ({ billingHistory: [...state.billingHistory, newEntry] }));
+  },
 
-    // Function to add a support message
-    addSupportMessage: (newMessage) => {
-        set((state) => ({ supportMessages: [...state.supportMessages, newMessage] }));
-    },
+  // Function to add a support message
+  addSupportMessage: (newMessage: SupportMessage) => {
+    set((state) => ({
+      supportMessages: [...state.supportMessages, newMessage],
+    }));
+  },
 }));
+
+interface ProjectStoreState {
+    projects: Project[];
+    selectedProject: Project | null;
+}
 
 // Create a Zustand store for managing projects
-const useProjectStore = create((set) => ({
-    projects: initialProjects, // Sample project data
-    selectedProject: null,     // Store the selected project
+const useProjectStore = create<ProjectStoreState>((set) => ({
+  projects: initialProjects, // Sample project data
+  selectedProject: null, // Store the selected project
 
-    // Function to select a project
-    selectProject: (projectId) => {
-        set((state) => ({ selectedProject: state.projects.find((p) => p.id === projectId) }));
-    },
+  // Function to select a project
+  selectProject: (projectId: number) => {
+    set((state) => ({
+      selectedProject: state.projects.find((p) => p.id === projectId),
+    }));
+  },
 
-    // Function to clear the selected project
-    clearSelectedProject: () => {
-        set({ selectedProject: null });
-    },
+  // Function to clear the selected project
+  clearSelectedProject: () => {
+    set({ selectedProject: null });
+  },
 
-    // Function to add a new project
-    addProject: (newProject) => {
-        set((state) => ({ projects: [...state.projects, newProject] }));
-    },
+  // Function to add a new project
+  addProject: (newProject: Project) => {
+    set((state) => ({ projects: [...state.projects, newProject] }));
+  },
 }));
 
+
+interface BillingStoreState {
+    billingEntries: BillingHistoryEntry[];
+    selectedBillingEntry: BillingHistoryEntry | null;
+}
+
 // Create a Zustand store for managing billing entries
-const useBillingStore = create((set) => ({
-    billingEntries: [],//initialBillingEntries, // Sample billing entries data
-    selectedBillingEntry: null, // Initialize selectedBillingEntry as null
+const useBillingStore = create<BillingStoreState>((set) => ({
+  billingEntries: [], //initialBillingEntries, // Sample billing entries data
+  selectedBillingEntry: null, // Initialize selectedBillingEntry as null
 
-    // Function to add a new billing entry
-    addBillingEntry: (newBillingEntry) => {
-        set((state) => ({ billingEntries: [...state.billingEntries, newBillingEntry] }));
-    },
+  // Function to add a new billing entry
+  addBillingEntry: (newBillingEntry: BillingHistoryEntry) => {
+    set((state) => ({
+      billingEntries: [...state.billingEntries, newBillingEntry],
+    }));
+  },
 
-    // Function to set the selected billing entry
-    setSelectedBillingEntry: (billingEntry) => set({ selectedBillingEntry: billingEntry }),
+  // Function to set the selected billing entry
+  setSelectedBillingEntry: (billingEntry: BillingHistoryEntry) =>
+    set({ selectedBillingEntry: billingEntry }),
 
-    // Function to clear the selected billing entry
-    clearSelectedBillingEntry: () => set({ selectedBillingEntry: null }),
+  // Function to clear the selected billing entry
+  clearSelectedBillingEntry: () => set({ selectedBillingEntry: null }),
 }));
 
 export { useProjectStore, useBillingStore };
