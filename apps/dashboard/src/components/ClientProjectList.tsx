@@ -1,9 +1,9 @@
 // ClientProjectList.js
 import React from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
 
 const ClientProjectList = () => {
-  const { clientProjects } = useStore();
+  const { projects: clientProjects } = useStore();
 
   return (
     <div className="p-4 border border-gray-300 rounded">
@@ -12,7 +12,9 @@ const ClientProjectList = () => {
         <ul className="list-disc pl-6">
           {clientProjects.map((project) => (
             <li key={project.id} className="mb-3">
-              <h3 className="text-md font-semibold">{project.name}</h3>
+              <h3 className="text-md font-semibold">
+                {project.name ?? project.title}
+              </h3>
               <p>Status: {project.status}</p>
               <p>Balance: ${project.balance.toFixed(2)}</p>
             </li>
