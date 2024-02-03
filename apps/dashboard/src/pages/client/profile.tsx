@@ -1,6 +1,7 @@
 import ClientProfile from "@/components/ClientProfile";
 import ClientEditProfile from "@/components/ClientEditProfile";
 import React from "react";
+import ClientSettings from "@/components/ClientSettings";
 
 function ClientProfilePage() {
   return (
@@ -9,6 +10,7 @@ function ClientProfilePage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <ClientProfile />
         <ClientEditProfile />
+        <ClientSettings />
       </div>
     </div>
   );
