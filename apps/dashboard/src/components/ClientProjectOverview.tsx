@@ -1,9 +1,9 @@
 // ClientProjectOverview.js
 import React from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
 
 const ClientProjectOverview = () => {
-  const { clientProjects } = useStore();
+  const { projects: clientProjects } = useStore();
 
   // Calculate project statistics
   const totalInEscrow = clientProjects.reduce(
