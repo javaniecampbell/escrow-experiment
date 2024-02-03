@@ -1,9 +1,9 @@
 // ClientBilling.js
 import React from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
 
 const ClientBilling = () => {
-  const { clientBillingHistory } = useStore();
+  const { billingHistory: clientBillingHistory } = useStore();
 
   return (
     <div className="p-4 border border-gray-300 rounded">
