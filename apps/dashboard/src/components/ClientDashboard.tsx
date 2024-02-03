@@ -1,13 +1,13 @@
 // ClientDashboard.js
 import React from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
 import ClientProjectOverview from "./ClientProjectOverview";
 import ClientProjects from "./ClientProjects";
 import ClientPayments from "./ClientPayments";
 import ClientNotifications from "./ClientNotifications";
 
 const ClientDashboard = () => {
-  const { clientProjects } = useStore();
+  const { projects: clientProjects } = useStore();
 
   return (
     <div className="p-4 border border-gray-300 rounded">
