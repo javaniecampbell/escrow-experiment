@@ -8,25 +8,32 @@ if (process.env.NODE_ENV !== 'production') {
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-router.post('/create-checkout-session', async (req, res) => {
+router.post("/create-checkout-session", async (req, res) => {
     // Assume req.body contains amount and projectId
     const { amount, projectId } = req.body;
     try {
-        const origin = req.headers.origin ?? req.hostname ?? "http://localhost:3000";
-        console.log(origin, req.protocol);
+        const origin =
+            req.headers.origin ?? req.hostname ?? "http://localhost:3000";
+       
+        const productName = projectId === undefined
+            ? ""
+            : projectId ?? "Project";
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [{
-                price_data: {
-                    currency: 'usd',
-                    product_data: {
-                        name: 'Escrow Service Fee for' + projectId === undefined ? '' : projectId ?? 'Project',
+            payment_method_types: ["card"],
+            line_items: [
+                {
+                    price_data: {
+                        currency: "usd",
+                        product_data: {
+                            name:
+                                "Escrow Service Fee for " + productName,
+                        },
+                        unit_amount: (amount ?? 100) * 100, // example amount
                     },
-                    unit_amount: (amount ?? 100) * 100, // example amount
+                    quantity: 1,
                 },
-                quantity: 1,
-            }],
-            mode: 'payment',
+            ],
+            mode: "payment",
             success_url: `${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
             cancel_url: `${origin}/cancel?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
             // success_url: `${req.protocol}://${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}&project=${projectId}`,
@@ -37,11 +44,11 @@ router.post('/create-checkout-session', async (req, res) => {
         } else {
             res.json({ id: session.id, url: session.url });
         }
-
     } catch (error) {
         res.status(500).send(error.toString());
     }
 });
+
 
 router.post('/initiate-payment', async (req, res) => {
     try {
