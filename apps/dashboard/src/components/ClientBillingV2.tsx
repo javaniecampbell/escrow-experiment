@@ -1,8 +1,10 @@
 // ClientBilling.js
+import useStore from "@/shared/clientStore";
 import React, { useState, useEffect } from "react";
 
 const ClientBillingV2 = () => {
-  const [billingHistory, setBillingHistory] = useState([]);
+  // const [billingHistory, setBillingHistory] = useState([]);
+  const { billingHistory } = useStore();
 
   useEffect(() => {
     // Fetch and set the client's billing history
@@ -15,19 +17,19 @@ const ClientBillingV2 = () => {
       <table className="w-full table-fixed">
         <thead>
           <tr>
-            <th className="w-1/4">Date</th>
-            <th className="w-1/4">Description</th>
-            <th className="w-1/4">Amount</th>
-            <th className="w-1/4">Status</th>
+            <th className="w-1/4 text-justify">Date</th>
+            <th className="w-1/4 text-justify">Description</th>
+            <th className="w-1/4 text-justify">Amount</th>
+            <th className="w-1/4 text-justify">Status</th>
           </tr>
         </thead>
         <tbody>
           {billingHistory.map((entry) => (
             <tr key={entry.id}>
-              <td>{entry.date}</td>
-              <td>{entry.description}</td>
-              <td>{entry.amount}</td>
-              <td>{entry.status}</td>
+              <td className="text-justify">{entry.date}</td>
+              <td className="text-justify">{entry.description}</td>
+              <td className="text-justify">{entry.amount}</td>
+              <td className="text-justify">{entry.status}</td>
             </tr>
           ))}
         </tbody>
