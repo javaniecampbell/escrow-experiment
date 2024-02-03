@@ -1,10 +1,11 @@
-import ClientProjectList from "@/components/ClientProjectList";
+
+import ClientProjects from "@/components/ClientProjectsV2";
 import React from "react";
 
 function ClientProjectsListPage() {
   return (
     <div>
-      <ClientProjectList />
+      <ClientProjects />
     </div>
   );
 }
