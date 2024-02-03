@@ -1,9 +1,13 @@
 // ClientProjectDetails.js
 import React, { useState } from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
 
 const ClientProjectDetails = () => {
-  const { clientProjects, markMilestonePreviewed, releaseEscrow } = useStore();
+  const {
+    projects: clientProjects,
+    markMilestonePreviewed,
+    releaseEscrow,
+  } = useStore();
   const [selectedProject, setSelectedProject] = useState("");
   const [selectedMilestone, setSelectedMilestone] = useState("");
   const [previewed, setPreviewed] = useState(false);
@@ -42,7 +46,7 @@ const ClientProjectDetails = () => {
               </option>
               {clientProjects.map((project) => (
                 <option key={project.id} value={project.id}>
-                  {project.name}
+                  {project.name ?? project.title}
                 </option>
               ))}
             </select>
@@ -61,7 +65,7 @@ const ClientProjectDetails = () => {
                   </option>
                   {clientProjects
                     .find((project) => project.id === selectedProject)
-                    .milestones.map((milestone) => (
+                    ?.milestones.map((milestone) => (
                       <option key={milestone.id} value={milestone.id}>
                         {milestone.name} - {milestone.status}
                       </option>
