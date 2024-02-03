@@ -8,13 +8,13 @@ import React from "react";
 
 function Dashboard() {
   return (
-    <div>
+    <div className="grid grid-cols-3 gap-1  p-4">
       <ProjectOverview />
       <TotalEscrowed />
       <TotalPayouts />
       <DeliveredMilestones />
       <MilestonesWithPreviews />
-      <MilestonesWithUpcomingPayouts /> 
+      <MilestonesWithUpcomingPayouts />
     </div>
   );
 }
