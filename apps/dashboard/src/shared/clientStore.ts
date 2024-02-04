@@ -1,6 +1,7 @@
 // clientStore.js
 import { create } from 'zustand';
 import { initialClients, initialProjects, initialBillingHistory, initialSupportMessages } from './initialData';
+import { Client, Project, BillingHistoryEntry, SupportMessage } from './app.types';
 
 interface ClientStoreState {
     clients: Client[];
@@ -17,65 +18,6 @@ interface ClientStoreState {
     markMilestonePreviewed: (milestoneId: number | string) => void;
     releaseEscrow: (milestoneId: number | string) => void;
 }
-
-export type Client = {
-    id: number;
-    name: string;
-    email: string;
-};
-
-export type Project = {
-    id: number;
-    title: string;
-    name?: string;
-    description?: string;
-    balance: number;
-    inEscrow: number;
-    totalPayouts: number;
-    milestones: Milestone[];
-    status: string;
-    clientId: number;
-};
-
-export type Milestone = {
-    id: number;
-    projectId: number;
-    name: string;
-    amount: number;
-    date: string;
-    status: string;
-    payout: number;
-    previewed: boolean;
-    payoutDate: Date;
-    description: string;
-    digitalAssets: DigitalAsset[];
-};
-
-export type DigitalAsset = {
-    id: number;
-    name: string;
-    url: string;
-    type: string;
-    milestoneId: number;
-    expiryDate: string;
-};
-
-export type BillingHistoryEntry = {
-    id: number;
-    date: string;
-    description: string;
-    amount: number;
-    status: string;
-    clientId: number;
-};
-
-export type SupportMessage = {
-    id: number;
-    date: string;
-    message: string;
-    clientId: number;
-};
-
 
 // Create a Zustand store for managing client data
 const useClientStore = create<ClientStoreState>((set) => ({

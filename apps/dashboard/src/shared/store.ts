@@ -1,15 +1,16 @@
 // store.js
 import { create } from 'zustand';
 import { initialMilestones, initialProjects } from './initialData';
+import { Milestone, Project } from './app.types';
 
 
 interface StoreState {
-  projects: any[];
-  milestones: any[];
-  selectedProject: any | null;
-  addProject: (project: any) => void;
-  addMilestone: (milestone: any) => void;
-  selectProject: (projectId: any) => void;
+  projects: Project[];
+  milestones: Milestone[];
+  selectedProject: number | string | null;
+  addProject: (project: Project) => void;
+  addMilestone: (milestone: Milestone) => void;
+  selectProject: (projectId: string | number) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
