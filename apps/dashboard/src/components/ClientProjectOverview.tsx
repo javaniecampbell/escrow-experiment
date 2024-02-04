@@ -42,13 +42,30 @@ const ClientProjectOverview = () => {
 
   return (
     <div className="p-4 border border-gray-300 rounded">
-      <h2 className="text-lg font-semibold mb-4">Project Overview</h2>
-      <div className="mb-4">
-        <p>Total in Escrow: ${totalInEscrow.toFixed(2)}</p>
-        <p>Total Payouts: ${totalPayouts.toFixed(2)}</p>
-        <p>Milestones Delivered: {deliveredMilestones}</p>
-        <p>Milestones with Previews: {milestonesWithPreviews}</p>
-        <p>Upcoming Payouts: {upcomingPayouts}</p>
+      <h2 className="text-lg font-semibold mb-4">Overview</h2>
+      <div className="mb-4 grid gap-2 grid-cols-2 last:col-span-2">
+        <div className="flex flex-col space-y-2 grid-item">
+          <span className="text-3xl font-bold">
+            ${totalInEscrow.toFixed(2)}
+          </span>
+          <span className="text-primary/25">Total in Escrow </span>
+        </div>
+        <div className="flex flex-col space-y-2 grid-item">
+          <span className="text-3xl font-bold">${totalPayouts.toFixed(2)}</span>
+          <span className="text-primary/25">Total Payouts</span>
+        </div>
+        <div className="flex flex-col space-y-2 grid-item">
+          <span className="text-3xl font-bold">{deliveredMilestones}</span>
+          <span className="text-primary/25">Milestones Delivered</span>
+        </div>
+        <div className="flex flex-col space-y-2 grid-item">
+          <span className="text-3xl font-bold">{milestonesWithPreviews}</span>
+          <span className="text-primary/25">Milestones with Previews </span>
+        </div>
+        <div className="flex flex-col space-y-2 grid-item col-span-2">
+          <span className="text-3xl font-bold">{upcomingPayouts}</span>
+          <span className="text-primary/25">Upcoming Payouts </span>
+        </div>
       </div>
     </div>
   );
