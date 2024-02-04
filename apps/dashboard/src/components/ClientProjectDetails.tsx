@@ -1,5 +1,5 @@
 // ClientProjectDetails.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useStore from "@/shared/clientStore";
 
 const ClientProjectDetails = () => {
@@ -8,11 +8,24 @@ const ClientProjectDetails = () => {
     markMilestonePreviewed,
     releaseEscrow,
   } = useStore();
-  const [selectedProject, setSelectedProject] = useState("");
+  const [selectedProject, setSelectedProject] = useState<number | string>("");
   const [selectedMilestone, setSelectedMilestone] = useState("");
   const [previewed, setPreviewed] = useState(false);
   const [released, setReleased] = useState(false);
 
+  useEffect(() => {
+    // Select first project if none is selected
+    if (selectedProject === "") {
+      setSelectedProject(clientProjects[0].id);
+    }
+    if (selectedProject) {
+      console.log("selectedProject", selectedProject);
+      const found = clientProjects.find(
+        (project) => project.id === selectedProject
+      );
+      console.log("found project", found);
+    }
+  }, [clientProjects, selectedProject]);
   // Handle marking a milestone as previewed
   const handlePreviewMilestone = () => {
     if (selectedMilestone) {
