@@ -411,6 +411,11 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.1.tgz#16308cea045f0fc777b6ff20a9f25474dd8293d2"
   integrity sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==
 
+"@heroicons/react@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-2.1.1.tgz#422deb80c4d6caf3371aec6f4bee8361a354dc13"
+  integrity sha512-JyyN9Lo66kirbCMuMMRPtJxtKJoIsXKS569ebHGGRKbl8s4CtUfLnyKJxteA+vIKySocO4s1SkTkGS4xtG/yEA==
+
 "@hookform/resolvers@^3.3.4":
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-3.3.4.tgz#de9b668c2835eb06892290192de6e2a5c906229b"
@@ -1845,6 +1850,13 @@ axobject-query@^3.2.1:
   dependencies:
     dequal "^2.0.3"
 
+backbone@>=0.3.3:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/backbone/-/backbone-1.5.0.tgz#3f20e4c6feb22f896131bcc58eb599b9555e8744"
+  integrity sha512-RPKlstw5NW+rD2X4PnEnvgLhslRnXOugXw2iBloHkPMgOxvakP1/A+tZIGM3qCm8uvZeEf8zMm0uvcK1JwL+IA==
+  dependencies:
+    underscore ">=1.8.3"
+
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
@@ -2171,6 +2183,14 @@ damerau-levenshtein@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz#b43d286ccbd36bc5b2f7ed41caf2d0aba1f8a6e7"
   integrity sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==
+
+dashboard@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/dashboard/-/dashboard-0.0.1.tgz#314cc02bfefb553b1a977190cd17f3526e8b9aad"
+  integrity sha512-Fj5gUksHYOwKYoaCE1RGznKPbc73tF3pFWnXMb3jJRWQ/mEJxvj6qjmK2tn3K+osi5jLCPwTK87v//4CvvYIog==
+  dependencies:
+    backbone ">=0.3.3"
+    underscore ">=1.1.2"
 
 date-fns@^3.3.1:
   version "3.3.1"
@@ -5107,6 +5127,11 @@ unbox-primitive@^1.0.2:
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
 
+underscore@>=1.1.2, underscore@>=1.8.3:
+  version "1.13.6"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.6.tgz#04786a1f589dc6c09f761fc5f45b89e935136441"
+  integrity sha512-+A5Sja4HP1M08MaXya7p5LvjuM7K6q/2EaC0+iovj/wOcMsTzMvDFbasi/oSapiwOlt252IqsKqPjCl7huKS0A==
+
 undici-types@~5.26.4:
   version "5.26.5"
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
@@ -5291,6 +5316,11 @@ which@^2.0.1:
   integrity sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==
   dependencies:
     isexe "^2.0.0"
+
+workspace@^0.0.1-preview.1:
+  version "0.0.1-preview.1"
+  resolved "https://registry.yarnpkg.com/workspace/-/workspace-0.0.1-preview.1.tgz#0ba0a6b92b3dbc7f1502dd12bc27a37b1eec9083"
+  integrity sha512-oPpEvU7NIQ0MW7ReL+EigMUI2JPNp05kmqzWS6zXVUaSq5KxuQzfgxGd8wuurBulBkTaOnEcGge+2rriyDVHkw==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
   version "7.0.0"
