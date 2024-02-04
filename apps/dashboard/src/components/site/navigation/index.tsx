@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ModeToggle } from "@/components/global/mode-toggle";
 type Props = {};
 
 const Navigation = (props: Props) => {
@@ -39,6 +40,8 @@ const Navigation = (props: Props) => {
         >
           Login
         </Link>
+        {/* UserBUtton for Auth */}
+        <ModeToggle />
       </aside>
     </div>
   );
