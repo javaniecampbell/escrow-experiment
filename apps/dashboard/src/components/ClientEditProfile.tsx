@@ -26,81 +26,112 @@ const ClientEditProfile = () => {
     }
   };
 
-  return (
-    <div className="p-4 border border-gray-300 rounded">
-      <h2 className="text-lg font-semibold mb-4">Profile</h2>
-      <div className="mb-4">
-        <label className="text-md font-semibold">Full Name</label>
-        <input
-          type="text"
-          className="border rounded px-2 py-1 w-full"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="text-md font-semibold">Email</label>
-        <input
-          type="email"
-          className="border rounded px-2 py-1 w-full"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="text-md font-semibold">Phone</label>
-        <input
-          type="text"
-          className="border rounded px-2 py-1 w-full"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-      </div>
+  import React, { useState } from "react";
 
-      <div className="mb-4">
-        <label className="text-md font-semibold">Company</label>
-        <input
-          type="text"
-          className="border rounded px-2 py-1 w-full"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-        />
+  const ClientEditProfile = () => {
+    return (
+      <div className="p-4 border border-gray-300 rounded">
+        <h2 className="text-lg font-semibold mb-4">Profile</h2>
+        <div className="mb-4">
+          <label className="text-md font-semibold" htmlFor="fullName">
+            Full Name
+          </label>
+          <input
+            id="fullName"
+            type="text"
+            className="border rounded px-2 py-1 w-full"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="text-md font-semibold" htmlFor="email">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            className="border rounded px-2 py-1 w-full"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="text-md font-semibold" htmlFor="phone">
+            Phone
+          </label>
+          <input
+            id="phone"
+            type="text"
+            className="border rounded px-2 py-1 w-full"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="text-md font-semibold" htmlFor="company">
+            Company
+          </label>
+          <input
+            id="company"
+            type="text"
+            className="border rounded px-2 py-1 w-full"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="text-md font-semibold" htmlFor="address">
+            Address
+          </label>
+          <input
+            id="address"
+            type="text"
+            className="border rounded px-2 py-1 w-full"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="text-md font-semibold" htmlFor="password">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            className="border rounded px-2 py-1 w-full"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="text-md font-semibold" htmlFor="confirmPassword">
+            Confirm Password
+          </label>
+          <input
+            id="confirmPassword"
+            type="password"
+            className="border rounded px-2 py-1 w-full"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+
+        <button
+          className="px-4 py-1 rounded bg-blue-500 text-white hover:bg-blue-600"
+          onClick={handleUpdateProfile}
+        >
+          Update Profile
+        </button>
       </div>
-      <div className="mb-4">
-        <label className="text-md font-semibold">Address</label>
-        <input
-          type="text"
-          className="border rounded px-2 py-1 w-full"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="text-md font-semibold">Password</label>
-        <input
-          type="password"
-          className="border rounded px-2 py-1 w-full"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="text-md font-semibold">Confirm Password</label>
-        <input
-          type="password"
-          className="border rounded px-2 py-1 w-full"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-      </div>
-      <button
-        className="px-4 py-1 rounded bg-blue-500 text-white hover:bg-blue-600"
-        onClick={handleUpdateProfile}
-      >
-        Update Profile
-      </button>
-    </div>
-  );
+    );
+  };
 };
 
 export default ClientEditProfile;
