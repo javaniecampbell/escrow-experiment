@@ -1,12 +1,12 @@
 
 export type Client = {
-    id: number;
+    id: number | string;
     name: string;
     email: string;
 };
 
 export type Project = {
-    id: number;
+    id: number | string;
     title: string;
     name?: string;
     description?: string;
@@ -19,8 +19,8 @@ export type Project = {
 };
 
 export type Milestone = {
-    id: number;
-    projectId: number;
+    id: number | string;
+    projectId: number | string;
     name: string;
     amount: number;
     date: string | Date;
@@ -33,7 +33,7 @@ export type Milestone = {
 };
 
 export type DigitalAsset = {
-    id: number;
+    id: number | string;
     name: string;
     url: string;
     type: string;
@@ -42,7 +42,7 @@ export type DigitalAsset = {
 };
 
 export type BillingHistoryEntry = {
-    id: number;
+    id: number | string;
     date: string | Date;
     description: string;
     amount: number;
@@ -51,7 +51,7 @@ export type BillingHistoryEntry = {
 };
 
 export type SupportMessage = {
-    id: number;
+    id: number | string;
     date: string | Date;
     message: string;
     clientId: number;
