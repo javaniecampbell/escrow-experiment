@@ -11,8 +11,8 @@ const initialClients = [
 
 // Sample data for projects
 const initialProjects = [
-    { id: 1, title: 'Project 1', balance: 100, inEscrow: 100, totalPayouts: 0, milestones: [], status: 'Active', clientId: 1 },
-    { id: 2, title: 'Project 2', balance: 0, inEscrow: 0, totalPayouts: 100, milestones: [], status: 'Completed', clientId: 2 },
+    { id: 1, title: 'Project 1', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', balance: 100, inEscrow: 100, totalPayouts: 0, milestones: [], status: 'Active', clientId: 1 },
+    { id: 2, title: 'Project 2', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', balance: 0, inEscrow: 0, totalPayouts: 100, milestones: [], status: 'Completed', clientId: 2 },
     // Add more projects as needed
 ];
 
@@ -57,6 +57,7 @@ export type Project = {
     id: number;
     title: string;
     name?: string;
+    description?: string;
     balance: number;
     inEscrow: number;
     totalPayouts: number;
