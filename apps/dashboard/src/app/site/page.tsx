@@ -11,10 +11,24 @@ export default function Home() {
 
         <p className="text-center">Here's how our service works...</p>
         <div className="bg-gradient-to-r from-primary to-secondary-foreground text-transparent bg-clip-text relative">
-          <h1 className="text-9xl font-bold text-center">Escrow.</h1>
+          <h1 className="text-9xl font-bold text-center md:text-[300px]">
+            Escrow.
+          </h1>
+        </div>
+        <div className="flex justify-center items-center relative md:mt-[-70px]">
+          {/* Image */}
+          <Image
+            src="/assets/preview.png"
+            width={1200}
+            height={1200}
+            alt="hero"
+            className="rounded-tl-2xl rounded-tr-2xl border-2 border-muted"
+          />
+          {/* Fade out */}
+          <div className="bottom-0 top-[50%] bg-gradient-to-t from-background left-0 right-0 absolute z-10"></div>
         </div>
         <Link
-          className=" bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 "
+          className="mt-4 mb-4 bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 "
           href="/service-agreement"
         >
           Let's get started
