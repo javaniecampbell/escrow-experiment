@@ -3,11 +3,11 @@ import { CheckIcon } from "@heroicons/react/20/solid";
 import { classNames } from "@/lib/utils";
 
 export const steps = [
-  { name: "Project Start", href: "#", status: "complete", dueOn: 'Dec 23, 20' },
-  { name: "Milestone 2", href: "#", status: "complete", dueOn: 'Dec 23, 20' },
-  { name: "Milestone 3", href: "#", status: "current", dueOn: 'Dec 23, 20' },
-  { name: "Milestone 4", href: "#", status: "upcoming", dueOn: 'Dec 23, 20' },
-  { name: "Milestone 5", href: "#", status: "upcoming", dueOn: 'Dec 23, 20' },
+  { name: "Project Start", href: "#", status: "complete", dueOn: "Dec 23, 20" },
+  { name: "Milestone 2", href: "#", status: "complete", dueOn: "Dec 23, 20" },
+  { name: "Milestone 3", href: "#", status: "current", dueOn: "Dec 23, 20" },
+  { name: "Milestone 4", href: "#", status: "upcoming", dueOn: "Dec 23, 20" },
+  { name: "Milestone 5", href: "#", status: "upcoming", dueOn: "Dec 23, 20" },
 ];
 export function MilestoneStepper() {
   return (
@@ -42,7 +42,10 @@ export function MilestoneStepper() {
                   </span>
                   <span className="relative -left-[50%] -right-[50%] top-9 items-center flex min-w-0 flex-col">
                     <span className="text-sm font-medium">{step.name}</span>
-                    <span className="text-sm text-gray-500">{step.name}</span>
+                    <span className="text-sm text-gray-500">
+                      {" "}
+                      {step.dueOn ?? step.status}
+                    </span>
                   </span>
                 </a>
               </>
@@ -72,7 +75,7 @@ export function MilestoneStepper() {
                   <span className="relative -left-[50%] -right-[50%] top-9 items-center flex min-w-0 flex-col">
                     <span className="text-sm font-medium">{step.name}</span>
                     <span className="text-sm text-gray-500">
-                      {step.status ?? step.dueOn}
+                      {step.dueOn ?? step.status}
                     </span>
                   </span>
                 </a>
@@ -98,7 +101,9 @@ export function MilestoneStepper() {
                   </span>
                   <span className="relative -left-[50%] right-[50%] top-9 items-center flex min-w-0 flex-col">
                     <span className="text-sm font-medium">{step.name}</span>
-                    <span className="text-sm text-gray-500">{step.name}</span>
+                    <span className="text-sm text-gray-500">
+                      {step.dueOn ?? step.status}
+                    </span>
                   </span>
                 </a>
               </>
