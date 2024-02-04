@@ -102,7 +102,9 @@ const ClientProjectDetails = () => {
           )}
         </>
       ) : (
-        <p className="text-gray-700">You don't have any active projects.</p>
+        <p className="text-gray-700">
+          You don&apos;t have any active projects.
+        </p>
       )}
     </div>
   );
