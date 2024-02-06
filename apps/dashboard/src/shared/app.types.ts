@@ -56,3 +56,41 @@ export type SupportMessage = {
     message: string;
     clientId: number;
 };
+
+export type Permission = {
+    id: string;
+    name: string;
+    description: string;
+    permissions: string[];
+    subAccountId: string;
+    access: boolean;
+};
+export type SubAccount = {
+    id: string;
+    name: string;
+    connectAccountId: string | null;
+    agencyId: string;
+    subAccountLogo?: string;
+    SidebarOptions?: SidebarOption[];
+};
+
+export type SidebarOption = {
+    id: string;
+    name: string;
+    icon: string;
+    link: string;
+    createdAt: string | Date;
+    updatedAt: string | Date;
+    subAccountId: string | null;
+};
+export type Agency = {
+    whiteLabel: boolean;
+    agencyLogo?: string;
+    SubAccounts?: SubAccount[];
+    SidebarOptions?: SidebarOption[];
+    Permissions?: Permission[];
+};
+
+export type User = {
+    Agency?: Agency;
+};
