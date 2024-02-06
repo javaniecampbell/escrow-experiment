@@ -37,7 +37,7 @@ const Sidebar = async ({ id, type }: Props) => {
       const details: Agency | SubAccount | undefined =
         type === "agency"
           ? authUser?.Agency
-          : authUser?.Agency?.SubAccount?.find(
+          : authUser?.Agency?.SubAccounts?.find(
               (subaccount) => subaccount.id === id
             );
       const isWhiteLabeledAgency = authUser?.Agency?.whiteLabel;
@@ -50,7 +50,7 @@ const Sidebar = async ({ id, type }: Props) => {
       if (!isWhiteLabeledAgency) {
         if (type === "subaccount") {
           sidebarLogo =
-            authUser?.Agency?.SubAccount?.find(
+            authUser?.Agency?.SubAccounts?.find(
               (subaccount) => subaccount.id === id
             )?.subAccountLogo ?? user?.Agency?.agencyLogo;
         }
@@ -67,7 +67,7 @@ const Sidebar = async ({ id, type }: Props) => {
 
       const subaccounts =
         user?.Agency?.SubAccounts?.filter((subaccount) =>
-          user.Permissions.find(
+          user?.Permissions?.find(
             (permission) =>
               permission.subAccountId === subaccount.id && permission.access
           )

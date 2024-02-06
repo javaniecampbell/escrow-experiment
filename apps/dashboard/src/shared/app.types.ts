@@ -93,4 +93,5 @@ export type Agency = {
 
 export type User = {
     Agency?: Agency;
+    Permissions?: Permission[];
 };
