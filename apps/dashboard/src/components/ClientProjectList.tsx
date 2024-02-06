@@ -33,7 +33,9 @@ const ClientProjectList = () => {
                   <MilestoneStepper />
                 </div>
               </div>
-              <div className="flex flex-col gap-1 w-1/4">
+
+              <div className="flex flex-col gap-1 w-1/4 relative p-4">
+                <div className="absolute -inset-y-3 left-0 w-px bg-primary/15 [mask-image:linear-gradient(to_top,transparent,white_4rem,white_calc(100%-4rem),transparent)]"></div>
                 <ClientDetails />
                 <div className="actions flex flex-col gap-1">
                   <button className="px-4 py-1 mt-2 border border-slate-500 bg-slate-300 text-gray-600 rounded hover:bg-slate-600 hover:text-white">
