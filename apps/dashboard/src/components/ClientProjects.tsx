@@ -1,5 +1,6 @@
 // ClientProjects.js
 import React, { useState } from "react";
+import ProjectActions from "./ProjectActions";
 
 const ClientProjects = () => {
   const [projects, setProjects] = useState([
@@ -28,6 +29,7 @@ const ClientProjects = () => {
           <tr>
             <th className="border border-gray-300 p-2">Project Name</th>
             <th className="border border-gray-300 p-2">Status</th>
+            <th className="border border-gray-300 p-2">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -35,6 +37,9 @@ const ClientProjects = () => {
             <tr key={project.id}>
               <td className="border border-gray-300 p-2">{project.name}</td>
               <td className="border border-gray-300 p-2">{project.status}</td>
+              <td className="border border-gray-300 p-2">
+                <ProjectActions />
+              </td>
             </tr>
           ))}
         </tbody>
