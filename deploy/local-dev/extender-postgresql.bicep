@@ -10,7 +10,7 @@ param user string = 'postgres'
 @description('Password for the PostgreSQL user. Defaults to "postgres".')
 @secure()
 #disable-next-line secure-parameter-default
-param password string = 'postgres'
+param password string = 'P@ssword1234$$'
 
 @description('Tag to pull for the postgres container image.')
 param tag string = '16-alpine'
@@ -103,6 +103,11 @@ resource svc 'core/Service@v1' = {
 
 @description('The result of the Recipe. Must match the target resource\'s schema.')
 output result object = {
+  // UCP IDs for the above Kubernetes resources
+  resources: [
+    '/planes/kubernetes/local/namespaces/${svc.metadata.namespace}/providers/core/Service/${svc.metadata.name}'
+    '/planes/kubernetes/local/namespaces/${postgresql.metadata.namespace}/providers/apps/Deployment/${postgresql.metadata.name}'
+  ]
   values: {
     host: '${svc.metadata.name}.${svc.metadata.namespace}.svc.cluster.local'
     port: port
@@ -114,10 +119,6 @@ output result object = {
     #disable-next-line outputs-should-not-contain-secrets
     password: password
   }
-  // UCP IDs for the above Kubernetes resources
-  resources: [
-    '/planes/kubernetes/local/namespaces/${svc.metadata.namespace}/providers/core/Service/${svc.metadata.name}'
-    '/planes/kubernetes/local/namespaces/${postgresql.metadata.namespace}/providers/apps/Deployment/${postgresql.metadata.name}'
-  ]
+  
 }
 
