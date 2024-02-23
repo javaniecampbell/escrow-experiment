@@ -14,3 +14,8 @@ rad env list
 
 # Install any monorepo dependencies
 yarn install
+
+kubectl apply -f https://raw.githubusercontent.com/radius-project/dashboard/main/deploy/dashboard.yaml
+
+# Open the dashboard
+kubectl port-forward --namespace=radius-system svc/dashboard 3000:80
