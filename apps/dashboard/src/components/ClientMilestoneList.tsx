@@ -2,8 +2,12 @@
 import React from "react";
 import useStore from "@/shared/store";
 
-const ClientMilestoneList = () => {
-  const { clientProjects } = useStore();
+type ClientMilestoneListProps = {
+  projectId: string;
+};
+
+const ClientMilestoneList = ({ projectId }: ClientMilestoneListProps) => {
+  const { projects: clientProjects } = useStore();
   const selectedProject = ""; // Set the selected project here
 
   return (
@@ -12,13 +16,13 @@ const ClientMilestoneList = () => {
       {selectedProject ? (
         <ul className="list-disc pl-6">
           {clientProjects
-            .find((project) => project.id === selectedProject)
-            .milestones.map((milestone) => (
+            .find((project) => project.id === projectId)
+            ?.milestones.map((milestone) => (
               <li key={milestone.id} className="mb-4">
                 <h3 className="text-md font-semibold">{milestone.name}</h3>
                 <p>Description: {milestone.description}</p>
                 <p>Status: {milestone.status}</p>
-                <p>Balance: ${milestone.balance.toFixed(2)}</p>
+                <p>Balance: ${milestone?.balance?.toFixed(2)}</p>
               </li>
             ))}
         </ul>
