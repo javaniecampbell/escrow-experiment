@@ -23,6 +23,7 @@ export type Milestone = {
     projectId: number | string;
     name: string;
     amount: number;
+    balance?: number;
     date: string | Date;
     status: string;
     payout: number;
