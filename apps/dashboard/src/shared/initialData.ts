@@ -27,6 +27,7 @@ export const initialMilestones = [{
     date: threeDaysFromNow.toDateString(),
     status: 'Active',
     payout: 0,
+    balance: 100,
     previewed: false,
     payoutDate: threeDaysFromNow.toDateString(),
     description: 'Milestone 1 description',
