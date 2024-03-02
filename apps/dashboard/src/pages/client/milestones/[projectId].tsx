@@ -4,7 +4,7 @@ import React from "react";
 
 function ClientProjectMilestoneListPage({
   projectId,
-}: ProjectMilestonesPageProps) {
+}: Readonly<ProjectMilestonesPageProps>) {
   return (
     <div>
       <ClientMilestoneList projectId={projectId} />
