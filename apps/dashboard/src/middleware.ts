@@ -37,11 +37,14 @@ export function middleware(req: NextRequest) {
         url.pathname.startsWith('/agency/dashboard')
         ||
         url.pathname.startsWith('/client/settings') ||
+        url.pathname.startsWith('/client/profile') ||
         url.pathname.startsWith('/client/projects') ||
         url.pathname.startsWith('/client/project') ||
         url.pathname.startsWith('/client/billing') ||
         url.pathname.startsWith('/client/support') ||
-        url.pathname.startsWith('/client/feedback')
+        url.pathname.startsWith('/client/feedback') ||
+        url.pathname.startsWith('/client/milestones')
+
     ) {
         console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams}`);
         return NextResponse.rewrite(new URL(`${pathWithSearchParams}`, req.url));
