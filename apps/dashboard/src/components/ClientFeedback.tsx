@@ -1,7 +1,12 @@
 // ClientFeedback.js
 import React, { useState } from "react";
 
-const ClientFeedback = () => {
+type ClientFeedbackProps = {
+  projectId: string;
+
+};
+
+const ClientFeedback = ({ projectId }:ClientFeedbackProps) => {
   const [feedback, setFeedback] = useState("");
 
   const handleSubmitFeedback = () => {
