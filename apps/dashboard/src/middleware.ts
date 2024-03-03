@@ -34,6 +34,7 @@ export function middleware(req: NextRequest) {
 
     if (
         // url.pathname.startsWith('/client/dashboard')||
+        url.pathname.startsWith('/agency/service-agreement') ||
         url.pathname.startsWith('/agency/dashboard')
         ||
         url.pathname.startsWith('/client/settings') ||
