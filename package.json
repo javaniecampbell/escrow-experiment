@@ -18,6 +18,11 @@
     "build": "yarn workspace @devdaysatwork/app build",
     "start": "yarn workspace @devdaysatwork/app start",
     "lint": "yarn workspace @devdaysatwork/app lint",
-    "test": "yarn workspace @devdaysatwork/app test"
+    "test": "yarn workspace @devdaysatwork/app test",
+    "dev:dashboard": "yarn workspace dashboard dev",
+    "build:dashboard": "yarn workspace dashboard build",
+    "start:dashboard": "yarn workspace dashboard start",
+    "lint:dashboard": "yarn workspace dashboard lint",
+    "test:dashbaord": "yarn workspace dashboard test"
   }
 }
