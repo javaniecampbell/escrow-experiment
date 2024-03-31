@@ -66,3 +66,43 @@ export const initialSupportMessages = [
     // Add more support messages as needed
 ];
 
+
+const sideBarItems = [
+    {
+        id: 1,
+        title: 'Dashboard',
+        icon: 'dashboard',
+        link: '/agency/dashboard'
+    },
+    {
+        id: 2,
+        title: 'Projects',
+        icon: 'projects',
+        link: '/agency/projects'
+    },
+    // generate all other items based on the data in this file
+    {
+        id: 3,
+        title: 'Clients',
+        icon: 'clients',
+        link: '/agency/clients'
+    },
+    {
+        id: 4,
+        title: 'Billing',
+        icon: 'billing',
+        link: '/agency/billing'
+    },
+    {
+        id: 5,
+        title: 'Support',
+        icon: 'support',
+        link: '/agency/support'
+    },
+    {
+        id: 6,
+        title: 'Settings',
+        icon: 'settings',
+        link: '/agency/settings'
+    }
+];
