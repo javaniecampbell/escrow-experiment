@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.post('/', express.raw({ type: 'application/json' }), (request, response) => {
     let event = request.body;
-
+    //TODO: Ensure the integrity of the event by verifying the signature
     // Handle the event
     switch (event.type) {
         case 'payment_intent.succeeded':
