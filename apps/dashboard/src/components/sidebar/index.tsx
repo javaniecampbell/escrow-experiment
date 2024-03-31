@@ -15,7 +15,7 @@ type Props = {
  *
  * @returns {Promise<JSX.Element>} The sidebar component.
  */
-const Sidebar = async ({ id, type }: Props) => {
+const Sidebar = ({ id, type }: Props) => {
   const [user, setUser] = useState<User | null>(null);
   const [isWhiteLabeledAgency, setIsWhiteLabeledAgency] = useState(false);
   const [sideBarLogo, setSideBarLogo] = useState<string | null | undefined>(
