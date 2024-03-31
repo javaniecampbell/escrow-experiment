@@ -2,10 +2,12 @@
 import React from "react";
 import useStore from "@/shared/store";
 import { Project } from "@/shared/app.types";
+import { useDialogStore } from "@/shared/dialogStore";
+import BottomSheet from "./global/bottom-sheet";
 
 const ProjectList = () => {
   const { projects, addProject, selectProject } = useStore();
-
+  const { createDialog, openDialog, closeDialog } = useDialogStore();
   const handleAddProject = () => {
     const newProject = {
       id: projects.length + 1,
@@ -18,7 +20,19 @@ const ProjectList = () => {
       milestones: [],
       clientId: 1,
     } satisfies Project;
-    addProject(newProject);
+    createDialog({
+      title: "New Project",
+      description: "Enter details for the new project",
+      onConfirm: () => {
+        addProject(newProject);
+        closeDialog();
+      },
+      onCancel: () => {
+        // Handle cancel action
+        //addProject(newProject);
+      },
+    });
+    openDialog();
   };
 
   const handleProjectClick = (projectId: number) => {
@@ -27,24 +41,29 @@ const ProjectList = () => {
   };
 
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between">
-        <h1>Projects</h1>
-        <button onClick={handleAddProject}>New Project</button>
+    <>
+      <div className="space-y-2">
+        <div className="flex justify-between">
+          <h1>Projects</h1>
+          <button onClick={handleAddProject}>New Project</button>
+        </div>
+        <hr />
+        <ul className="grid grid-cols-4 gap-2">
+          {projects.map((project) => (
+            <li
+              key={project.id}
+              onClick={() => handleProjectClick(Number(project.id))}
+              className="bg-gray-200 p-4 rounded-md shadow-md hover:bg-gray-300 cursor-pointer"
+            >
+              <p className="text-gray-800">{project.title ?? project.name}</p>
+            </li>
+          ))}
+        </ul>
       </div>
-      <hr />
-      <ul className="grid grid-cols-4 gap-2">
-        {projects.map((project) => (
-          <li
-            key={project.id}
-            onClick={() => handleProjectClick(Number(project.id))}
-            className="bg-gray-200 p-4 rounded-md shadow-md hover:bg-gray-300 cursor-pointer"
-          >
-            <p className="text-gray-800">{project.title ?? project.name}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <BottomSheet>
+        <span>New Project</span>
+      </BottomSheet>
+    </>
   );
 };
 
