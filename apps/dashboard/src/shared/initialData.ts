@@ -29,6 +29,7 @@ export const initialMilestones = [{
     payout: 0,
     balance: 100,
     previewed: false,
+    hasPreview: true,
     payoutDate: threeDaysFromNow.toDateString(),
     description: 'Milestone 1 description',
     digitalAssets: [{
