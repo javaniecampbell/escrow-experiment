@@ -4,6 +4,7 @@ import useStore from "@/shared/store";
 import { Project } from "@/shared/app.types";
 import { useDialogStore } from "@/shared/dialogStore";
 import BottomSheet from "./global/bottom-sheet";
+import CreateProjectForm from "./CreateProjectForm";
 
 const ProjectList = () => {
   const { projects, addProject, selectProject } = useStore();
@@ -60,8 +61,8 @@ const ProjectList = () => {
           ))}
         </ul>
       </div>
-      <BottomSheet>
-        <span>New Project</span>
+      <BottomSheet targetForm="create-project-form">
+        <CreateProjectForm />
       </BottomSheet>
     </>
   );
