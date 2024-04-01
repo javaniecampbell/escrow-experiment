@@ -1,3 +1,4 @@
+import { classNames } from "@/lib/utils";
 import React, { useState } from "react";
 
 const CreateProjectForm = () => {
@@ -26,9 +27,14 @@ const CreateProjectForm = () => {
   };
 
   return (
-    <div className="p-4 border border-gray-300 rounded">
-      <h2 className="text-lg font-semibold mb-2">Create a New Project</h2>
-      <form onSubmit={handleSubmit}>
+    <div
+      className={classNames(
+        "p-4"
+        // "border border-gray-300 rounded"
+      )}
+    >
+      {/* <h2 className="text-lg font-semibold mb-2">Create a New Project</h2> */}
+      <form onSubmit={handleSubmit} id="create-project-form">
         <div className="mb-4">
           <label htmlFor="projectName" className="block text-gray-700">
             Project Name:
@@ -54,12 +60,12 @@ const CreateProjectForm = () => {
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
         </div>
-        <button
+        {/* <button
           type="submit"
           className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
         >
           Create Project
-        </button>
+        </button> */}
       </form>
     </div>
   );
