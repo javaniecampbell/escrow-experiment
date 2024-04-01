@@ -25,6 +25,13 @@ export function middleware(req: NextRequest) {
         return NextResponse.rewrite(new URL('/site', req.url));
     }
 
+    if (url.pathname === '/login' || url.pathname === '/login/'
+        && url.host === process.env.NEXT_PUBLIC_DOMAIN
+    ) {
+        console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams} for client`);
+        return NextResponse.rewrite(new URL('/shared/login', req.url));
+    }
+
     if (url.pathname === '/client' || url.pathname === '/client/'
         && url.host === process.env.NEXT_PUBLIC_DOMAIN
     ) {
