@@ -1,6 +1,6 @@
 // PreviewAsset.js
 import React, { useState } from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
 
 const PreviewAsset = () => {
   const { selectedProject, milestones, markMilestonePreviewed } = useStore();
