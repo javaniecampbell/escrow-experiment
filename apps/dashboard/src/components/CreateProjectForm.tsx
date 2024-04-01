@@ -10,7 +10,7 @@ const CreateProjectForm = () => {
 
     try {
       // Make a POST request to create a new project
-      const response = await fetch("/create-project", {
+      const response = await fetch("/api/create-project", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
