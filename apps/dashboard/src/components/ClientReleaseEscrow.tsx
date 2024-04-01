@@ -1,9 +1,9 @@
 // ClientReleaseEscrow.js
 import React, { useState } from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
 
 const ClientReleaseEscrow = () => {
-  const { clientProjects, releaseEscrow } = useStore();
+  const { projects, releaseEscrow } = useStore();
   const [selectedMilestone, setSelectedMilestone] = useState("");
   const [released, setReleased] = useState(false);
 
@@ -28,7 +28,7 @@ const ClientReleaseEscrow = () => {
           <option value="" disabled>
             Select Milestone
           </option>
-          {clientProjects.map((project) =>
+          {projects.map((project) =>
             project.milestones.map((milestone) => (
               <option key={milestone.id} value={milestone.id}>
                 {milestone.name} - {milestone.status}
