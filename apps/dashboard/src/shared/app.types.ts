@@ -28,6 +28,7 @@ export type Milestone = {
     status: string;
     payout: number;
     previewed: boolean;
+    hasPreview: boolean;
     payoutDate: string | Date;
     description: string;
     digitalAssets: DigitalAsset[];
