@@ -58,72 +58,91 @@ interface Project {
     customer: Customer;
     freelancer: Freelancer;
     status: 'pending' | 'active' | 'completed' | 'cancelled';
-  }
-  
-  interface Customer {
+    requirements: Requirement[];
+    epics: Epic[];
+}
+
+interface Customer {
     id: string;
     name: string;
     email: string;
     phone: string;
-  }
-  
-  interface Freelancer {
+    projects: Project[];
+}
+
+interface Freelancer {
     id: string;
     name: string;
     email: string;
     skills: string[];
-  }
-  
-  interface Requirement {
+    projects: Project[];
+}
+
+interface Requirement {
     id: string;
     type: 'functional' | 'non-functional';
     description: string;
     priority: 'high' | 'medium' | 'low';
     projectId: string;
-  }
-  
-  interface Epic {
+    project: Project;
+}
+
+interface Epic {
     id: string;
     name: string;
     description: string;
     priority: 'high' | 'medium' | 'low';
     projectId: string;
-  }
-  
-  interface Feature {
+    project: Project;
+    features: Feature[];
+}
+
+interface Feature {
     id: string;
     name: string;
     description: string;
     priority: 'high' | 'medium' | 'low';
     epicId: string;
     projectId: string;
-  }
-  
-  interface Scenario {
+    epic: Epic;
+    project: Project;
+    scenarios: Scenario[];
+    userStories: UserStory[];
+}
+
+interface Scenario {
     id: string;
     name: string;
     description: string;
     priority: 'high' | 'medium' | 'low';
     featureId: string;
     projectId: string;
-  }
-  
-  interface UserStory {
+    feature: Feature;
+    project: Project;
+}
+
+interface UserStory {
     id: string;
     title: string;
     description: string;
     priority: 'high' | 'medium' | 'low';
     epicId: string;
     projectId: string;
-  }
-  
-  interface AcceptanceCriteria {
+    epic: Epic;
+    feature: Feature;
+    project: Project;
+    acceptanceCriteria: AcceptanceCriteria[];
+    tasks: Task[];
+}
+
+interface AcceptanceCriteria {
     id: string;
     description: string;
     userStoryId: string;
-  }
-  
-  interface Task {
+    userStory: UserStory;
+}
+
+interface Task {
     id: string;
     title: string;
     description: string;
@@ -133,4 +152,6 @@ interface Project {
     dueDate: Date;
     userStoryId: string;
     projectId: string;
-  }
+    userStory: UserStory;
+    project: Project;
+}
