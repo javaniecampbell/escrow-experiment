@@ -49,6 +49,10 @@ export class ProjectBreakdown {
 
     addScenario(scenario: Scenario): void {
         this.scenarios.push(scenario);
+        scenario.project = this.project;
+        scenario.feature = this.features.find((f) => f.id === scenario.featureId);
+        this.project.scenarios.push(scenario);
+        scenario.feature.scenarios.push(scenario);
     }
 
     addUserStory(userStory: UserStory): void {
