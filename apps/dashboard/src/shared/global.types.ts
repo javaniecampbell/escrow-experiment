@@ -41,6 +41,10 @@ export class ProjectBreakdown {
 
     addFeature(feature: Feature): void {
         this.features.push(feature);
+        feature.project = this.project;
+        feature.epic = this.epics.find((e) => e.id === feature.epicId);
+        this.project.features.push(feature);
+        feature.epic.features.push(feature);
     }
 
     addScenario(scenario: Scenario): void {
