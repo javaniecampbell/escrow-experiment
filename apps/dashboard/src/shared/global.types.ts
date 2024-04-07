@@ -50,53 +50,87 @@ export class ProjectBreakdown {
 
 // Data models
 interface Project {
+    id: string;
     name: string;
     description: string;
-    // Add other relevant properties
-}
-
-interface Requirement {
+    startDate: Date;
+    endDate: Date;
+    customer: Customer;
+    freelancer: Freelancer;
+    status: 'pending' | 'active' | 'completed' | 'cancelled';
+  }
+  
+  interface Customer {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+  }
+  
+  interface Freelancer {
+    id: string;
+    name: string;
+    email: string;
+    skills: string[];
+  }
+  
+  interface Requirement {
+    id: string;
     type: 'functional' | 'non-functional';
     description: string;
-    // Add other relevant properties
-}
-
-interface Epic {
+    priority: 'high' | 'medium' | 'low';
+    projectId: string;
+  }
+  
+  interface Epic {
+    id: string;
     name: string;
     description: string;
-    // Add other relevant properties
-}
-
-interface Feature {
+    priority: 'high' | 'medium' | 'low';
+    projectId: string;
+  }
+  
+  interface Feature {
+    id: string;
     name: string;
     description: string;
+    priority: 'high' | 'medium' | 'low';
     epicId: string;
-    // Add other relevant properties
-}
-
-interface Scenario {
+    projectId: string;
+  }
+  
+  interface Scenario {
+    id: string;
     name: string;
     description: string;
+    priority: 'high' | 'medium' | 'low';
     featureId: string;
-    // Add other relevant properties
-}
-
-interface UserStory {
+    projectId: string;
+  }
+  
+  interface UserStory {
+    id: string;
     title: string;
     description: string;
+    priority: 'high' | 'medium' | 'low';
     epicId: string;
-    // Add other relevant properties
-}
-
-interface AcceptanceCriteria {
+    projectId: string;
+  }
+  
+  interface AcceptanceCriteria {
+    id: string;
     description: string;
     userStoryId: string;
-    // Add other relevant properties
-}
-
-interface Task {
+  }
+  
+  interface Task {
+    id: string;
     title: string;
     description: string;
+    status: 'not started' | 'in progress' | 'completed';
+    priority: 'high' | 'medium' | 'low';
+    assignedTo: string;
+    dueDate: Date;
     userStoryId: string;
-    // Add other relevant properties
-}
+    projectId: string;
+  }
