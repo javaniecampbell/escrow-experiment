@@ -134,7 +134,11 @@ export class ProjectBreakdown {
         }
 
         this.tasks.push(task);
-        task.userStory = this.userStories.find((us) => us.id === task.userStoryId);
+        const userStory = this.userStories.find((us) => us.id === task.userStoryId);
+        if (!userStory) {
+            throw new Error(`User story with ID ${task.userStoryId} not found`);
+        }
+        task.userStory = userStory;
         task.project = this.project;
         task.userStory.tasks.push(task);
         this.project.tasks.push(task);
