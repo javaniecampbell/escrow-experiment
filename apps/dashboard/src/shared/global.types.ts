@@ -79,7 +79,11 @@ export class ProjectBreakdown {
 
         this.scenarios.push(scenario);
         scenario.project = this.project;
-        scenario.feature = this.features.find((f) => f.id === scenario.featureId);
+        const feature = this.features.find((f) => f.id === scenario.featureId);
+        if (!feature) {
+            throw new Error(`Feature with ID ${scenario.featureId} not found`);
+        }
+        scenario.feature = feature;
         this.project.scenarios.push(scenario);
         scenario.feature.scenarios.push(scenario);
     }
