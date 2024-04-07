@@ -1,5 +1,7 @@
 export class ProjectBreakdown {
     project: Project;
+    customer: Customer;
+    freelancer: Freelancer;
     requirements: Requirement[];
     epics: Epic[];
     features: Feature[];
@@ -8,8 +10,10 @@ export class ProjectBreakdown {
     acceptanceCriteria: AcceptanceCriteria[];
     tasks: Task[];
 
-    constructor(project: Project) {
+    constructor(project: Project, customer: Customer, freelancer: Freelancer) {
         this.project = project;
+        this.customer = customer;
+        this.freelancer = freelancer;
         this.requirements = [];
         this.epics = [];
         this.features = [];
@@ -17,6 +21,10 @@ export class ProjectBreakdown {
         this.userStories = [];
         this.acceptanceCriteria = [];
         this.tasks = [];
+
+        // Add project to customer and freelancer
+        this.customer.projects.push(project);
+        this.freelancer.projects.push(project);
     }
 
     addRequirement(requirement: Requirement): void {
