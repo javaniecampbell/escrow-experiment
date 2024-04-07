@@ -73,6 +73,10 @@ export class ProjectBreakdown {
 
     addTask(task: Task): void {
         this.tasks.push(task);
+        task.userStory = this.userStories.find((us) => us.id === task.userStoryId);
+        task.project = this.project;
+        task.userStory.tasks.push(task);
+        this.project.tasks.push(task);
     }
 }
 
