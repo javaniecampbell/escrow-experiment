@@ -11,6 +11,11 @@ export class ProjectBreakdown {
     tasks: Task[];
 
     constructor(project: Project, customer: Customer, freelancer: Freelancer) {
+        // Validate input
+        if (!project || !customer || !freelancer) {
+            throw new Error('Project, customer, and freelancer are required');
+        }
+
         this.project = project;
         this.customer = customer;
         this.freelancer = freelancer;
@@ -28,18 +33,33 @@ export class ProjectBreakdown {
     }
 
     addRequirement(requirement: Requirement): void {
+        // Validate input
+        if (!requirement || !requirement.type || !requirement.description || !requirement.priority) {
+            throw new Error('Requirement must have type, description, and priority');
+        }
+
         this.requirements.push(requirement);
         requirement.project = this.project;
         this.project.requirements.push(requirement);
     }
 
     addEpic(epic: Epic): void {
+        // Validate input
+        if (!epic || !epic.name || !epic.description || !epic.priority) {
+            throw new Error('Epic must have name, description, and priority');
+        }
+
         this.epics.push(epic);
         epic.project = this.project;
         this.project.epics.push(epic);
     }
 
     addFeature(feature: Feature): void {
+        // Validate input
+        if (!feature || !feature.name || !feature.description || !feature.priority || !feature.epicId) {
+            throw new Error('Feature must have name, description, priority, and an epic ID');
+        }
+
         this.features.push(feature);
         feature.project = this.project;
         feature.epic = this.epics.find((e) => e.id === feature.epicId);
@@ -48,6 +68,11 @@ export class ProjectBreakdown {
     }
 
     addScenario(scenario: Scenario): void {
+        // Validate input
+        if (!scenario || !scenario.name || !scenario.description || !scenario.priority || !scenario.featureId) {
+            throw new Error('Scenario must have name, description, priority, and a feature ID');
+        }
+
         this.scenarios.push(scenario);
         scenario.project = this.project;
         scenario.feature = this.features.find((f) => f.id === scenario.featureId);
@@ -56,6 +81,11 @@ export class ProjectBreakdown {
     }
 
     addUserStory(userStory: UserStory): void {
+        // Validate input
+        if (!userStory || !userStory.title || !userStory.description || !userStory.priority || !userStory.epicId || !userStory.featureId) {
+            throw new Error('User story must have title, description, priority, an epic ID, and a feature ID');
+        }
+
         this.userStories.push(userStory);
         userStory.project = this.project;
         userStory.epic = this.epics.find((e) => e.id === userStory.epicId);
@@ -66,12 +96,23 @@ export class ProjectBreakdown {
     }
 
     addAcceptanceCriteria(acceptanceCriteria: AcceptanceCriteria): void {
+        // Validate input
+        if (!acceptanceCriteria || !acceptanceCriteria.description || !acceptanceCriteria.userStoryId) {
+            throw new Error('Acceptance criteria must have a description and a user story ID');
+        }
+
+
         this.acceptanceCriteria.push(acceptanceCriteria);
         acceptanceCriteria.userStory = this.userStories.find((us) => us.id === acceptanceCriteria.userStoryId);
         acceptanceCriteria.userStory.acceptanceCriteria.push(acceptanceCriteria);
     }
 
     addTask(task: Task): void {
+        // Validate input
+        if (!task || !task.title || !task.description || !task.status || !task.priority || !task.assignedTo || !task.dueDate || !task.userStoryId) {
+            throw new Error('Task must have title, description, status, priority, assigned to, due date, and a user story ID');
+        }
+
         this.tasks.push(task);
         task.userStory = this.userStories.find((us) => us.id === task.userStoryId);
         task.project = this.project;
