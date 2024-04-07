@@ -29,6 +29,8 @@ export class ProjectBreakdown {
 
     addRequirement(requirement: Requirement): void {
         this.requirements.push(requirement);
+        requirement.project = this.project;
+        this.project.requirements.push(requirement);
     }
 
     addEpic(epic: Epic): void {
