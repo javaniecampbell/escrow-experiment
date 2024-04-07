@@ -67,6 +67,8 @@ export class ProjectBreakdown {
 
     addAcceptanceCriteria(acceptanceCriteria: AcceptanceCriteria): void {
         this.acceptanceCriteria.push(acceptanceCriteria);
+        acceptanceCriteria.userStory = this.userStories.find((us) => us.id === acceptanceCriteria.userStoryId);
+        acceptanceCriteria.userStory.acceptanceCriteria.push(acceptanceCriteria);
     }
 
     addTask(task: Task): void {
