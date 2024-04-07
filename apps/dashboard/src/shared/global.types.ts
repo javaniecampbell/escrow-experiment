@@ -119,7 +119,11 @@ export class ProjectBreakdown {
 
 
         this.acceptanceCriteria.push(acceptanceCriteria);
-        acceptanceCriteria.userStory = this.userStories.find((us) => us.id === acceptanceCriteria.userStoryId);
+        const userStory = this.userStories.find((us) => us.id === acceptanceCriteria.userStoryId);
+        if (!userStory) {
+            throw new Error(`User story with ID ${acceptanceCriteria.userStoryId} not found`);
+        }
+        acceptanceCriteria.userStory = userStory;
         acceptanceCriteria.userStory.acceptanceCriteria.push(acceptanceCriteria);
     }
 
