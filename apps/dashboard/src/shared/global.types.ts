@@ -57,6 +57,12 @@ export class ProjectBreakdown {
 
     addUserStory(userStory: UserStory): void {
         this.userStories.push(userStory);
+        userStory.project = this.project;
+        userStory.epic = this.epics.find((e) => e.id === userStory.epicId);
+        userStory.feature = this.features.find((f) => f.id === userStory.featureId);
+        this.project.userStories.push(userStory);
+        userStory.epic.userStories.push(userStory);
+        userStory.feature.userStories.push(userStory);
     }
 
     addAcceptanceCriteria(acceptanceCriteria: AcceptanceCriteria): void {
