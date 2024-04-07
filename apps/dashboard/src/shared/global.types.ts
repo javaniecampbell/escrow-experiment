@@ -62,7 +62,11 @@ export class ProjectBreakdown {
 
         this.features.push(feature);
         feature.project = this.project;
-        feature.epic = this.epics.find((e) => e.id === feature.epicId);
+        const epic = this.epics.find((e) => e.id === feature.epicId);
+        if (!epic) {
+            throw new Error(`Epic with ID ${feature.epicId} not found`);
+        }
+        feature.epic = epic;
         this.project.features.push(feature);
         feature.epic.features.push(feature);
     }
