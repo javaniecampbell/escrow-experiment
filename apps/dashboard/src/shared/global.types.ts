@@ -35,6 +35,8 @@ export class ProjectBreakdown {
 
     addEpic(epic: Epic): void {
         this.epics.push(epic);
+        epic.project = this.project;
+        this.project.epics.push(epic);
     }
 
     addFeature(feature: Feature): void {
