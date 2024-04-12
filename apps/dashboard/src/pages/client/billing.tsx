@@ -1,5 +1,5 @@
-import ClientBilling from "@/components/ClientBilling";
-import ClientBillingV2 from "@/components/ClientBillingV2";
+import ClientBilling from "@/components/platform/billing/ClientBilling";
+import ClientBillingV2 from "@/components/platform/billing/ClientBillingV2";
 import React from "react";
 
 function BillingPage() {
