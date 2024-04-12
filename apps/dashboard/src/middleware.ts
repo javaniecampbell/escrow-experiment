@@ -1,13 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
+import { authMiddleware } from "@clerk/nextjs";
 
 
 export const config = {
     matcher: [
         '/((?!api|_next/static|_next/image|favicon.ico|assets).*)',
+        "/((?!.+.[w]+$|_next).*)", "/", "/(api|trpc)(.*)" // Match all routes except /api and /trpc
     ]
 }
 
-export function middleware(req: NextRequest) {
+
+export default authMiddleware({
+    publicRoutes: ['/login', '/signup', '/service-agreement', '/terms-conditions', '/site'],
+
+    afterAuth: async (auth, req) => {
+        console.log('beforeAuth');
+        return rewrites(req);
+    }
+});
+
+
+function rewrites(req: NextRequest) {
 
     const url = req.nextUrl;
     const searchParams = url.searchParams.toString();
