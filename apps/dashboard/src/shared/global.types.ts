@@ -240,14 +240,15 @@ interface UserStory {
     title: string;
     description: string;
     priority: 'high' | 'medium' | 'low';
-    projectId: string;
     featureId: string;
-    // epicId: string; // readonly
-    // epic: Epic; // read only
     feature: Feature;
-    project: Project;
     acceptanceCriteria: AcceptanceCriteria[];
     tasks: Task[];
+    projectId: Readonly<string>;
+    epicId: Readonly<string>;
+    project: Readonly<Project>;
+    epic: Readonly<Epic>;
+
 }
 
 interface AcceptanceCriteria {
