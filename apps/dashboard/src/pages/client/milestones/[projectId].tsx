@@ -1,4 +1,4 @@
-import ClientMilestoneList from "@/components/ClientMilestoneList";
+import ClientMilestoneList from "@/components/platform/milestones/ClientMilestoneList";
 import { GetStaticProps } from "next";
 import React from "react";
 

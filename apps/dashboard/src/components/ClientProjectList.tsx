@@ -2,7 +2,7 @@
 import React from "react";
 import useStore from "@/shared/clientStore";
 
-import { MilestoneStepper } from "./MilestoneStepper";
+import { MilestoneStepper } from "./platform/milestones/MilestoneStepper";
 import { ClientDetails } from "./ClientDetails";
 
 const ClientProjectList = () => {
