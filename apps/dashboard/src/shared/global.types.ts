@@ -143,10 +143,22 @@ export class ProjectBreakdown {
         if (!userStory) {
             throw new Error(`User story with ID ${task.userStoryId} not found`);
         }
+
+        userStory.tasks.push(task);
         task.userStory = userStory;
+        // add task to user stories to project
+        // get the epic first
+        const projectEpic = this.project.epics.find((e) => e.id === userStory.feature.epicId);
+        // get the feature
+        const epicFeature = projectEpic?.features.find((f) => f.id === userStory.featureId);
+        // get the user story
+        const featureUserStory = epicFeature?.userStories.find((us) => us.id === task.userStoryId);
+        // add the task to the user story
+        if (!featureUserStory) {
+            throw new Error(`User story with ID ${task.userStoryId} not found in feature with ID ${userStory.featureId}`);
+        }
+        featureUserStory.tasks.push(task);
         task.project = this.project;
-        task.userStory.tasks.push(task);
-        this.project.tasks.push(task);
     }
 }
 
@@ -230,8 +242,8 @@ interface UserStory {
     priority: 'high' | 'medium' | 'low';
     projectId: string;
     featureId: string;
-    // epicId: string;
-    // epic: Epic;
+    // epicId: string; // readonly
+    // epic: Epic; // read only
     feature: Feature;
     project: Project;
     acceptanceCriteria: AcceptanceCriteria[];
