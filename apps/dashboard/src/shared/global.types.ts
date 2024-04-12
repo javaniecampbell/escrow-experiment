@@ -225,6 +225,7 @@ interface UserStory {
     priority: 'high' | 'medium' | 'low';
     epicId: string;
     projectId: string;
+    featureId: string;
     epic: Epic;
     feature: Feature;
     project: Project;
