@@ -52,6 +52,7 @@ export function middleware(req: NextRequest) {
         console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams} for client`);
         return NextResponse.rewrite(new URL('/shared/terms-conditions', req.url));
     }
+
     if (url.pathname === '/client' || url.pathname === '/client/'
         && url.host === process.env.NEXT_PUBLIC_DOMAIN
     ) {
@@ -92,3 +93,33 @@ export function middleware(req: NextRequest) {
 }
 
 
+
+function rewriteSharedPages(url: URL, pathWithSearchParams: string, hostname: string | null, req: NextRequest) {
+    if (url.pathname === '/login' || url.pathname === '/login/'
+        && url.host === process.env.NEXT_PUBLIC_DOMAIN
+    ) {
+        console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams} for client`);
+        new URL('/shared/login', req.url);
+    }
+
+    if (url.pathname === '/signup' || url.pathname === '/signup/'
+        && url.host === process.env.NEXT_PUBLIC_DOMAIN
+    ) {
+        console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams} for client`);
+        new URL('/shared/signup', req.url);
+    }
+
+    if (url.pathname === '/service-agreement' || url.pathname === '/service-agreement/'
+        && url.host === process.env.NEXT_PUBLIC_DOMAIN
+    ) {
+        console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams} for client`);
+        new URL('/shared/service-agreement', req.url);
+    }
+
+    if (url.pathname === '/terms-conditions' || url.pathname === '/terms-conditions/'
+        && url.host === process.env.NEXT_PUBLIC_DOMAIN
+    ) {
+        console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams} for client`);
+        new URL('/shared/terms-conditions', req.url);
+    }
+}
