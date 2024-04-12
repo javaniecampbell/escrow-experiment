@@ -85,7 +85,7 @@ export class ProjectBreakdown {
         }
         scenario.feature = feature;
         scenario.feature.scenarios.push(scenario);
-        
+
         const epic = this.project.epics.find((e) => e.id === feature.epicId);
         const epicFeature = epic?.features.find((f) => f.id === scenario.featureId);
         epicFeature?.scenarios.push(scenario);
@@ -93,25 +93,27 @@ export class ProjectBreakdown {
 
     addUserStory(userStory: UserStory): void {
         // Validate input
-        if (!userStory || !userStory.title || !userStory.description || !userStory.priority || !userStory.epicId || !userStory.featureId) {
-            throw new Error('User story must have title, description, priority, an epic ID, and a feature ID');
+        if (!userStory || !userStory.title || !userStory.description || !userStory.priority || !userStory.featureId) {
+            throw new Error('User story must have title, description, priority, and a feature ID');
         }
 
         this.userStories.push(userStory);
         userStory.project = this.project;
-        const epic = this.epics.find((e) => e.id === userStory.epicId);
-        if (!epic) {
-            throw new Error(`Epic with ID ${userStory.epicId} not found`);
-        }
-        userStory.epic = epic;
+
         const feature = this.features.find((f) => f.id === userStory.featureId);
         if (!feature) {
             throw new Error(`Feature with ID ${userStory.featureId} not found`);
         }
+        feature.userStories.push(userStory);
         userStory.feature = feature;
-        this.project.userStories.push(userStory);
-        userStory.epic.userStories.push(userStory);
-        userStory.feature.userStories.push(userStory);
+
+        const projectEpic = this.project.epics.find((e) => e.id === feature.epicId);
+        const epicFeature = projectEpic?.features.find((f) => f.id === userStory.featureId);
+
+        if (!epicFeature) {
+            throw new Error(`Feature with ID ${userStory.featureId} not found in epic with ID ${feature.epicId}`);
+        }
+        epicFeature.userStories.push(userStory);
     }
 
     addAcceptanceCriteria(acceptanceCriteria: AcceptanceCriteria): void {
@@ -226,10 +228,10 @@ interface UserStory {
     title: string;
     description: string;
     priority: 'high' | 'medium' | 'low';
-    epicId: string;
     projectId: string;
     featureId: string;
-    epic: Epic;
+    // epicId: string;
+    // epic: Epic;
     feature: Feature;
     project: Project;
     acceptanceCriteria: AcceptanceCriteria[];
