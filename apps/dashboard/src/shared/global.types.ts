@@ -67,8 +67,8 @@ export class ProjectBreakdown {
             throw new Error(`Epic with ID ${feature.epicId} not found`);
         }
         feature.epic = epic;
-        this.project.features.push(feature);
         feature.epic.features.push(feature);
+        this.project.epics.find((e) => e.id === feature.epicId)?.features.push(feature);
     }
 
     addScenario(scenario: Scenario): void {
