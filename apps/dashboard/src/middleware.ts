@@ -39,6 +39,13 @@ export function middleware(req: NextRequest) {
         return NextResponse.rewrite(new URL('/shared/signup', req.url));
     }
 
+    if (url.pathname === '/service-agreement' || url.pathname === '/service-agreement/'
+        && url.host === process.env.NEXT_PUBLIC_DOMAIN
+    ) {
+        console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams} for client`);
+        return NextResponse.rewrite(new URL('/shared/service-agreement', req.url));
+    }
+
     if (url.pathname === '/client' || url.pathname === '/client/'
         && url.host === process.env.NEXT_PUBLIC_DOMAIN
     ) {
@@ -48,7 +55,6 @@ export function middleware(req: NextRequest) {
 
     if (
         // url.pathname.startsWith('/client/dashboard')||
-        url.pathname.startsWith('/agency/service-agreement') ||
         url.pathname.startsWith('/agency/dashboard')
         ||
         url.pathname.startsWith('/client/settings') ||

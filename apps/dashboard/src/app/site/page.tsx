@@ -29,7 +29,7 @@ export default function Home() {
         </div>
         <Link
           className="mt-4 mb-4 bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 "
-          href="/agency/service-agreement"
+          href="/service-agreement"
         >
           Let's get started
         </Link>
