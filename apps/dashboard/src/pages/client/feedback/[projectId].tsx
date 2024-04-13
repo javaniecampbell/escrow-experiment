@@ -1,4 +1,4 @@
-import ClientFeedback from "@/components/ClientFeedback";
+import ClientFeedback from "@/components/platform/support/ClientFeedback";
 import { GetStaticProps } from "next";
 import React from "react";
 

@@ -1,5 +1,5 @@
-import ClientFeedback from "@/components/ClientFeedback";
-import ClientSupport from "@/components/ClientSupport";
+import ClientFeedback from "@/components/platform/support/ClientFeedback";
+import ClientSupport from "@/components/platform/support/ClientSupport";
 import ClientSupportForm from "@/components/forms/ClientSupportForm";
 import ClientSupportFormV2 from "@/components/forms/ClientSupportFormV2";
 import React from "react";
