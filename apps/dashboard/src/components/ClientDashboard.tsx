@@ -2,10 +2,10 @@
 import React from "react";
 import useStore from "@/shared/clientStore";
 import ClientProjectsOverview from "./ClientProjectOverview";
-import ClientProjects from "./ClientProjects";
+import ClientProjects from "./platform/projects/ClientProjects";
 import ClientPayments from "./platform/escrow/ClientPayments";
 import ClientNotifications from "./ClientNotifications";
-import ClientProjectList from "./ClientProjectList";
+import ClientProjectList from "./platform/projects/ClientProjectList";
 
 const ClientDashboard = () => {
   const { projects: clientProjects } = useStore();

@@ -1,4 +1,4 @@
-import ClientProjectDetails from "@/components/ClientProjectDetails";
+import ClientProjectDetails from "@/components/platform/projects/ClientProjectDetails";
 import React from "react";
 
 function ClientProjectDetailsPage() {

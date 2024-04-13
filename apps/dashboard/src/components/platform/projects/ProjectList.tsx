@@ -3,8 +3,8 @@ import React from "react";
 import useStore from "@/shared/store";
 import { Project } from "@/shared/app.types";
 import { useDialogStore } from "@/shared/dialogStore";
-import BottomSheet from "./global/bottom-sheet";
-import CreateProjectForm from "./forms/CreateProjectForm";
+import BottomSheet from "../../global/bottom-sheet";
+import CreateProjectForm from "../../forms/CreateProjectForm";
 
 const ProjectList = () => {
   const { projects, addProject, selectProject } = useStore();
