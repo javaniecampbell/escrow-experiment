@@ -13,6 +13,7 @@ interface StoreState {
   selectProject: (projectId: string | number) => void;
   markMilestonePreviewed: (milestoneId: number | string) => void;
   requestPayout: (projectId: number | string | null) => void;
+  markMilestoneDelivered: (milestoneId: number | string | null) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
@@ -47,6 +48,16 @@ const useStore = create<StoreState>((set) => ({
           });
         }
         return p;
+      }),
+    }));
+  },
+  markMilestoneDelivered: (milestoneId) => {
+    set((state) => ({
+      milestones: state.milestones.map((milestone) => {
+        if (milestone.id === milestoneId) {
+          milestone.delivered = true;
+        }
+        return milestone;
       }),
     }));
   },
