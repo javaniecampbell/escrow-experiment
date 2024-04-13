@@ -52,6 +52,37 @@ export const initialMilestones = [{
         milestoneId: 1,
         expiryDate: tenDaysFromNow.toDateString()
     }]
+}, {
+    id: 2,
+    projectId: 1,
+    name: 'Milestone 2',
+    amount: 100,
+    date: threeDaysFromNow.toDateString(),
+    status: 'Active',
+    payout: 100,
+
+    balance: 100,
+    delivered: true,
+    paidOut: true,
+    previewed: true,
+    hasPreview: true,
+    payoutDate: threeDaysFromNow.toDateString(),
+    description: 'Milestone 1 description',
+    digitalAssets: [{
+        id: 3,
+        name: 'Milestone 1 Digital Asset 1',
+        url: 'https://www.example.com/asset1.pdf',
+        type: 'PDF',
+        milestoneId: 2,
+        expiryDate: tenDaysFromNow.toDateString()
+    }, {
+        id: 4,
+        name: 'Milestone 1 Digital Asset 2',
+        url: 'https://www.example.com/asset2.pdf',
+        type: 'PDF',
+        milestoneId: 2,
+        expiryDate: tenDaysFromNow.toDateString()
+    }]
 }] satisfies Milestone[];
 // Sample data for projects
 export const initialProjects = [
