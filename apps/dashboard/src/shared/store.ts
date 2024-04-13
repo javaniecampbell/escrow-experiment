@@ -12,6 +12,7 @@ interface StoreState {
   addMilestone: (milestone: Milestone) => void;
   selectProject: (projectId: string | number) => void;
   markMilestonePreviewed: (milestoneId: number | string) => void;
+  requestPayout: (projectId: number | string | null) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
@@ -32,6 +33,20 @@ const useStore = create<StoreState>((set) => ({
           // });
         }
         return milestone;
+      }),
+    }));
+  },
+  requestPayout: (projectId) => {
+    set((state) => ({
+      projects: state.projects.map((p) => {
+        if (p.id === projectId) {
+          p.milestones.forEach((m) => {
+            if (m.projectId === projectId) {
+              m.status = 'Payout Requested';
+            }
+          });
+        }
+        return p;
       }),
     }));
   },
