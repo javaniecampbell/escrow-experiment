@@ -27,6 +27,8 @@ export type Milestone = {
     date: string | Date;
     status: string;
     payout: number;
+    delivered: boolean;
+    paidOut: boolean;
     previewed: boolean;
     hasPreview: boolean;
     payoutDate: string | Date;
