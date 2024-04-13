@@ -31,6 +31,8 @@ export type Milestone = {
     paidOut: boolean;
     previewed: boolean;
     hasPreview: boolean;
+    payoutRequested?: boolean;
+    payoutRequestedAt?: string | Date;
     payoutDate: string | Date;
     description: string;
     digitalAssets: DigitalAsset[];
@@ -99,3 +101,15 @@ export type User = {
     Agency?: Agency;
     Permissions?: Permission[];
 };
+
+export type ClientId = number | string;
+export type ProjectId = number | string;
+export type MilestoneId = number | string;
+export type DigitalAssetId = number | string;
+export type SidebarOptionId = number | string;
+export type BillingHistoryEntryId = number | string;
+export type SupportMessageId = number | string;
+export type PermissionId = number | string;
+export type SubAccountId = number | string;
+export type AgencyId = number | string;
+export type UserId = number | string;

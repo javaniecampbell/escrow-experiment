@@ -1,20 +1,21 @@
 // store.js
 import { create } from 'zustand';
 import { initialMilestones, initialProjects } from './initialData';
-import { Milestone, Project } from './app.types';
+import { Milestone, MilestoneId, Project, ProjectId } from './app.types';
 
 
 interface StoreState {
   projects: Project[];
   milestones: Milestone[];
-  selectedProject: number | string | null;
+  selectedProject: ProjectId | null;
   addProject: (project: Project) => void;
   addMilestone: (milestone: Milestone) => void;
-  selectProject: (projectId: string | number) => void;
-  markMilestonePreviewed: (milestoneId: number | string) => void;
-  requestPayout: (projectId: number | string | null) => void;
-  markMilestoneDelivered: (milestoneId: number | string | null) => void;
+  selectProject: (projectId: ProjectId | null) => void;
+  markMilestonePreviewed: (milestoneId: MilestoneId | null) => void;
+  requestPayout: (projectId: ProjectId | null) => void;
+  markMilestoneDelivered: (milestoneId: MilestoneId | null) => void;
 }
+
 
 const useStore = create<StoreState>((set) => ({
   projects: initialProjects ?? [],
@@ -23,7 +24,7 @@ const useStore = create<StoreState>((set) => ({
   addProject: (project) => set((state) => ({ projects: [...state.projects, project] })),
   addMilestone: (milestone) => set((state) => ({ milestones: [...state.milestones, milestone] })),
   selectProject: (projectId) => set({ selectedProject: projectId }),
-  markMilestonePreviewed: (milestoneId: number | string) => {
+  markMilestonePreviewed: (milestoneId) => {
     set((state) => ({
       milestones: state.milestones.map((milestone) => {
         if (milestone.id === milestoneId) {
@@ -38,12 +39,20 @@ const useStore = create<StoreState>((set) => ({
     }));
   },
   requestPayout: (projectId) => {
+    console.log('requestPayout', projectId);
     set((state) => ({
       projects: state.projects.map((p) => {
         if (p.id === projectId) {
           p.milestones.forEach((m) => {
             if (m.projectId === projectId) {
               m.status = 'Payout Requested';
+              m.payoutRequested = true;
+              m.payoutRequestedAt = new Date();
+              p.balance -= m.amount;
+              p.totalPayouts += m.amount;
+              m.payoutDate = new Date();
+              m.payout = m.amount;
+              m.paidOut = true;
             }
           });
         }
