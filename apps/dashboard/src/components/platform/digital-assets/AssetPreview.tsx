@@ -30,7 +30,9 @@ const AssetPreview = () => {
       {downloadLink ? (
         <>
           <p className="text-gray-700 mb-2">Preview the downloadable asset:</p>
-          {/* Display the asset preview based on its type (e.g., image, video) */}
+          {/* Display the asset preview based on its type (e.g., image, video) 
+          Image preview (*.png,*.jpg, *.gif, *.webp) can be displayed using an <Image> tag, while video preview can be displayed using an <react palyer component> tag, website preview can be displayed using an <iframe> tag.
+          */}
           <iframe
             title="Asset Preview"
             src={downloadLink}
