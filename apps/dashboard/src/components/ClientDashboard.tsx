@@ -3,7 +3,7 @@ import React from "react";
 import useStore from "@/shared/clientStore";
 import ClientProjectsOverview from "./ClientProjectOverview";
 import ClientProjects from "./ClientProjects";
-import ClientPayments from "./ClientPayments";
+import ClientPayments from "./platform/escrow/ClientPayments";
 import ClientNotifications from "./ClientNotifications";
 import ClientProjectList from "./ClientProjectList";
 
