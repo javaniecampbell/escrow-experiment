@@ -3,7 +3,7 @@ import React from "react";
 import useStore from "@/shared/clientStore";
 
 import { MilestoneStepper } from "../milestones/MilestoneStepper";
-import { ClientDetails } from "../../ClientDetails";
+import { ClientDetails } from "../account/ClientDetails";
 
 const ClientProjectList = () => {
   const { projects: clientProjects } = useStore();

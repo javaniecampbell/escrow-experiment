@@ -1,7 +1,7 @@
-import ClientProfile from "@/components/ClientProfile";
+import ClientProfile from "@/components/platform/account/ClientProfile";
 import ClientEditProfile from "@/components/forms/ClientEditProfile";
 import React from "react";
-import ClientSettings from "@/components/ClientSettings";
+import ClientSettings from "@/components/platform/account/ClientSettings";
 
 function ClientProfilePage() {
   return (
