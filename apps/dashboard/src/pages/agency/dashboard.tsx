@@ -2,7 +2,7 @@ import DeliveredMilestones from "@/components/platform/milestones/DeliveredMiles
 import MilestonesWithPreviews from "@/components/platform/milestones/MilestonesWithPreviews";
 import MilestonesWithUpcomingPayouts from "@/components/platform/milestones/MilestonesWithUpcomingPayouts";
 import ProjectList from "@/components/platform/projects/ProjectList";
-import ProjectOverview from "@/components/ProjectOverview";
+import ProjectOverview from "@/components/dashboard/ProjectOverview";
 import TotalEscrowed from "@/components/platform/escrow/TotalEscrowed";
 import TotalPayouts from "@/components/platform/escrow/TotalPayouts";
 import Sidebar from "@/components/sidebar";

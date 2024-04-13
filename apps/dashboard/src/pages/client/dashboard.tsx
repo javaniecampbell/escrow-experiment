@@ -1,5 +1,5 @@
 import React from "react";
-import ClientDashboard from "@/components/ClientDashboard";
+import ClientDashboard from "@/components/dashboard/ClientDashboard";
 import { Action } from "@/components/types";
 import {
   UsersIcon,
