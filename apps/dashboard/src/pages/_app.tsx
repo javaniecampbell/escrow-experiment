@@ -3,6 +3,8 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
+import ModalProvider from "@/components/global/modal-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -17,7 +19,10 @@ export default function App({ Component, pageProps }: AppProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <Component {...pageProps} />
+          <ModalProvider>
+            <Component {...pageProps} />
+            <Toaster />
+          </ModalProvider>
         </ThemeProvider>
       </ClerkProvider>
     </div>

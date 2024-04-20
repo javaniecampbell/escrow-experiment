@@ -1,5 +1,7 @@
-import { User, Agency, SubAccount } from "@/shared/app.types";
+import { User, Agency, SubAccount, SidebarOption } from "@/shared/app.types";
 import React, { useEffect, useState } from "react";
+import MenuOptions from "./menu-options";
+import { set } from "date-fns";
 
 type Props = {
   id: string;
@@ -21,9 +23,11 @@ const Sidebar = ({ id, type }: Props) => {
   const [sideBarLogo, setSideBarLogo] = useState<string | null | undefined>(
     null
   );
+  const [sidebarOptions, setSidebarOptions] = useState<SidebarOption[]>([]);
   const [agencyDetails, setAgencyDetails] = useState<
     Agency | SubAccount | null
   >(null);
+  const [subAccounts, setSubAccounts] = useState<SubAccount[]>([]);
 
   useEffect(() => {
     async function init() {
@@ -58,7 +62,7 @@ const Sidebar = ({ id, type }: Props) => {
       setAgencyDetails(details);
       setSideBarLogo(sidebarLogo);
 
-      const sideOptions =
+      const tempSidebarOptions =
         type === "agency"
           ? user?.Agency?.SidebarOptions ?? []
           : user?.Agency?.SubAccounts?.find(
@@ -72,11 +76,35 @@ const Sidebar = ({ id, type }: Props) => {
               permission.subAccountId === subaccount.id && permission.access
           )
         ) ?? [];
+
+      setSidebarOptions(tempSidebarOptions);
+      setSubAccounts(subaccounts);
     }
     init();
   }, [id, type, user]);
 
-  return <div>Sidebar</div>;
+  return (
+    <>
+      <MenuOptions
+        defaultOpen={true}
+        subAccounts={subAccounts ?? []}
+        sidebarOption={sidebarOptions ?? []}
+        sidebarLogo={sideBarLogo ?? ""}
+        details={agencyDetails}
+        user={user}
+        id={id}
+      />
+      <MenuOptions
+        defaultOpen={true}
+        subAccounts={subAccounts ?? []}
+        sidebarOption={sidebarOptions ?? []}
+        sidebarLogo={sideBarLogo ?? ""}
+        details={agencyDetails}
+        user={user}
+        id={id}
+      />
+    </>
+  );
 };
 
 /**
@@ -88,6 +116,30 @@ function getAuthUserDetails(): Promise<User | null> {
   return Promise.resolve({
     Agency: {
       whiteLabel: true,
+      address: "",
+      SidebarOptions: [
+        {
+          id: "1",
+          name: "Dashboard",
+          icon: "dashboard",
+          link: "/dashboard",
+          subAccountId: null,
+        },
+        {
+          id: "2",
+          name: "Payments",
+          icon: "payments",
+          link: "/payments",
+          subAccountId: null,
+        },
+        {
+          id: "3",
+          name: "Settings",
+          icon: "settings",
+          link: "/settings",
+          subAccountId: null,
+        },
+      ],
       agencyLogo: "/assets/freelance-escrow-logo-v2.webp",
       SubAccounts: [
         {

@@ -77,6 +77,7 @@ export type SubAccount = {
     connectAccountId: string | null;
     agencyId: string;
     subAccountLogo?: string;
+    address?: string;
     SidebarOptions?: SidebarOption[];
 };
 
@@ -85,8 +86,8 @@ export type SidebarOption = {
     name: string;
     icon: string;
     link: string;
-    createdAt: string | Date;
-    updatedAt: string | Date;
+    createdAt?: string | Date;
+    updatedAt?: string | Date;
     subAccountId: string | null;
 };
 export type Agency = {
@@ -95,6 +96,7 @@ export type Agency = {
     SubAccounts?: SubAccount[];
     SidebarOptions?: SidebarOption[];
     Permissions?: Permission[];
+    address?: string;
 };
 
 export type User = {
