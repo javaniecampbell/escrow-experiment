@@ -1,10 +1,15 @@
 // ProjectActions.js
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import useStore from "@/shared/store";
 
-const ProjectActions = () => {
+type Props = {
+  projectId: string | number | null;
+};
+
+const ProjectActions = ({ projectId }: Props) => {
   const {
     selectedProject,
+    selectProject,
     addMilestone,
     markMilestoneDelivered,
     requestPayout,
@@ -12,29 +17,34 @@ const ProjectActions = () => {
   const [milestoneName, setMilestoneName] = useState("");
   const [milestoneAmount, setMilestoneAmount] = useState("");
 
+  // useEffect(() => {
+  //   selectProject(projectId);
+  // }, []);
   // Handle creating a new milestone
   const handleCreateMilestone = () => {
     if (milestoneName && milestoneAmount) {
-      addMilestone(selectedProject, milestoneName, parseFloat(milestoneAmount));
+      // Add the milestone to the selected project
+      // Use a sheet or side panel to create a new milestone
+      // addMilestone(selectedProject, milestoneName, parseFloat(milestoneAmount));
       setMilestoneName("");
       setMilestoneAmount("");
     }
   };
 
   // Handle marking a milestone as delivered
-  const handleMarkDelivered = (milestoneId) => {
+  const handleMarkDelivered = (milestoneId: string) => {
     markMilestoneDelivered(milestoneId);
   };
 
   // Handle requesting a payout
   const handleRequestPayout = () => {
-    requestPayout(selectedProject);
+    requestPayout(projectId);
   };
 
   return (
     <div className="p-4 border border-gray-300 rounded">
       <h2 className="text-lg font-semibold mb-2">Project Actions</h2>
-      {selectedProject ? (
+      {projectId ? (
         <>
           <div className="mb-4">
             <h3 className="text-md font-semibold">Create New Milestone</h3>
@@ -65,7 +75,7 @@ const ProjectActions = () => {
             <h3 className="text-md font-semibold">Mark Milestone Delivered</h3>
             <button
               className="px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-              onClick={() => handleMarkDelivered(selectedProject)}
+              onClick={() => handleMarkDelivered("")}
             >
               Mark as Delivered
             </button>

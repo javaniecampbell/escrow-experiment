@@ -1,25 +1,28 @@
 // ClientProjects.js
 import React, { useState } from "react";
 import ProjectActions from "./ProjectActions";
+import useStore from "@/shared/store";
 
 const ClientProjects = () => {
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      name: "Website Redesign",
-      status: "In Progress",
-    },
-    {
-      id: 2,
-      name: "Mobile App Development",
-      status: "Completed",
-    },
-    {
-      id: 3,
-      name: "E-commerce Platform",
-      status: "In Progress",
-    },
-  ]);
+  // const [projects, setProjects] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Website Redesign",
+  //     status: "In Progress",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Mobile App Development",
+  //     status: "Completed",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "E-commerce Platform",
+  //     status: "In Progress",
+  //   },
+  // ]);
+
+  const { projects } = useStore();
 
   return (
     <div className="p-4 border border-gray-300 rounded">
@@ -35,10 +38,12 @@ const ClientProjects = () => {
         <tbody>
           {projects.map((project) => (
             <tr key={project.id}>
-              <td className="border border-gray-300 p-2">{project.name}</td>
+              <td className="border border-gray-300 p-2">
+                {project.name ?? project.title}
+              </td>
               <td className="border border-gray-300 p-2">{project.status}</td>
               <td className="border border-gray-300 p-2">
-                <ProjectActions />
+                <ProjectActions projectId={project.id} />
               </td>
             </tr>
           ))}

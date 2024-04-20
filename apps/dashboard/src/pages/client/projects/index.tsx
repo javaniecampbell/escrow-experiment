@@ -1,4 +1,4 @@
-import ClientProjects from "@/components/platform/projects/ClientProjectsV2";
+import ClientProjects from "@/components/platform/projects/ClientProjects";
 import React from "react";
 
 function ClientProjectsListPage() {
