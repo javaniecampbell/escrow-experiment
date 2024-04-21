@@ -117,12 +117,20 @@ function getAuthUserDetails(): Promise<User | null> {
     role: "AGENCY_OWNER",
     Permissions: [
       {
-         id: "1",
-          name: "Dashboard",
-          description: "View the dashboard",
-          permissions: ["VIEW"],
-          subAccountId: "1",
-          access: true,
+        id: "1",
+        name: "Dashboard",
+        description: "View the dashboard",
+        permissions: ["VIEW"],
+        subAccountId: "1",
+        access: true,
+      },
+      {
+        id: "2",
+        name: "Dashboard",
+        description: "View the dashboard",
+        permissions: ["VIEW"],
+        subAccountId: "2",
+        access: true,
       },
     ],
     Agency: {
@@ -161,6 +169,7 @@ function getAuthUserDetails(): Promise<User | null> {
           name: "Subaccount 1",
           subAccountLogo: "/assets/freelance-escrow-logo-v4.webp",
           agencyId: "1",
+          address: "123 Main St, New York, NY 10001",
           connectAccountId: null,
         },
         {
@@ -168,6 +177,7 @@ function getAuthUserDetails(): Promise<User | null> {
           name: "Subaccount 2",
           subAccountLogo: "/assets/freelance-escrow-logo-v5.webp",
           agencyId: "1",
+          address: "123 Main St, New York, NY 10001",
           connectAccountId: null,
         },
       ],

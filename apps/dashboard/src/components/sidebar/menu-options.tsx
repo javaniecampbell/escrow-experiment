@@ -84,9 +84,9 @@ const MenuOptions = ({
             />
           </AspectRatio>
           <Popover>
-            <PopoverTrigger>
+            <PopoverTrigger className="w-full">
               <Button
-                className="w-full my-4 flex items-center justify-between py-8"
+                className="w-full my-4 flex items-center justify-between p-8"
                 variant={"ghost"}
               >
                 <div className="flex items-center text-left gap-3">
@@ -97,9 +97,12 @@ const MenuOptions = ({
                       {details.address}
                     </span>
                   </div>
-                </div>
-                <div>
-                  <ChevronsUpDown size={16} className="text-muted-foreground" />
+                  <div>
+                    <ChevronsUpDown
+                      size={16}
+                      className="text-muted-foreground"
+                    />
+                  </div>
                 </div>
               </Button>
             </PopoverTrigger>
