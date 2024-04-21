@@ -91,7 +91,9 @@ export type SidebarOption = {
     subAccountId: string | null;
 };
 export type Agency = {
+    id: string;
     whiteLabel: boolean;
+    name?: string;
     agencyLogo?: string;
     SubAccounts?: SubAccount[];
     SidebarOptions?: SidebarOption[];
@@ -100,6 +102,7 @@ export type Agency = {
 };
 
 export type User = {
+    role?: string;
     Agency?: Agency;
     Permissions?: Permission[];
 };

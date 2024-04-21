@@ -121,10 +121,10 @@ const MenuOptions = ({
                               >
                                 <div className="relative w-16">
                                   <Image
-                                    src={user?.Agency?.logo}
+                                    src={user?.Agency?.agencyLogo!}
                                     alt="Agency Logo"
                                     fill
-                                    // objectFit="contain"
+                                    objectFit="contain"
                                     className="rounded-md object-contain"
                                   />
                                 </div>
@@ -163,7 +163,7 @@ const MenuOptions = ({
                         </CommandGroup>
                       )}
                     <CommandGroup heading="Accounts">
-                      {!!subAccounts
+                      {subAccounts.length > 0
                         ? subAccounts.map((subAccount) => (
                             <CommandItem key={subAccount.id}>
                               {defaultOpen ? (
@@ -198,7 +198,7 @@ const MenuOptions = ({
                                         src={subAccount.subAccountLogo!}
                                         alt="Subaccount Logo"
                                         fill
-                                        // objectFit="contain"
+                                        objectFit="contain"
                                         className="rounded-md object-contain"
                                       />
                                     </div>

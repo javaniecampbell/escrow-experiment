@@ -44,12 +44,12 @@ const Sidebar = ({ id, type }: Props) => {
           : authUser?.Agency?.SubAccounts?.find(
               (subaccount) => subaccount.id === id
             );
-      const isWhiteLabeledAgency = authUser?.Agency?.whiteLabel;
-      setIsWhiteLabeledAgency(isWhiteLabeledAgency);
+      //const isWhiteLabeledAgency = authUser?.Agency?.whiteLabel;
+      setIsWhiteLabeledAgency(authUser?.Agency?.whiteLabel);
       if (!details) return;
 
       let sidebarLogo: string | undefined =
-        authUser?.Agency?.agencyLogo || "/assets/freelance-escrow-logo.webp";
+        authUser?.Agency?.agencyLogo ?? "/assets/freelance-escrow-logo.webp";
 
       if (!isWhiteLabeledAgency) {
         if (type === "subaccount") {
@@ -114,9 +114,23 @@ export default Sidebar;
 
 function getAuthUserDetails(): Promise<User | null> {
   return Promise.resolve({
+    role: "AGENCY_OWNER",
+    Permissions: [
+      {
+         id: "1",
+          name: "Dashboard",
+          description: "View the dashboard",
+          permissions: ["VIEW"],
+          subAccountId: "1",
+          access: true,
+      },
+    ],
     Agency: {
+      id: "agency-owner-id",
+      name: "DevDaysAtWork",
       whiteLabel: true,
-      address: "",
+
+      address: "123 Main St, New York, NY 10001",
       SidebarOptions: [
         {
           id: "1",
