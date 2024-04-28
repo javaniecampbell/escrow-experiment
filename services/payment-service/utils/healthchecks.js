@@ -38,19 +38,32 @@ function checkCacheStatus() {
 }
 
 function checkIfAppIsRunning() {
-    var isAppRunning = true;
+    var isAppRunning = false;
     return new Promise((resolve, reject) => {
         try {
             logger.info('Application is running');
+            isAppRunning = true;
             resolve(isAppRunning);
         } catch (error) {
             logger.error('Application is not running', error);
-            isAppRunning = false;
             reject(isAppRunning);
         }
     })
 }
 
+function checkIfAppIsStarted(){
+    var isAppStarted = false;
+    return new Promise((resolve, reject) => {
+        try {
+            logger.info('Application is started');
+            isAppStarted = true;
+            resolve(isAppStarted);
+        } catch (error) {
+            logger.error('Application is not started', error);
+            reject(isAppStarted);
+        }
+    })
+}
 
 module.exports = {
     checkDatabaseConnection,
