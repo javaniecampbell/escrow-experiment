@@ -1,3 +1,4 @@
+const { Tracer } = require('@opentelemetry/api');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
@@ -28,5 +29,9 @@ registerInstrumentations({
     ],
 });
 
+/**
+ * Export the tracer
+ * @type {Tracer}
+ */
 // Export the tracer
 module.exports = { tracer: provider.getTracer('payment-service') };

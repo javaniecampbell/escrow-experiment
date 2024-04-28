@@ -25,9 +25,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api/payments', paymentRouter);
-app.use('/api/webhook', webhookRouter);
-app.use('/api/projects', projectRouter);
-app.use('/api/milestones', milestoneRouter);
+app.use('/api/payments', paymentRouter({ tracer }));
+app.use('/api/webhook', webhookRouter({ tracer }));
+app.use('/api/projects', projectRouter({ tracer }));
+app.use('/api/milestones', milestoneRouter({ tracer }));
+app.use('/api/milestones', milestoneRouter({ tracer }));
 
 module.exports = app;
