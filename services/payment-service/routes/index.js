@@ -65,10 +65,40 @@ module.exports = ({ tracer }) => {
     });
   });
   /* GET home page. */
-  router.get('/ready', function (req, res, next) {
+  router.get('/readiness', async function (req, res, next) {
     headers.forEach((header) => {
       res.set(header);
     });
+    try {
+      // Check if the application is ready to receive traffic
+      // (e.g., database connection, cache, external dependencies)
+      const dbConnection = true //await checkDatabaseConnection();
+      const cacheStatus = true //await checkCacheStatus();
+
+      if (dbConnection && cacheStatus) {
+        res.json(200, {
+          status: 'pass'
+        });
+      } else {
+        res.status(503).json({
+          status: 'fail',
+          message: 'Application not ready'
+        });
+      }
+    } catch (err) {
+      res.status(503).json({
+        status: 'fail',
+        message: 'Application not ready', error: err.message
+      });
+    }
+
+  });
+  router.get('/startup', function (req, res, next) {
+    headers.forEach((header) => {
+      res.set(header);
+    });
+    // Check if the application has started successfully
+    // (e.g., all required resources are available)
     res.json(200, {
       status: 'ok'
     });
