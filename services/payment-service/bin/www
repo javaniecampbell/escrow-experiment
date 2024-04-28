@@ -4,22 +4,23 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('payment-service:server');
-var http = require('http');
+const app = require('../app');
+const logger = require('../utils/logger');
+const debug = require('debug')('payment-service:server');
+const http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -88,3 +89,19 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+process.on('SIGTERM', () => {
+  logger.info('Received SIGTERM signal, shutting down gracefully');
+  server.close(() => {
+    logger.info('Server stopped');
+    process.exit(0);
+  });
+})
+
+process.on('SIGINT', () => {
+  logger.info('Received SIGINT signal, shutting down gracefully');
+  server.close(() => {
+    logger.info('Server stopped');
+    process.exit(0);
+  });
+})
