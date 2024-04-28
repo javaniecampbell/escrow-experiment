@@ -58,6 +58,12 @@ function rewrites(req: NextRequest) {
         console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams} for client`);
         return NextResponse.rewrite(new URL('/shared/service-agreement', req.url));
     }
+    if (url.pathname === '/healthcheck' || url.pathname === '/healthcheck/'
+        && url.host === process.env.NEXT_PUBLIC_DOMAIN
+    ) {
+        console.log(`Rewriting ${url.pathname} to ${pathWithSearchParams} for client`);
+        return NextResponse.rewrite(new URL('/shared/healthcheck', req.url));
+    }
 
     if (url.pathname === '/terms-conditions' || url.pathname === '/terms-conditions/'
         && url.host === process.env.NEXT_PUBLIC_DOMAIN
