@@ -37,7 +37,23 @@ function checkCacheStatus() {
     });
 }
 
+function checkIfAppIsRunning() {
+    var isAppRunning = true;
+    return new Promise((resolve, reject) => {
+        try {
+            logger.info('Application is running');
+            resolve(isAppRunning);
+        } catch (error) {
+            logger.error('Application is not running', error);
+            isAppRunning = false;
+            reject(isAppRunning);
+        }
+    })
+}
+
+
 module.exports = {
     checkDatabaseConnection,
-    checkCacheStatus
+    checkCacheStatus,
+    checkIfAppIsRunning
 };
