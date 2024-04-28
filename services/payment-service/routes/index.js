@@ -2,6 +2,8 @@ const { Tracer } = require('@opentelemetry/api');
 const express = require('express');
 const router = express.Router();
 const os = require('os');
+
+const { checkDatabaseConnection, checkCacheStatus } = require('../utils/healthchecks');
 /**
  * Endpoints for Health checks
  * @param {Tracer} tracer OpenTelemetry Tracer
@@ -72,12 +74,13 @@ module.exports = ({ tracer }) => {
     try {
       // Check if the application is ready to receive traffic
       // (e.g., database connection, cache, external dependencies)
-      const dbConnection = true //await checkDatabaseConnection();
-      const cacheStatus = true //await checkCacheStatus();
+      const dbConnection = await checkDatabaseConnection();
+      const cacheStatus = await checkCacheStatus();
 
       if (dbConnection && cacheStatus) {
         res.json(200, {
-          status: 'pass'
+          status: 'pass',
+          message: 'Application is ready'
         });
       } else {
         res.status(503).json({
