@@ -2,7 +2,8 @@ import { User, Agency, SubAccount, SidebarOption } from "@/shared/app.types";
 import React, { useEffect, useState } from "react";
 import MenuOptions from "./menu-options";
 import { set } from "date-fns";
-
+import { tracer } from "@/lib/tracing";
+import { Attributes } from "@opentelemetry/api";
 type Props = {
   id: string;
   type: "agency" | "client" | "subaccount";
@@ -30,20 +31,23 @@ const Sidebar = ({ id, type }: Props) => {
   const [subAccounts, setSubAccounts] = useState<SubAccount[]>([]);
 
   useEffect(() => {
+    const span = tracer.startSpan("Sidebar_Init");
     async function init() {
       const authUser = await getAuthUserDetails();
       if (authUser) {
+        span.addEvent("User_Fetched", { user: authUser.role });
         setUser(authUser);
       }
 
       if (!authUser?.Agency) return;
-
+      span.addEvent("Agency_Fetched", { agency: authUser.Agency.name });
       const details: Agency | SubAccount | undefined =
         type === "agency"
           ? authUser?.Agency
           : authUser?.Agency?.SubAccounts?.find(
               (subaccount) => subaccount.id === id
             );
+      span.addEvent("Details_Fetched", { details: details?.name });
       //const isWhiteLabeledAgency = authUser?.Agency?.whiteLabel;
       setIsWhiteLabeledAgency(authUser?.Agency?.whiteLabel);
       if (!details) return;
@@ -59,6 +63,7 @@ const Sidebar = ({ id, type }: Props) => {
             )?.subAccountLogo ?? user?.Agency?.agencyLogo;
         }
       }
+      span.addEvent("Sidebar_Logo_Fetched", { sidebarLogo });
       setAgencyDetails(details);
       setSideBarLogo(sidebarLogo);
 
@@ -68,7 +73,9 @@ const Sidebar = ({ id, type }: Props) => {
           : user?.Agency?.SubAccounts?.find(
               (subaccount) => subaccount.id === id
             )?.SidebarOptions ?? [];
-
+      span.addEvent("Sidebar_Options_Fetched", {
+        sidebarOptionsNumber: tempSidebarOptions.length,
+      });
       const subaccounts =
         user?.Agency?.SubAccounts?.filter((subaccount) =>
           user?.Permissions?.find(
@@ -76,12 +83,16 @@ const Sidebar = ({ id, type }: Props) => {
               permission.subAccountId === subaccount.id && permission.access
           )
         ) ?? [];
+      span.addEvent("Subaccounts_Fetched", {
+        subaccountsNumber: subaccounts.length,
+      });
 
       setSidebarOptions(tempSidebarOptions);
       setSubAccounts(subaccounts);
     }
     init();
-  }, [id, type, user]);
+    span.end();
+  }, [id, isWhiteLabeledAgency, type, user]);
 
   return (
     <>
