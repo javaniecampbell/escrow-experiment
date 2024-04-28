@@ -14,21 +14,49 @@ module.exports = ({ tracer }) => {
     { 'Expires': '0' }
   ];
   /* GET home page. */
-  router.get('/_health', function (req, res, next) {
+  router.get('/', function (req, res, next) {
     // calculates the heap memory used vs maximum
     headers.forEach((header) => {
       res.set(header);
     });
     const memoryUsed = process.memoryUsage().heapUsed;
     const maxMemory = process.memoryUsage().heapTotal;
-
+    const healthCheck = {
+      uptime: process.uptime(),
+      responseTime: process.hrtime(),
+      message: 'OK',
+      timestamp: Date.now(),
+    };
 
     res.json(200, {
-      status: 'ok'
+      ...healthCheck,
+      status: 'ok',
+      checks: [
+
+        {
+          name: 'memory',
+          status: memoryUsed / maxMemory > 0.8 ? 'fail' : 'pass',
+          used: memoryUsed,
+          max: maxMemory,
+          percentage: ((memoryUsed / maxMemory) * 100).toFixed(2),
+        },
+        {
+          name: 'cpu',
+          status: os.loadavg()[0] / os.cpus().length > 0.8 ? 'fail' : 'pass',
+          value: os.loadavg()[0] / os.cpus().length,
+          loadavg: os.loadavg(),
+          cpus: os.cpus(),
+        },
+        {
+          name: 'uptime',
+          status: process.uptime() > 0 ? 'pass' : 'fail',
+          value: process.uptime(),
+        },
+      ],
     });
   });
   /* GET home page. */
-  router.get('/_health/live', function (req, res, next) {
+  router.get('/liveliness', function (req, res, next) {
     headers.forEach((header) => {
       res.set(header);
     });
@@ -37,7 +65,7 @@ module.exports = ({ tracer }) => {
     });
   });
   /* GET home page. */
-  router.get('/_health/ready', function (req, res, next) {
+  router.get('/ready', function (req, res, next) {
     headers.forEach((header) => {
       res.set(header);
     });

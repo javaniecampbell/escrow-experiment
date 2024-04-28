@@ -12,7 +12,14 @@ const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
 // Configure the tracer
-const provider = new NodeTracerProvider();
+const provider = new NodeTracerProvider({
+    resource: {
+        attributes: {
+            service: 'payment_service',
+            'service.name': 'payment_service',
+        }
+    }
+});
 const exporter = new ConsoleSpanExporter();
 const spanProcessor = new SimpleSpanProcessor(exporter);
 provider.addSpanProcessor(spanProcessor);
@@ -34,4 +41,4 @@ registerInstrumentations({
  * @type {Tracer}
  */
 // Export the tracer
-module.exports = { tracer: provider.getTracer('payment-service') };
+module.exports = { tracer: provider.getTracer('payment_service') };

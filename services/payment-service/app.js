@@ -22,9 +22,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.disable('x-powered-by');
+// app.use(express.static(path.join(__dirname, 'public')));
+// app.use((req, res, next)=> {
 
-app.use('/', indexRouter);
+//     // req.d
+//     next();
+// })
+app.use('/api/health', indexRouter({ tracer }));
 app.use('/api/payments', paymentRouter({ tracer }));
 app.use('/api/webhook', webhookRouter({ tracer }));
 app.use('/api/projects', projectRouter({ tracer }));
