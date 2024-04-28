@@ -37,6 +37,10 @@ function checkCacheStatus() {
     });
 }
 
+/**
+ * This function is used to check if the application is running
+ * @returns {Promise<boolean>} boolean of the application status
+ */
 function checkIfAppIsRunning() {
     var isAppRunning = false;
     return new Promise((resolve, reject) => {
@@ -51,7 +55,11 @@ function checkIfAppIsRunning() {
     })
 }
 
-function checkIfAppIsStarted(){
+/**
+ * This function is used to check if the application is started
+ * @returns {Promise<boolean>} boolean of the application status
+ */
+function checkIfAppIsStarted() {
     var isAppStarted = false;
     return new Promise((resolve, reject) => {
         try {
@@ -68,5 +76,6 @@ function checkIfAppIsStarted(){
 module.exports = {
     checkDatabaseConnection,
     checkCacheStatus,
-    checkIfAppIsRunning
+    checkIfAppIsRunning,
+    checkIfAppIsStarted
 };
