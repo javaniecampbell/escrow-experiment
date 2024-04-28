@@ -1,9 +1,11 @@
 const { Tracer } = require('@opentelemetry/api');
 const express = require('express');
+const { v4 } = require('uuid');
 const router = express.Router();
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const prisma = require('../utils/prisma');
+const logger = require('../utils/logger');
 /**
  * Endpoints for Project management
  * @param {Tracer} tracer OpenTelemetry Tracer
@@ -13,15 +15,23 @@ module.exports = ({ tracer }) => {
 
   router.get('/', async (req, res) => {
     // const { projectName, description, milestones } = req.body;
+    const requestId = req.header('x-request-id') || v4();
+    logger.info('Retrieving projects', { requestId, path: req.path });
+    const span = tracer.startSpan('retrieve_projects', { attributes: { requestId } });
     try {
       // const { projectName, description } = req.body;
 
+      span.addEvent('retrieving_projects', { requestId });
       // Create a new project in the database
       const projects = await prisma.project.findMany({
         include: {
           milestones: true
         }
       });
+
+      span.addEvent('projects_retrieved', { requestId, projects: projects.length });
+
+
 
       const projectsDelta = projects.map(project => {
         return {
@@ -51,10 +61,14 @@ module.exports = ({ tracer }) => {
           })
         };
       }) ?? [];
-
+      logger.info('Projects retrieved', { requestId, projects: projectsDelta });
+      span.addEvent('projects_transformed', { requestId, projects: projectsDelta });
+      span.end();
       res.status(200).json({ projects: projectsDelta });
     } catch (error) {
-      console.error('Error creating project:', error);
+      logger.error('Error creating project:', error);
+      span.addEvent('error_creating_project', { requestId, error: error.message });
+      span.end();
       res.status(500).json({ error: 'Unable to create project' });
     }
   });
@@ -75,7 +89,7 @@ module.exports = ({ tracer }) => {
 
       res.status(201).send({ message: 'Project created' });
     } catch (error) {
-      console.error('Error creating project:', error);
+      logger.error('Error creating project:', error);
       res.status(500).json({ error: 'Unable to create project' });
     }
 

@@ -11,7 +11,7 @@ const { v4 } = require('uuid');
 module.exports = ({ tracer }) => {
     router.post('/', express.raw({ type: 'application/json' }), (request, response) => {
         const requestId = request.header('x-request-id') || v4();
-        logger.info('Received Webhook Event request', { requestId, path: req.path });
+        logger.info('Received Webhook Event request', { requestId, path: request.path });
 
         const span = tracer.startSpan('stripe_webhook_event', { attributes: { requestId } });
         let event = request.body;
