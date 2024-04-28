@@ -30,5 +30,6 @@ app.use('/api/webhook', webhookRouter({ tracer }));
 app.use('/api/projects', projectRouter({ tracer }));
 app.use('/api/milestones', milestoneRouter({ tracer }));
 app.use('/api/milestones', milestoneRouter({ tracer }));
+app.use('/api/assets', digitalAssetRouter({ tracer }));
 
 module.exports = app;
