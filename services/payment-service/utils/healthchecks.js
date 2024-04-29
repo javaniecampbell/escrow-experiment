@@ -1,6 +1,6 @@
 const prisma = require('../utils/prisma');
 const logger = require('./logger');
-const HealthCheck = require('@ddaw/healthcheck-sdk');
+const { HealthCheck } = require('@ddaw/healthcheck-sdk');
 
 /**
  * This function is used to check the database connection
