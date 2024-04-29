@@ -56,6 +56,39 @@ function checkIfAppIsRunning() {
 }
 
 /**
+ * This function is used to initialize the database
+ * @returns {Promise<boolean>} boolean of the database connection
+ */
+async function initDatabase() {
+    try {
+        // Implement database initialization logic here
+        // Return true if the database is initialized successfully, false otherwise
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
+/**
+ * This function is used to initialize the cache
+ * @returns {Promise<boolean>} boolean of the cache status
+ */
+async function initCache() {
+    // Implement cache initialization logic here
+    // Return true if the cache is initialized successfully, false otherwise
+    return true; // Example: Assuming cache initialization always succeeds
+}
+
+async function initThirdPartyServices() {
+    try {
+        const response = await fetch('https://api.example.com/health');
+        return response.status === 200;
+    } catch (err) {
+        return false;
+    }
+}
+
+/**
  * This function is used to check if the application is started
  * @returns {Promise<boolean>} boolean of the application status
  */
@@ -64,7 +97,12 @@ function checkIfAppIsStarted() {
     return new Promise((resolve, reject) => {
         try {
             logger.info('Application is started');
-            isAppStarted = true;
+            const databaseAvailable = initDatabase();
+            const cacheAvailable = initCache();
+            const thirdPartyServicesAvailable = initThirdPartyServices();
+            if (databaseAvailable && cacheAvailable && thirdPartyServicesAvailable) {
+                isAppStarted = true;
+            }
             resolve(isAppStarted);
         } catch (error) {
             logger.error('Application is not started', error);
@@ -73,9 +111,20 @@ function checkIfAppIsStarted() {
     })
 }
 
+function checkSystemResources() {
+    const memoryUsage = process.memoryUsage().heapTotal / 1024 / 1024; // MB
+    const cpuUsage = os.loadavg()[0]; // CPU load average for 1 minute
+
+    const minMemoryRequired = 512; // MB
+    const maxCpuLoad = 4; // Adjust based on your system's capabilities
+
+    return memoryUsage < minMemoryRequired && cpuUsage <= maxCpuLoad;
+}
+
 module.exports = {
     checkDatabaseConnection,
     checkCacheStatus,
     checkIfAppIsRunning,
-    checkIfAppIsStarted
+    checkIfAppIsStarted,
+    checkSystemResources
 };
