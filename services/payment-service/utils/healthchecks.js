@@ -186,5 +186,8 @@ module.exports = {
     checkCacheStatus,
     checkIfAppIsRunning,
     checkIfAppIsStarted,
-    checkSystemResources
+    checkSystemResources,
+    initDatabase,
+    initCache,
+    initThirdPartyServices
 };
