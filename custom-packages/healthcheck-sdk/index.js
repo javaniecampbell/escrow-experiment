@@ -5,3 +5,8 @@ module.exports = {
     HealthCheck,
     HealthCheckStrategy
 };
+
+module.exports.__default = {
+    HealthCheck,
+    HealthCheckStrategy
+};
