@@ -10,10 +10,23 @@ class DatabaseHealthCheckStrategy extends HealthCheckStrategy {
         try {
             // Check the database connection status
             this.isHealthy = await checkDatabaseConnection();
-            this.details = { message: 'Database connection successful' };
+            this.details = {
+                status: 'pass',
+                componentId: 'database', // Replace with your component ID
+                componentType: 'datastore',
+                observedValue: this.getStatus(), // You can include any relevant observed value
+                observedUnit: 'boolean', // Include the observed unit if applicable
+            };
         } catch (err) {
             this.isHealthy = false;
-            this.details = { error: err.message };
+            this.details = {
+                status: 'fail',
+                componentId: 'database', // Replace with your component ID
+                componentType: 'datastore',
+                observedValue: this.getStatus(), // You can include any relevant observed value
+                observedUnit: 'boolean', // Include the observed unit if applicable
+                output: err.message,
+            };
         }
         return this;
     }

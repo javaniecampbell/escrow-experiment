@@ -10,10 +10,23 @@ class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
         // check third-party service health
         try {
             this.isHealthy = await initThirdPartyServices();
-            this.details = { message: 'Third-party services are healthy' };
+            this.details = {
+                status: 'pass',
+                componentId: 'third-party', // Replace with your component ID
+                componentType: 'service',
+                observedValue: this.getStatus(), // You can include any relevant observed value
+                observedUnit: 'boolean', // Include the observed unit if applicable
+            };
         } catch (err) {
             this.isHealthy = false;
-            this.details = { error: err.message };
+            this.details = {
+                status: 'fail',
+                componentId: 'third-party', // Replace with your component ID
+                componentType: 'service',
+                observedValue: this.getStatus(), // You can include any relevant observed value
+                observedUnit: 'boolean', // Include the observed unit if applicable
+                output: err.message,
+            };
         }
         return this;
     }

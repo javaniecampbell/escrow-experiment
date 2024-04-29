@@ -9,10 +9,23 @@ class CacheHealthCheckStrategy extends HealthCheckStrategy {
         // check cache health
         try {
             this.isHealthy = await checkCacheStatus();
-            this.details = { message: 'Cache connection successful' };
+            this.details = {
+                status: 'pass',
+                componentId: 'cache', // Replace with your component ID
+                componentType: 'datastore',
+                observedValue: this.getStatus(), // You can include any relevant observed value
+                observedUnit: 'boolean', // Include the observed unit if applicable
+            };
         } catch (err) {
             this.isHealthy = false;
-            this.details = { error: err.message };
+            this.details = {
+                status: 'fail',
+                componentId: 'cache', // Replace with your component ID
+                componentType: 'datastore',
+                observedValue: this.getStatus(), // You can include any relevant observed value
+                observedUnit: 'boolean', // Include the observed unit if applicable
+                output: err.message,
+            };
         }
         return this;
     }
