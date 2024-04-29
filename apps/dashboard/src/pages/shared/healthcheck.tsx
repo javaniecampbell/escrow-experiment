@@ -1,3 +1,4 @@
+import HealthCheckDashboard from "@/components/dashboard/HealthCheckDashboard";
 import React, { useEffect, useState } from "react";
 
 type Props = {};
@@ -23,10 +24,7 @@ const HealthCheckPage = (props: Props) => {
   return (
     <div>
       {isBackendHealthy ? (
-        <div>
-          {/* Render data */}
-          {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
-        </div>
+        <HealthCheckDashboard />
       ) : (
         <div>
           <p>The backend is not healthy. Please try again later.</p>
