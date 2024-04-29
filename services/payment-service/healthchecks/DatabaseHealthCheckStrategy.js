@@ -2,6 +2,11 @@ const { HealthCheckStrategy } = require('@ddaw/healthcheck-sdk');
 const { checkDatabaseConnection } = require('../utils/healthchecks');
 
 class DatabaseHealthCheckStrategy extends HealthCheckStrategy {
+    constructor() {
+        super();
+        this.componentName = 'database';
+        this.measurementName = 'availability';
+    }
     /**
      * Run the health check and return the instance for chaining
      * @returns {Promise<HealthCheckStrategy>} The health check instance

@@ -5,6 +5,11 @@ class CacheHealthCheckStrategy extends HealthCheckStrategy {
      * Run the health check and return the instance for chaining
      * @returns {Promise<HealthCheckStrategy>} The health check instance
      */
+    constructor() {
+        super();
+        this.componentName = 'cache';
+        this.measurementName = 'availability';
+    }
     async check() {
         // check cache health
         try {

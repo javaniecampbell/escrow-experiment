@@ -2,6 +2,11 @@ const { HealthCheckStrategy } = require('@ddaw/healthcheck-sdk');
 const { initThirdPartyServices } = require('../utils/healthchecks');
 
 class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
+    constructor() {
+        super();
+        this.componentName = 'api';
+        this.measurementName = 'health';
+      }
     /**
      * Run the health check and return the instance for chaining
      * @returns {Promise<HealthCheckStrategy>} The health check instance
@@ -12,7 +17,7 @@ class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
             this.isHealthy = await initThirdPartyServices();
             this.details = {
                 status: 'pass',
-                componentId: 'third-party', // Replace with your component ID
+                componentId: 'api', // Replace with your component ID
                 componentType: 'service',
                 observedValue: this.getStatus(), // You can include any relevant observed value
                 observedUnit: 'boolean', // Include the observed unit if applicable
@@ -21,7 +26,7 @@ class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
             this.isHealthy = false;
             this.details = {
                 status: 'fail',
-                componentId: 'third-party', // Replace with your component ID
+                componentId: 'api', // Replace with your component ID
                 componentType: 'service',
                 observedValue: this.getStatus(), // You can include any relevant observed value
                 observedUnit: 'boolean', // Include the observed unit if applicable
