@@ -31,7 +31,7 @@ const Sidebar = ({ id, type }: Props) => {
   const [subAccounts, setSubAccounts] = useState<SubAccount[]>([]);
 
   useEffect(() => {
-    const span = tracer.startSpan("Sidebar_Init");
+    const span = tracer.startSpan("Sidebar_Init"); //TODO: add LogLevel
     async function init() {
       const authUser = await getAuthUserDetails();
       if (authUser) {
