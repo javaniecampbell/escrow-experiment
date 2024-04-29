@@ -318,6 +318,53 @@ module.exports = ({ tracer }) => {
     }
 
   });
+  router.get('/v3/spec', async function (req, res, next) {
+    // calculates the heap memory used vs maximum
+    headers.forEach((header) => {
+      res.set(header);
+    });
+    // Create a HealthCheckContext instance
+    const healthCheckContext = new HealthCheckContext();
+
+    // Add health check strategies
+    healthCheckContext.addStrategy(new DatabaseHealthCheckStrategy());
+    healthCheckContext.addStrategy(new CacheHealthCheckStrategy());
+    healthCheckContext.addStrategy(new ThirdPartyHealthCheckStrategy());
+
+
+    try {
+
+      const { overallHealthy, healthData } = await healthCheckContext.performHealthCheckAllSettled();
+
+
+      const healthCheck = {
+        uptime: process.uptime(),
+        responseTime: process.hrtime(),
+        message: overallHealthy ? 'OK' : 'Degraded',
+        timestamp: Date.now(),
+      };
+      const responseData = {
+        status: overallHealthy ? 'pass' : 'fail',
+        version: '1.0.0', // Replace with your API version
+        releaseId: '1.0.0', // Replace with your release ID
+        serviceId: 'payment-service', // Replace with your service ID
+        description: 'Health check for Payment Service API', // Replace with your service description
+        ...healthCheck,
+        checks: [
+          healthData,
+        ],
+      };
+      if (overallHealthy) {
+        res.status(200).json(responseData);
+      } else {
+        res.status(503).json(responseData);
+      }
+    } catch (err) {
+      logger.error('Health check failed', err);
+      res.status(503).json({ message: 'Health check failed' });
+    }
+
+  });
 
 
   return router;
