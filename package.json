@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/*",
+    "custom-packages/*",
     "apps/*",
     "services/*",
     "playwright"

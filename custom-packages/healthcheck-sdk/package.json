@@ -1,0 +1,9 @@
+{
+  "name": "@ddaw/healthcheck-sdk",
+  "version": "0.1.0",
+  "description": "A reusable package that helps with creating and health checks for a web application or frontend",
+  "main": "index.js",
+  "author": "Javanie Campbell",
+  "license": "MIT",
+  "private": true
+}
