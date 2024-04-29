@@ -62,6 +62,27 @@ class HealthCheckContext {
 
         return { overallHealthy, healthData };
     }
+
+    async performHealthCheckAllSettled() {
+        const results = await Promise.allSettled(this.strategies.map((strategy) => strategy.check()));
+
+        const healthyStrategies = results.filter((result) => result.status === 'fulfilled');
+        const failedStrategies = results.filter((result) => result.status === 'rejected');
+
+        const overallHealthy = failedStrategies.length === 0;
+        const healthData = {
+            healthy: healthyStrategies.map((result) => ({
+                strategy: result.value.constructor.name,
+                details: result.value.details,
+            })),
+            unhealthy: failedStrategies.map((result) => ({
+                strategy: result.reason.constructor.name,
+                error: result.reason.message,
+            })),
+        };
+
+        return { overallHealthy, healthData };
+    }
 }
 
 module.exports.HealthCheckContext = HealthCheckContext;
