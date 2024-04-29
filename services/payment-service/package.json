@@ -10,6 +10,7 @@
   "dependencies": {
     "@azure/identity": "^4.0.0",
     "@azure/storage-blob": "^12.17.0",
+    "@ddaw/healthcheck-sdk": "*",
     "@opentelemetry/api": "^1.8.0",
     "@opentelemetry/auto-instrumentations-node": "^0.45.0",
     "@opentelemetry/exporter-jaeger": "^1.24.0",
