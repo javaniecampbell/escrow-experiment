@@ -3,7 +3,7 @@ const { checkCacheStatus } = require('../utils/healthchecks');
 class CacheHealthCheckStrategy extends HealthCheckStrategy {
     /**
      * Run the health check and return the instance for chaining
-     * @returns {Promise<HealthCheck>} The health check instance
+     * @returns {Promise<HealthCheckStrategy>} The health check instance
      */
     async check() {
         // check cache health
