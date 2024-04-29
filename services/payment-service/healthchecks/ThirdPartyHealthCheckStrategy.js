@@ -6,7 +6,7 @@ class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
         super();
         this.componentName = 'api';
         this.measurementName = 'health';
-      }
+    }
     /**
      * Run the health check and return the instance for chaining
      * @returns {Promise<HealthCheckStrategy>} The health check instance
@@ -16,7 +16,7 @@ class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
         try {
             this.isHealthy = await initThirdPartyServices();
             this.details = {
-                status: 'pass',
+                status: this.getStatus() === true ? 'pass' : 'fail',
                 componentId: 'api', // Replace with your component ID
                 componentType: 'service',
                 observedValue: this.getStatus(), // You can include any relevant observed value
