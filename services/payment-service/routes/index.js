@@ -2,8 +2,9 @@ const { Tracer } = require('@opentelemetry/api');
 const express = require('express');
 const router = express.Router();
 const os = require('os');
+const logger = require('../utils/logger');
 
-const { checkDatabaseConnection, checkCacheStatus } = require('../utils/healthchecks');
+const { checkDatabaseConnection, checkCacheStatus, DatabaseHealthCheck, CacheHealthCheck } = require('../utils/healthchecks');
 /**
  * Endpoints for Health checks
  * @param {Tracer} tracer OpenTelemetry Tracer
@@ -105,6 +106,57 @@ module.exports = ({ tracer }) => {
     res.json(200, {
       status: 'ok'
     });
+  });
+
+  /* GET home page. */
+  router.get('/v2', async function (req, res, next) {
+    // calculates the heap memory used vs maximum
+    headers.forEach((header) => {
+      res.set(header);
+    });
+
+    try {
+      const healthChecks = [
+        new DatabaseHealthCheck(),
+        new CacheHealthCheck(),
+        // new ThirdPartyHealthCheck(),
+        // Add any other health checks
+      ];
+
+      const results = await Promise.all(healthChecks.map((check) => check.check()));
+
+      const overallHealthy = results.every((result) => result.getStatus());
+      const healthData = results.reduce(
+        (acc, result) => ({
+          ...acc,
+          ...result.getDetails(),
+        }),
+        {}
+      );
+
+      const healthCheck = {
+        uptime: process.uptime(),
+        responseTime: process.hrtime(),
+        message: overallHealthy ? 'OK' : 'Degraded',
+        timestamp: Date.now(),
+      };
+      const responseData = {
+        ...healthCheck,
+        status: overallHealthy ? 'pass' : 'fail',
+        checks: [
+          healthData,
+        ],
+      };
+      if (overallHealthy) {
+        res.status(200).json(responseData);
+      } else {
+        res.status(503).json(responseData);
+      }
+    } catch (err) {
+      logger.error('Health check failed', err);
+      res.status(503).json({ message: 'Health check failed' });
+    }
+
   });
 
   return router;
