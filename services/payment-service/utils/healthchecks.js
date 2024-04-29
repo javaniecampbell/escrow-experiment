@@ -1,5 +1,7 @@
 const prisma = require('../utils/prisma');
 const logger = require('./logger');
+const HealthCheck = require('@ddaw/healthcheck-sdk');
+
 /**
  * This function is used to check the database connection
  * @returns {Promise<boolean>} boolean of the database connection
@@ -121,7 +123,65 @@ function checkSystemResources() {
     return memoryUsage < minMemoryRequired && cpuUsage <= maxCpuLoad;
 }
 
+class DatabaseHealthCheck extends HealthCheck {
+
+
+    /**
+     * Run the health check and return the instance for chaining
+     * @returns {Promise<HealthCheck>} The health check instance
+     */
+    async check() {
+        try {
+            // Check the database connection status
+            this.isHealthy = await checkDatabaseConnection();
+            this.details = { message: 'Database connection successful' };
+        } catch (err) {
+            this.isHealthy = false;
+            this.details = { error: err.message };
+        }
+        return this;
+
+    }
+}
+
+class CacheHealthCheck extends HealthCheck {
+
+
+    /**
+     * Run the health check and return the instance for chaining
+     * @returns {Promise<HealthCheck>} The health check instance
+     */
+    async check() {
+        // check cache health
+        try {
+            this.isHealthy = await checkCacheStatus();
+            this.details = { message: 'Database connection successful' };
+        } catch (err) {
+            this.isHealthy = false;
+            this.details = { error: err.message };
+        }
+        return this;
+
+    }
+}
+
+class ThirdPartyHealthCheck extends HealthCheck {
+    async check() {
+        // check third-party service health
+        try {
+            this.isHealthy = await initThirdPartyServices();
+            this.details = { message: 'Third-party services are healthy' };
+        } catch (err) {
+            this.isHealthy = false;
+            this.details = { error: err.message };
+        }
+    }
+}
+
 module.exports = {
+    DatabaseHealthCheck,
+    CacheHealthCheck,
+    ThirdPartyHealthCheck,
     checkDatabaseConnection,
     checkCacheStatus,
     checkIfAppIsRunning,
