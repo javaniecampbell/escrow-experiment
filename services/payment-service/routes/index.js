@@ -361,7 +361,7 @@ module.exports = ({ tracer }) => {
       }
     } catch (err) {
       logger.error('Health check failed', err);
-      res.status(503).json({ message: 'Health check failed' });
+      res.status(503).json({ status: 'fail', message: 'Health check failed' });
     }
 
   });
