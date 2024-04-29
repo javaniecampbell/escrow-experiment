@@ -7,6 +7,7 @@ const { HealthCheckStrategy } = require("./HealthCheckStrategy");
  * allowing you to add, remove, and perform health checks using those strategies.
  *
  * @class HealthCheckContext
+ * @property {HealthCheckStrategy[]} strategies - The collection of health check strategies.
  * @method addStrategy - Adds a health check strategy to the context.
  * @method removeStrategy - Removes a health check strategy from the context.
  * @method performHealthCheck - Performs a health check using all the registered strategies.
@@ -15,6 +16,7 @@ const { HealthCheckStrategy } = require("./HealthCheckStrategy");
 class HealthCheckContext {
     /**
      * Constructs a new `HealthCheckContext` instance.
+     *
      */
     constructor() {
         this.strategies = [];
@@ -54,7 +56,7 @@ class HealthCheckContext {
         const healthData = [];
 
         results.forEach(result => {
-            healthData.push(result.details);
+            healthData.push(result.getDetails());
         });
 
 
