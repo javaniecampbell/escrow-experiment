@@ -6,8 +6,22 @@
  * 
  */
 class HealthCheckStrategy {
+    constructor() {
+        if (this.constructor === HealthCheckStrategy) {
+            throw new Error('Cannot instantiate abstract class');
+        }
+        this.isHealthy = true;
+        this.details = {};
+    }
     async check() {
         throw new Error('check method must be implemented');
+    }
+    getStatus() {
+        return this.isHealthy;
+    }
+
+    getDetails() {
+        return this.details;
     }
 }
 
