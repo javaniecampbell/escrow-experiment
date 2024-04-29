@@ -468,3 +468,42 @@ model AddOns {
 
   @@index([agencyId])
 }
+
+// Might need to put this into a separate service
+
+model Service {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  description     String?
+  components      Component[]
+  healthCheckData HealthCheckData[]
+
+  @@map("Services")
+}
+
+model Component {
+  id              Int               @id @default(autoincrement())
+  serviceId       Int
+  name            String
+  description     String?
+  service         Service           @relation(fields: [serviceId], references: [id])
+  healthCheckData HealthCheckData[]
+
+  @@map("Components")
+}
+
+model HealthCheckData {
+  id              Int       @id @default(autoincrement())
+  serviceId       Int
+  componentId     Int
+  measurementName String?
+  status          String
+  observedValue   Float?
+  observedUnit    String?
+  output          String?
+  createdAt       DateTime  @default(now())
+  service         Service   @relation(fields: [serviceId], references: [id])
+  component       Component @relation(fields: [componentId], references: [id])
+
+  @@map("HealthCheckData")
+}
