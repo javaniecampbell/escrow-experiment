@@ -2,9 +2,17 @@ const { Tracer } = require('@opentelemetry/api');
 const express = require('express');
 const router = express.Router();
 const os = require('os');
+const { HealthCheckContext } = require('@ddaw/healthcheck-sdk');
 const logger = require('../utils/logger');
 
 const { checkDatabaseConnection, checkCacheStatus, DatabaseHealthCheck, CacheHealthCheck } = require('../utils/healthchecks');
+
+const {
+  CacheHealthCheckStrategy,
+  DatabaseHealthCheckStrategy,
+  ThirdPartyHealthCheckStrategy
+} = require('../healthchecks');
+
 /**
  * Endpoints for Health checks
  * @param {Tracer} tracer OpenTelemetry Tracer
@@ -218,6 +226,53 @@ module.exports = ({ tracer }) => {
     }
 
   });
+
+  /* GET General health check route v3 */
+
+  router.get('/v3', async function (req, res, next) {
+    // calculates the heap memory used vs maximum
+    headers.forEach((header) => {
+      res.set(header);
+    });
+    // Create a HealthCheckContext instance
+    const healthCheckContext = new HealthCheckContext();
+
+    // Add health check strategies
+    healthCheckContext.addStrategy(new DatabaseHealthCheckStrategy());
+    healthCheckContext.addStrategy(new CacheHealthCheckStrategy());
+    // healthCheckContext.addStrategy(new ThirdPartyHealthCheckStrategy());
+
+
+    try {
+
+      const { overallHealthy, healthData } = await healthCheckContext.performHealthCheck();
+
+
+      const healthCheck = {
+        uptime: process.uptime(),
+        responseTime: process.hrtime(),
+        message: overallHealthy ? 'OK' : 'Degraded',
+        timestamp: Date.now(),
+      };
+      const responseData = {
+        ...healthCheck,
+        status: overallHealthy ? 'pass' : 'fail',
+        checks: [
+          healthData,
+        ],
+      };
+      if (overallHealthy) {
+        res.status(200).json(responseData);
+      } else {
+        res.status(503).json(responseData);
+      }
+    } catch (err) {
+      logger.error('Health check failed', err);
+      res.status(503).json({ message: 'Health check failed' });
+    }
+
+  });
+
 
   return router;
 
