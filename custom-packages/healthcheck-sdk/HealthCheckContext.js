@@ -48,13 +48,15 @@ class HealthCheckContext {
             this.strategies.map((strategy) => strategy.check())
         );
         const overallHealthy = results.every((result) => result.isHealthy);
-        const healthData = results.reduce(
-            (acc, result) => ({
-                ...acc,
-                ...result.details,
-            }),
-            {}
-        );
+        // Original: was reducing the results down to a single object rather than accumulating an array
+
+        // Fixed:  by building up an array instead
+        const healthData = [];
+
+        results.forEach(result => {
+            healthData.push(result.details);
+        });
+
 
         return { overallHealthy, healthData };
     }
