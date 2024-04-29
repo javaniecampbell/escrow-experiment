@@ -159,6 +159,66 @@ module.exports = ({ tracer }) => {
 
   });
 
+  router.get('/v2/fix', async function (req, res, next) {
+    // calculates the heap memory used vs maximum
+    headers.forEach((header) => {
+      res.set(header);
+    });
+
+    try {
+      const healthChecks = [
+        new DatabaseHealthCheck(),
+        new CacheHealthCheck(),
+        // new ThirdPartyHealthCheck(),
+        // Add any other health checks
+      ];
+
+      const results = await Promise.all(healthChecks.map((check) => check.check()));
+
+      const overallHealthy = results.every((result) => result.getStatus());
+      // The main problem is on this line:
+      // This is overwriting the healthData object on each iteration, so it will only contain the last result.
+      // const healthData = results.reduce(
+      //   (acc, result) => ({
+      //     ...acc,
+      //     ...result.getDetails(),
+      //   }),
+      //   {}
+      // );
+
+      // To fix it, you need to change it to properly accumulate the results in an array:
+      const healthData = [];
+
+      results.forEach(result => {
+        healthData.push(result.getDetails());
+      });
+
+
+      const healthCheck = {
+        uptime: process.uptime(),
+        responseTime: process.hrtime(),
+        message: overallHealthy ? 'OK' : 'Degraded',
+        timestamp: Date.now(),
+      };
+      const responseData = {
+        ...healthCheck,
+        status: overallHealthy ? 'pass' : 'fail',
+        checks: [
+          healthData,
+        ],
+      };
+      if (overallHealthy) {
+        res.status(200).json(responseData);
+      } else {
+        res.status(503).json(responseData);
+      }
+    } catch (err) {
+      logger.error('Health check failed', err);
+      res.status(503).json({ message: 'Health check failed' });
+    }
+
+  });
+
   return router;
 
 };

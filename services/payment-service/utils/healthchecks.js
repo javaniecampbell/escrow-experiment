@@ -155,7 +155,7 @@ class CacheHealthCheck extends HealthCheck {
         // check cache health
         try {
             this.isHealthy = await checkCacheStatus();
-            this.details = { message: 'Database connection successful' };
+            this.details = { message: 'Cache connection successful' };
         } catch (err) {
             this.isHealthy = false;
             this.details = { error: err.message };
