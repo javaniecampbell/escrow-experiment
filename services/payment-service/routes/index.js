@@ -334,7 +334,7 @@ module.exports = ({ tracer }) => {
 
     try {
 
-      const { overallHealthy, healthData } = await healthCheckContext.performHealthCheckAllSettled();
+      const { overallHealthy, healthData } = await healthCheckContext.performHealthCheckSpec();
 
 
       const healthCheck = {

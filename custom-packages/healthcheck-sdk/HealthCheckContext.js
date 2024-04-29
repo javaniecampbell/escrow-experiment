@@ -70,6 +70,7 @@ class HealthCheckContext {
         const failedStrategies = results.filter((result) => result.status === 'rejected');
 
         const overallHealthy = failedStrategies.length === 0;
+
         const healthData = {
             healthy: healthyStrategies.map((result) => ({
                 strategy: result.value.constructor.name,
@@ -82,6 +83,44 @@ class HealthCheckContext {
         };
 
         return { overallHealthy, healthData };
+    }
+
+    async performHealthCheckSpec() {
+        const results = await Promise.allSettled(this.strategies.map((strategy) => strategy.check()));
+
+        const healthyStrategies = results.filter((result) => result.status === 'fulfilled');
+        const failedStrategies = results.filter((result) => result.status === 'rejected');
+
+        const overallHealthy = failedStrategies.length === 0;
+
+        const checks = {};
+
+        healthyStrategies.forEach((result) => {
+            const { componentName, measurementName, ...details } = result.value;
+            const key = componentName && measurementName ? `${componentName}:${measurementName}` : componentName || measurementName;
+
+            if (!checks[key]) {
+                checks[key] = [];
+            }
+
+            checks[key].push(details);
+        });
+
+        failedStrategies.forEach((result) => {
+            const { componentName, measurementName } = result.reason;
+            const key = componentName && measurementName ? `${componentName}:${measurementName}` : componentName || measurementName;
+
+            if (!checks[key]) {
+                checks[key] = [];
+            }
+
+            checks[key].push({
+                status: 'fail',
+                output: result.reason.message,
+            });
+        });
+
+        return { overallHealthy, healthData: checks };
     }
 }
 
