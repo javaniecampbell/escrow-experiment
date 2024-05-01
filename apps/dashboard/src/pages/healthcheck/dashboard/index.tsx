@@ -6,7 +6,7 @@ import { map, catchError, switchMap } from "rxjs/operators";
 import { fromFetch } from "rxjs/fetch";
 
 type Props = {
-  healthCheckData?: HealthCheckData;
+  healthCheckData?: HealthCheckData | null;
 };
 
 const HealthCheckPage = ({ healthCheckData }: Props) => {

@@ -3,7 +3,7 @@ import moment from "moment";
 import { HealthCheckData } from "@/shared/app.types";
 
 type HealthCheckDashboardProps = {
-  healthCheckData?: HealthCheckData;
+  healthCheckData?: HealthCheckData | null;
   loading?: boolean;
   error?: string | null;
 };
