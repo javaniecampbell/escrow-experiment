@@ -45,7 +45,11 @@ const healthCheckStream = new Observable((observer) => {
                 return responseData;
 
             }),
-            map((healthCheckData) => observer.next(healthCheckData)),
+            map((healthCheckData) => {
+
+                const eventType = healthCheckData.status === 'pass' ? 'HEALTHY' : healthCheckData.status === 'fail' ? 'UNHEALTHY' : healthCheckData.status === 'warn' ? 'DEGRADED' : healthCheckData.checks.some(check => check.status === 'fail') ? 'UNHEALTHY' : 'DEGRADED';
+                observer.next({ eventType, data: healthCheckData });
+            }),
             catchError(async (error) => {
                 const { healthData } = await healthCheckContext.performHealthCheckSpec();
                 logger.error('An error occurred while performing health checks', error);
@@ -66,7 +70,7 @@ const healthCheckStream = new Observable((observer) => {
                         healthData,
                     ],
                 };
-                return of(responseData);
+                return of({ eventType: 'DEGRADED', data: responseData });
             })
         )
         .subscribe();

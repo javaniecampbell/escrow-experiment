@@ -378,16 +378,9 @@ module.exports = ({ tracer }) => {
     });
 
     const healthCheckSubscription = healthCheckStream.subscribe({
-      next: (healthCheckData) => {
-        if (healthCheckData.status === 'fail') {
-          res.write(`event: error\ndata: ${JSON.stringify(healthCheckData)}\n\n`);
-          return;
-        }
-        if (healthCheckData.status === 'warn') {
-          res.write(`event: warn\ndata: ${JSON.stringify(healthCheckData)}\n\n`);
-          return;
-        }
-        res.write(`event: success\ndata: ${JSON.stringify(healthCheckData)}\n\n`);
+      next: ({ eventType, data }) => {
+
+        res.write(`event: ${eventType}\ndata: ${JSON.stringify(data)}\n\n`);
       },
       error: (error) => {
         res.status(500);
