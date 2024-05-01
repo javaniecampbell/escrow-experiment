@@ -20,16 +20,13 @@ const HealthCheckPage = ({ healthCheckData }: Props) => {
 export const getServerSideProps = async () => {
   try {
     const healthCheckData = await new Promise((resolve, reject) => {
-      const subscription = interval(5000)
+      const subscription = fromFetch<HealthCheckData>(
+        "http:localhost:3000/api/health/v3/spec",
+        {
+          selector: (response) => response.json(),
+        }
+      )
         .pipe(
-          switchMap(() =>
-            fromFetch<HealthCheckData>(
-              "http:localhost:3000/api/health/v3/spec",
-              {
-                selector: (response) => response.json(),
-              }
-            )
-          ),
           map((response) => response),
           catchError((error) => {
             reject(error);
