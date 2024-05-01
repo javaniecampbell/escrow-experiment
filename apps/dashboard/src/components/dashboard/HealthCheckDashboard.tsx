@@ -6,12 +6,14 @@ type HealthCheckDashboardProps = {
   healthCheckData?: HealthCheckData | null;
   loading?: boolean;
   error?: string | null;
+  overallStatus?: string | null;
 };
 
 const HealthCheckDashboard = ({
   healthCheckData,
   loading,
   error,
+  overallStatus,
 }: HealthCheckDashboardProps) => {
   const renderHealthCheckCard = (checkDetails: any) => {
     const { componentName, measurementName, details } = checkDetails;
@@ -46,7 +48,7 @@ const HealthCheckDashboard = ({
                 <p>
                   Status:{" "}
                   <span
-                    className={`font-semibold ${
+                    className={`font-semibold uppercase ${
                       detail.status === "pass"
                         ? "text-green-600"
                         : detail.status === "warn"
@@ -84,6 +86,22 @@ const HealthCheckDashboard = ({
       <h1 className="text-3xl font-bold mb-6">Health Check Dashboard</h1>
       {loading && <div className="text-center">Loading...</div>}
       {error && <div className="text-center text-red-600">{error}</div>}
+      {overallStatus && (
+        <div className="mb-6">
+          <span className="font-semibold">Overall Status:</span>
+          <span
+            className={`ml-2 px-2 py-1 rounded-md uppercase ${
+              overallStatus === "pass"
+                ? "bg-green-100 text-green-600"
+                : overallStatus === "fail"
+                ? "bg-red-100 text-red-600"
+                : "bg-yellow-100 text-yellow-600"
+            }`}
+          >
+            {overallStatus}
+          </span>
+        </div>
+      )}
       {healthCheckData && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {Object.entries(healthCheckData.checks)

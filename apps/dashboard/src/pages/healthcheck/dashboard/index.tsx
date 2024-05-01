@@ -16,6 +16,9 @@ const HealthCheckPage = ({
   const [healthCheckData, setHealthCheckData] = useState(
     initialHealthCheckData
   );
+  const [overallStatus, setOverallStatus] = useState<string | null | undefined>(
+    initialHealthCheckData?.status
+  );
   useEffect(() => {
     const subscription = interval(5000)
       .pipe(
@@ -30,6 +33,13 @@ const HealthCheckPage = ({
       )
       .subscribe({
         next: (data) => {
+          const status =
+            data?.status === "pass"
+              ? "pass"
+              : data?.status === "fail"
+              ? "fail"
+              : "warn";
+          setOverallStatus(status);
           setHealthCheckData(data);
         },
       });
@@ -40,7 +50,10 @@ const HealthCheckPage = ({
   }, []);
   return (
     <div>
-      <HealthCheckDashboard healthCheckData={healthCheckData} />
+      <HealthCheckDashboard
+        healthCheckData={healthCheckData}
+        overallStatus={overallStatus}
+      />
     </div>
   );
 };
