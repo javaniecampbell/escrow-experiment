@@ -1,9 +1,6 @@
 import React from "react";
 import moment from "moment";
-
-type HealthCheckData = {
-  checks: any;
-};
+import { HealthCheckData } from "@/shared/app.types";
 
 type HealthCheckDashboardProps = {
   healthCheckData?: HealthCheckData;

@@ -1,3 +1,6 @@
+export type HealthCheckData = {
+    checks: any;
+};
 
 export type Client = {
     id: number | string;
