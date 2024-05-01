@@ -16,16 +16,17 @@ healthCheckContext.addStrategy(new DatabaseHealthCheckStrategy());
 healthCheckContext.addStrategy(new CacheHealthCheckStrategy());
 healthCheckContext.addStrategy(new ThirdPartyHealthCheckStrategy());
 
-const healthCheckStream = Observable.create((observer) => {
+const healthCheckStream = new Observable((observer) => {
     const intervalSubscription = interval(5000)
         .pipe(
             concatMap(() => healthCheckContext.performHealthCheck()),
-            map((healthCheckData) => observer.next(healthCheckData))
+            map((healthCheckData) => observer.next(healthCheckData)),
+            // catchError((error) => observer.error(error))
         )
-        .subscribe(
-            null,
-            (error) => observer.error(error)
-        );
+        .subscribe({
+            next: null,
+            error: observer.error(error)
+        });
 
     return () => intervalSubscription.unsubscribe();
 });
