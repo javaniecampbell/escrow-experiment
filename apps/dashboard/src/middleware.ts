@@ -82,7 +82,8 @@ function rewrites(req: NextRequest) {
     if (
         // url.pathname.startsWith('/client/dashboard')||
         url.pathname.startsWith('/agency') ||
-        url.pathname.startsWith('/agency/dashboard')
+        url.pathname.startsWith('/agency/dashboard') ||
+        url.pathname.startsWith('/healthcheck/dashboard')
         ||
         url.pathname.startsWith('/client/settings') ||
         url.pathname.startsWith('/client/profile') ||
