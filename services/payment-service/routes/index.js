@@ -13,6 +13,8 @@ const {
   ThirdPartyHealthCheckStrategy
 } = require('../healthchecks');
 
+const healthCheckStream = require('../service/healthCheckStream');
+
 /**
  * Endpoints for Health checks
  * @param {Tracer} tracer OpenTelemetry Tracer
@@ -363,6 +365,48 @@ module.exports = ({ tracer }) => {
       logger.error('Health check failed', err);
       res.status(503).json({ status: 'fail', message: 'Health check failed' });
     }
+
+  });
+
+  router.get('/v3/spec/stream', async function (req, res, next) {
+    // calculates the heap memory used vs maximum
+    // res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    headers.forEach((header) => {
+      res.set(header);
+    });
+
+    const healthCheckSubscription = healthCheckStream.subscribe({
+      next: (healthCheckData) => {
+        if (healthCheckData.status === 'fail') {
+          res.write(`event: error\ndata: ${JSON.stringify(healthCheckData)}\n\n`);
+          return;
+        }
+        if (healthCheckData.status === 'warn') {
+          res.write(`event: warn\ndata: ${JSON.stringify(healthCheckData)}\n\n`);
+          return;
+        }
+        res.write(`event: success\ndata: ${JSON.stringify(healthCheckData)}\n\n`);
+      },
+      error: (error) => {
+        res.status(500);
+        logger.error('Health check failed', error);
+        res.write(`event: error\ndata: ${JSON.stringify({ error: 'Health check failed' })}\n\n`);
+        res.end();
+      },
+      complete: () => {
+        res.end();
+      }
+    });
+
+    req.on('close', () => {
+      healthCheckSubscription.unsubscribe();
+    });
+
+    // } catch (err) {
+    //   res.status(503).json({ status: 'fail', message: 'Health check failed' });
+    // }
 
   });
 
