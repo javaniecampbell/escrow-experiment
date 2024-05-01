@@ -7,6 +7,7 @@ const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
+const logger = require('./logger');
 
 // Configure logger for debugging
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
@@ -34,6 +35,24 @@ registerInstrumentations({
         HttpInstrumentation,
         ExpressInstrumentation,
     ],
+});
+
+process.on('SIGTERM', () => {
+    logger.info('Received SIGTERM signal, tracer is shutting down gracefully');
+
+    provider.shutdown().then(() => {
+        logger.log('Tracer successfully shutdown');
+        process.exit(0);
+    });
+});
+
+process.on('SIGINT', () => {
+    logger.info('Received SIGINT signal, tracer is shutting down gracefully');
+
+    provider.shutdown().then(() => {
+        logger.log('Tracer successfully shutdown');
+        process.exit(0);
+    });
 });
 
 /**
