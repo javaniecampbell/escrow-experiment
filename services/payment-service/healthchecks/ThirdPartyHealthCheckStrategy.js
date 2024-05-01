@@ -21,6 +21,8 @@ class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
                 componentType: 'service',
                 observedValue: this.getStatus(), // You can include any relevant observed value
                 observedUnit: 'boolean', // Include the observed unit if applicable
+                output: this.getStatus() === true ? 'Third-party services are healthy' : 'Third-party services are unhealthy',
+                time: new Date().toISOString(),
             };
         } catch (err) {
             this.isHealthy = false;
@@ -31,6 +33,7 @@ class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
                 observedValue: this.getStatus(), // You can include any relevant observed value
                 observedUnit: 'boolean', // Include the observed unit if applicable
                 output: err.message,
+                time: new Date().toISOString(),
             };
         }
         return this;

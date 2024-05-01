@@ -16,7 +16,8 @@ function checkDatabaseConnection() {
             resolve(connectionStatus);
         } catch (error) {
             logger.error('Unexpected error for database connection', error);
-            reject(false);
+            // reject(false);
+            reject(error);
         }
     });
 }
@@ -33,7 +34,8 @@ function checkCacheStatus() {
             resolve(true);
         } catch (error) {
             logger.error('Unexpected error for establishing cache connection', error);
-            reject(false);
+            // reject(false);
+            reject(error);
         }
 
     });
@@ -86,7 +88,9 @@ async function initThirdPartyServices() {
         const response = await fetch('https://api.example.com/health');
         return response.status === 200;
     } catch (err) {
-        return false;
+        // return false; // Uncomment this line to simulate a failure
+        // throw new Error('Failed to connect to third-party services');
+        throw new Error('Third-party services are unhealthy');
     }
 }
 
