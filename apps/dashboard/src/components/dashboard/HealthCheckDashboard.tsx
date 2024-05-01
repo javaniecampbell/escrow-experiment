@@ -37,7 +37,6 @@ const HealthCheckDashboard = () => {
   }, []);
 
   const renderHealthCheckCard = (checkDetails: any) => {
-    console.log(checkDetails);
     const { componentName, measurementName, details } = checkDetails;
     const title = `${componentName}${
       measurementName ? `: ${measurementName}` : ""
@@ -83,7 +82,8 @@ const HealthCheckDashboard = () => {
                 </p>
                 {detail.observedValue !== undefined && (
                   <p>
-                    Observed Value: <span>{String(detail.observedValue)}</span> - {detail.observedUnit}
+                    Observed Value: <span>{String(detail.observedValue)}</span>{" "}
+                    - {detail.observedUnit}
                   </p>
                 )}
                 {detail.time && (
