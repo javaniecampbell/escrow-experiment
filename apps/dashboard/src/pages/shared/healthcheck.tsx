@@ -1,3 +1,4 @@
+import HealthCheckContainer from "@/components/HealthCheckContainer";
 import HealthCheckDashboard from "@/components/dashboard/HealthCheckDashboard";
 import React, { useEffect, useState } from "react";
 
@@ -10,7 +11,9 @@ const HealthCheckPage = (props: Props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/health");
+        const response = await fetch(
+          "http://localhost:3000/api/health/v3/spec"
+        );
         const data = await response.json();
         setData(data);
       } catch (error) {
@@ -24,7 +27,7 @@ const HealthCheckPage = (props: Props) => {
   return (
     <div>
       {isBackendHealthy ? (
-        <HealthCheckDashboard />
+        <HealthCheckContainer />
       ) : (
         <div>
           <p>The backend is not healthy. Please try again later.</p>
