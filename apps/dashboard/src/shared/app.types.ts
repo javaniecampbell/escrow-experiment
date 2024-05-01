@@ -1,4 +1,13 @@
 export type HealthCheckData = {
+    status?: string;
+    version?: string;
+    releaseId?: string;
+    serviceId?: string;
+    description?: string;
+    uptime: number;
+    responseTime: Array<number>;
+    message?: string;
+    timestamp: number;
     checks: any;
 };
 
