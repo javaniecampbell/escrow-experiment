@@ -10,9 +10,9 @@ type Props = {
   healthCheckData?: HealthCheckData | null;
 };
 
-const HealthCheckStream = () => {
+const HealthCheckStream = ({healthCheckData: serverHealthCheckData}:Props) => {
   const [healthCheckData, setHealthCheckData] =
-    useState<HealthCheckData | null>(null);
+    useState<HealthCheckData | null | undefined>(serverHealthCheckData);
   const [overallStatus, setOverallStatus] = useState<string | null | undefined>(
     null
   );
