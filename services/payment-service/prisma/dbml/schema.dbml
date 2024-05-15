@@ -339,6 +339,37 @@ Table AddOns {
   Agency Agency
 }
 
+Table Services {
+  id Int [pk, increment]
+  name String [unique, not null]
+  description String
+  components Components [not null]
+  healthCheckData HealthCheckData [not null]
+}
+
+Table Components {
+  id Int [pk, increment]
+  serviceId Int [not null]
+  name String [not null]
+  description String
+  service Services [not null]
+  healthCheckData HealthCheckData [not null]
+}
+
+Table HealthCheckData {
+  id Int [pk, increment]
+  serviceId Int [not null]
+  componentId Int [not null]
+  measurementName String
+  status String [not null]
+  observedValue Float
+  observedUnit String
+  output String
+  createdAt DateTime [default: `now()`, not null]
+  service Services [not null]
+  component Components [not null]
+}
+
 Table TagToTicket {
   ticketId String [ref: > Ticket.id]
   tagsId String [ref: > Tag.id]
@@ -462,3 +493,9 @@ Ref: Notification.subAccountId > SubAccount.id [delete: Cascade]
 Ref: Subscription.agencyId - Agency.id
 
 Ref: AddOns.agencyId > Agency.id
+
+Ref: Components.serviceId > Services.id
+
+Ref: HealthCheckData.serviceId > Services.id
+
+Ref: HealthCheckData.componentId > Components.id
