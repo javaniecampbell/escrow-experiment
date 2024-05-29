@@ -7,10 +7,10 @@ const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
-const logger = require('./logger');
+
 
 // Configure logger for debugging
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
+// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
 // Configure the tracer
 const provider = new NodeTracerProvider({
@@ -26,16 +26,19 @@ const spanProcessor = new SimpleSpanProcessor(exporter);
 provider.addSpanProcessor(spanProcessor);
 
 // Load auto-instrumentations
-provider.register(...getNodeAutoInstrumentations());
+provider.register();
 
 registerInstrumentations({
     tracerProvider: provider,
     instrumentations: [
+        ...getNodeAutoInstrumentations(),
         // Express instrumentation expects HTTP layer to be instrumented
-        HttpInstrumentation,
-        ExpressInstrumentation,
+        new HttpInstrumentation(),
+        new ExpressInstrumentation(),
     ],
 });
+
+const logger = require('./logger');
 
 process.on('SIGTERM', () => {
     logger.info('Received SIGTERM signal, tracer is shutting down gracefully');
