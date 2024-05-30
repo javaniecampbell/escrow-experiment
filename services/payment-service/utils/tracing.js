@@ -1,16 +1,29 @@
+require('dotenv').config();
 const { Tracer } = require('@opentelemetry/api');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
+const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
+const { credentials } =require('@grpc/grpc-js');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
-const { registerInstrumentations } = require('@opentelemetry/instrumentation');
+const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
+const {
+    LoggerProvider,
+    SimpleLogRecordProcessor,
+    ConsoleLogRecordExporter,
+} = require('@opentelemetry/sdk-logs');
+const logsAPI = require('@opentelemetry/api-logs');
 
 
-// Configure logger for debugging
-// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
+const environment = process.env.NODE_ENV || 'development';
+// Configure logger for debugging, for troubleshooting, set the log level to DiagLogLevel.DEBUG
+diag.setLogger(new DiagConsoleLogger(), environment === 'development' ? DiagLogLevel.INFO : DiagLogLevel.WARN);
+
+const otlpServer = process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
+// || 'http://localhost:4317';
 
 // Configure the tracer
 const provider = new NodeTracerProvider({
@@ -21,13 +34,39 @@ const provider = new NodeTracerProvider({
         }
     }
 });
-const exporter = new ConsoleSpanExporter();
+let exporter;
+if (otlpServer) {
+
+    // Configure OTLP exporter
+    const isHttps = otlpServer.startsWith('https://');
+    const collectorOptions = {
+        // url: otlpServer,
+        credentials: !isHttps? credentials.createInsecure() : credentials.createSsl(),
+        // Set to true to enable certificate validation
+        // Note: this option is ignored if the protocol is not https
+        // ignoreCertificateValidation: false,
+    };
+    exporter = new OTLPTraceExporter({
+        // url: otlpServer,
+        ...collectorOptions,
+    
+    });
+}else{
+    // 
+    exporter = new ConsoleSpanExporter();
+}
 const spanProcessor = new SimpleSpanProcessor(exporter);
 provider.addSpanProcessor(spanProcessor);
 
 // Load auto-instrumentations
 provider.register();
-
+// To start a logger, you first need to initialize the Logger provider.
+const loggerProvider = new LoggerProvider();
+// Add a processor to export log record
+loggerProvider.addLogRecordProcessor(
+    new SimpleLogRecordProcessor(new ConsoleLogRecordExporter())
+);
+logsAPI.logs.setGlobalLoggerProvider(loggerProvider);
 registerInstrumentations({
     tracerProvider: provider,
     instrumentations: [

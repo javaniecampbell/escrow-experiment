@@ -19,7 +19,8 @@
     "@opentelemetry/sdk-node": "^0.51.0",
     "@opentelemetry/sdk-trace-base": "^1.24.0",
     "@opentelemetry/sdk-trace-node": "^1.24.0",
-    "@prisma/client": "^5.11.0",
+    "@opentelemetry/winston-transport": "^0.3.0",
+    "@prisma/client": "^5.14.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -33,7 +34,7 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
-    "prisma": "^5.11.0",
+    "prisma": "^5.14.0",
     "prisma-dbml-generator": "^0.12.0"
   }
 }
