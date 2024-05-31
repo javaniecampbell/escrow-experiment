@@ -1,26 +1,38 @@
 require('dotenv').config();
+const { SimpleSpanProcessor, BasicTracerProvider } = require('@opentelemetry/sdk-trace-base');
+const { Resource } = require('@opentelemetry/resources');
+const { SEMRESATTRS_SERVICE_NAME, SEMRESATTRS_SERVICE_VERSION } = require('@opentelemetry/semantic-conventions');
+const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
+const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
+const { credentials } = require('@grpc/grpc-js');
+const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
+const { NodeSDK } = require('@opentelemetry/sdk-node');
+// const { OTLPTraceExporter: HttpOTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
+
+/* Start of development configuration imports */
 const { Tracer } = require('@opentelemetry/api');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
-const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
+const { diag, DiagConsoleLogger, DiagLogLevel, trace } = require('@opentelemetry/api');
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
-const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
-const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
-const { credentials } = require('@grpc/grpc-js');
-const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
-const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
+
 const {
     LoggerProvider,
     SimpleLogRecordProcessor,
     ConsoleLogRecordExporter,
 } = require('@opentelemetry/sdk-logs');
 const logsAPI = require('@opentelemetry/api-logs');
+/* End of development configuration imports */
 
 
 const environment = process.env.NODE_ENV || 'development';
+const isDevelopment = environment === 'development';
+const isProduction = environment === 'production';
 // Configure logger for debugging, for troubleshooting, set the log level to DiagLogLevel.DEBUG
-diag.setLogger(new DiagConsoleLogger(), environment === 'development' ? DiagLogLevel.INFO : DiagLogLevel.WARN);
+diag.setLogger(new DiagConsoleLogger(), isDevelopment ? DiagLogLevel.INFO : DiagLogLevel.WARN);
+
+
 
 const otlpServer = process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
 // || 'http://localhost:4317';
@@ -29,12 +41,11 @@ const otlpServer = process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
 const provider = new NodeTracerProvider({
     resource: {
         attributes: {
-            service: 'payment_service',
-            'service.name': 'payment_service',
+            SEMRESATTRS_SERVICE_NAME: 'payment_service',
         }
     }
 });
-let exporter;
+let exporter, sdk;
 if (otlpServer) {
     // Configure OTLP exporter
     const isHttps = otlpServer.startsWith('https://');
@@ -51,6 +62,30 @@ if (otlpServer) {
 
     });
 
+    sdk = new NodeSDK({
+        resource: new Resource({
+            [SEMRESATTRS_SERVICE_NAME]: 'payment-service',
+            [SEMRESATTRS_SERVICE_VERSION]: '1.0.0',
+        }),
+        spanProcessors: [new SimpleSpanProcessor(exporter)],
+        traceExporter: exporter,
+        logger: new ConsoleLogRecordExporter(),
+        instrumentations: [
+            // ...getNodeAutoInstrumentations({
+            //     // We only want to include the http and express instrumentations
+            //   "@opentelemetry/instrumentation-http": true,
+            //     "@opentelemetry/instrumentation-express": true,
+            // }),
+            new HttpInstrumentation({
+                ignoreIncomingPaths: [
+                    '/health',
+                    '/metrics',
+                    '/metrics/prometheus',
+                ],
+            }),
+            new ExpressInstrumentation(),
+        ],
+    });
 } else {
     // 
     exporter = new ConsoleSpanExporter();
@@ -78,12 +113,21 @@ if (otlpServer) {
     });
 }
 
+if(sdk) {
+    sdk.start();
+}
 
 const logger = require('./logger');
 
 process.on('SIGTERM', () => {
     logger.info('Received SIGTERM signal, tracer is shutting down gracefully');
-
+    
+    if (sdk){
+        sdk.shutdown().then(() => {
+            logger.log('Tracer successfully shutdown');
+            process.exit(0);
+        });
+    }
     provider.shutdown().then(() => {
         logger.log('Tracer successfully shutdown');
         process.exit(0);
@@ -93,10 +137,20 @@ process.on('SIGTERM', () => {
 process.on('SIGINT', () => {
     logger.info('Received SIGINT signal, tracer is shutting down gracefully');
 
+    if (sdk){
+        sdk.shutdown().then(() => {
+            logger.log('Tracer successfully shutdown');
+            process.exit(0);
+        });
+    }
     provider.shutdown().then(() => {
         logger.log('Tracer successfully shutdown');
         process.exit(0);
     });
+});
+
+process.on('uncaughtException', (err) => {
+    logger.error('uncaughtException', err);
 });
 
 /**
@@ -104,4 +158,4 @@ process.on('SIGINT', () => {
  * @type {Tracer}
  */
 // Export the tracer
-module.exports = { tracer: provider.getTracer('payment_service') };
+module.exports = { tracer: isDevelopment ? provider.getTracer('payment-service') : trace.getTracer('payment-service') };
