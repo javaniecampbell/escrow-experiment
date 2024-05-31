@@ -25,20 +25,26 @@ var paymentServiceApi = builder.AddNpmApp("paymentservice-api","../payment-servi
 	.WithEnvironment("AZURE_STORAGE_CONNECTION_STRING",blobStorage)
 	.PublishAsDockerFile();
 
-builder.AddNpmApp("dashboard-nextjs", "../../apps/dashboard", "dev")
+var dashboardFrontend = builder.AddNpmApp("dashboard-nextjs", "../../apps/dashboard", "dev")
 	.WithHttpEndpoint(env: "PORT")
 	.WithExternalHttpEndpoints()
 	.WithReference(paymentServiceApi)
 	.WithReference(notificationServiceApi)
 	.PublishAsDockerFile();
 
-builder.AddNpmApp("clientportal-nextjs", "../../apps/client-portal", "dev")
+var clientFrontend = builder.AddNpmApp("clientportal-nextjs", "../../apps/client-portal", "dev")
 	.WithHttpEndpoint(env: "PORT")
 	.WithExternalHttpEndpoints()
 	.WithReference(paymentServiceApi)
 	.WithReference(notificationServiceApi)
 	.PublishAsDockerFile();
 
+if (builder.Environment.IsDevelopment() && builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
+{
+	// Disable TLS certificate validation in development, see https://github.com/dotnet/aspire/issues/3324 for more details.
+	dashboardFrontend.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+	clientFrontend.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+}
 
 
 builder.Build().Run();
