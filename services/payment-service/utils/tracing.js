@@ -37,8 +37,8 @@ diag.setLogger(new DiagConsoleLogger(), isDevelopment ? DiagLogLevel.INFO : Diag
 
 
 
-const otlpServer = process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
-// || 'http://localhost:4317';
+const otlpServer = process.env.OTEL_EXPORTER_OTLP_ENDPOINT
+|| 'http://localhost:4317';
 
 // Configure the tracer
 const provider = new NodeTracerProvider({
@@ -93,6 +93,8 @@ if (otlpServer) {
         // Note: this option is ignored if the protocol is not https
         // ignoreCertificateValidation: false,
     };
+
+    console.log(`collectorOptions: ${JSON.stringify(collectorOptions)}`);
     exporter = new OTLPTraceExporter({
         // url: otlpServer,
         ...collectorOptions,
