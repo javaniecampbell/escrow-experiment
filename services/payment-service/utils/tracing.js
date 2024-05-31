@@ -50,8 +50,42 @@ const provider = new NodeTracerProvider({
 });
 let exporter, sdk;
 if (otlpServer) {
+
+    ///REMOVE: Disable once fix at https://github.com/open-telemetry/opentelemetry-js/issues/4638 is addressed
+    const {
+        Detector,
+        DetectorSync,
+        IResource,
+        ResourceDetectionConfig,
+        envDetectorSync,
+        hostDetectorSync,
+        processDetectorSync,
+      } = require("@opentelemetry/resources")
+
+      /**
+       * A detector that returns attributes from the environment.
+       * @param {DetectorSync} detector 
+       * @returns {Detector}
+       */
+      function awaitAttributes(detector) {
+        return {
+            /**
+             * A function that returns a promise that resolves with the attributes
+             * @param {ResourceDetectionConfig} config 
+             * @returns {Promise<IResource>}
+             */
+          async detect(config){
+            const resource = detector.detect(config)
+            await resource.waitForAsyncAttributes?.()
+      
+            return resource
+          },
+        }
+      }
+
     // Configure OTLP exporter
     const isHttps = otlpServer.startsWith('https://');
+    console.log(`isHttps: ${isHttps}`);
     const collectorOptions = {
         // url: otlpServer,
         credentials: !isHttps ? credentials.createInsecure() : credentials.createSsl(),
@@ -95,6 +129,11 @@ if (otlpServer) {
             }),
             new ExpressInstrumentation(),
         ],
+        resourceDetectors: [
+            awaitAttributes(envDetectorSync),
+            awaitAttributes(hostDetectorSync),
+            awaitAttributes(processDetectorSync),
+        ]
     });
 } else {
     // 
@@ -122,24 +161,25 @@ if (otlpServer) {
         ],
     });
 }
-
+const logger = require('./logger');
 if (sdk) {
     sdk.start();
+    logger.info('Tracer successfully started');
 }
 
-const logger = require('./logger');
+
 
 process.on('SIGTERM', () => {
     logger.info('Received SIGTERM signal, tracer is shutting down gracefully');
 
     if (sdk) {
         sdk.shutdown().then(() => {
-            logger.log('Tracer successfully shutdown');
+            logger.info('Tracer successfully shutdown');
             process.exit(0);
         });
     }
     provider.shutdown().then(() => {
-        logger.log('Tracer successfully shutdown');
+        logger.info('Tracer successfully shutdown');
         process.exit(0);
     });
 });
