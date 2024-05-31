@@ -30,6 +30,7 @@ var dashboardFrontend = builder.AddNpmApp("dashboard-nextjs", "../../apps/dashbo
 	.WithExternalHttpEndpoints()
 	.WithReference(paymentServiceApi)
 	.WithReference(notificationServiceApi)
+	.WithOtlpExporter()
 	.PublishAsDockerFile();
 
 var clientFrontend = builder.AddNpmApp("clientportal-nextjs", "../../apps/client-portal", "dev")
@@ -37,6 +38,7 @@ var clientFrontend = builder.AddNpmApp("clientportal-nextjs", "../../apps/client
 	.WithExternalHttpEndpoints()
 	.WithReference(paymentServiceApi)
 	.WithReference(notificationServiceApi)
+	.WithOtlpExporter()
 	.PublishAsDockerFile();
 
 if (builder.Environment.IsDevelopment() && builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
