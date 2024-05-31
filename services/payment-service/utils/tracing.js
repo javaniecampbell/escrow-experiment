@@ -6,6 +6,9 @@ const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 const { credentials } = require('@grpc/grpc-js');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
+const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-grpc');
+const { OTLPLogExporter } = require('@opentelemetry/exporter-logs-otlp-grpc');
+const { PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics');
 const { NodeSDK } = require('@opentelemetry/sdk-node');
 // const { OTLPTraceExporter: HttpOTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 
@@ -63,13 +66,20 @@ if (otlpServer) {
     });
 
     sdk = new NodeSDK({
+        traceExporter: exporter,
         resource: new Resource({
             [SEMRESATTRS_SERVICE_NAME]: 'payment-service',
             [SEMRESATTRS_SERVICE_VERSION]: '1.0.0',
         }),
         spanProcessors: [new SimpleSpanProcessor(exporter)],
-        traceExporter: exporter,
         logger: new ConsoleLogRecordExporter(),
+        metricReader: new PeriodicExportingMetricReader({
+            exportIntervalMillis: isDevelopment ? 5000 : 10_000,
+            exporter: new OTLPMetricExporter(collectorOptions),
+        }),
+        logRecordProcessor: new SimpleLogRecordProcessor({
+            exporter: new OTLPLogExporter(collectorOptions),
+        }),
         instrumentations: [
             // ...getNodeAutoInstrumentations({
             //     // We only want to include the http and express instrumentations
@@ -113,7 +123,7 @@ if (otlpServer) {
     });
 }
 
-if(sdk) {
+if (sdk) {
     sdk.start();
 }
 
@@ -121,8 +131,8 @@ const logger = require('./logger');
 
 process.on('SIGTERM', () => {
     logger.info('Received SIGTERM signal, tracer is shutting down gracefully');
-    
-    if (sdk){
+
+    if (sdk) {
         sdk.shutdown().then(() => {
             logger.log('Tracer successfully shutdown');
             process.exit(0);
@@ -137,7 +147,7 @@ process.on('SIGTERM', () => {
 process.on('SIGINT', () => {
     logger.info('Received SIGINT signal, tracer is shutting down gracefully');
 
-    if (sdk){
+    if (sdk) {
         sdk.shutdown().then(() => {
             logger.log('Tracer successfully shutdown');
             process.exit(0);
