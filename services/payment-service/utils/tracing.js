@@ -7,7 +7,7 @@ const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
-const { credentials } =require('@grpc/grpc-js');
+const { credentials } = require('@grpc/grpc-js');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
 const {
@@ -36,12 +36,11 @@ const provider = new NodeTracerProvider({
 });
 let exporter;
 if (otlpServer) {
-
     // Configure OTLP exporter
     const isHttps = otlpServer.startsWith('https://');
     const collectorOptions = {
         // url: otlpServer,
-        credentials: !isHttps? credentials.createInsecure() : credentials.createSsl(),
+        credentials: !isHttps ? credentials.createInsecure() : credentials.createSsl(),
         // Set to true to enable certificate validation
         // Note: this option is ignored if the protocol is not https
         // ignoreCertificateValidation: false,
@@ -49,33 +48,36 @@ if (otlpServer) {
     exporter = new OTLPTraceExporter({
         // url: otlpServer,
         ...collectorOptions,
-    
+
     });
-}else{
+
+} else {
     // 
     exporter = new ConsoleSpanExporter();
-}
-const spanProcessor = new SimpleSpanProcessor(exporter);
-provider.addSpanProcessor(spanProcessor);
 
-// Load auto-instrumentations
-provider.register();
-// To start a logger, you first need to initialize the Logger provider.
-const loggerProvider = new LoggerProvider();
-// Add a processor to export log record
-loggerProvider.addLogRecordProcessor(
-    new SimpleLogRecordProcessor(new ConsoleLogRecordExporter())
-);
-logsAPI.logs.setGlobalLoggerProvider(loggerProvider);
-registerInstrumentations({
-    tracerProvider: provider,
-    instrumentations: [
-        ...getNodeAutoInstrumentations(),
-        // Express instrumentation expects HTTP layer to be instrumented
-        new HttpInstrumentation(),
-        new ExpressInstrumentation(),
-    ],
-});
+    const spanProcessor = new SimpleSpanProcessor(exporter);
+    provider.addSpanProcessor(spanProcessor);
+
+    // Load auto-instrumentations
+    provider.register();
+    // To start a logger, you first need to initialize the Logger provider.
+    const loggerProvider = new LoggerProvider();
+    // Add a processor to export log record
+    loggerProvider.addLogRecordProcessor(
+        new SimpleLogRecordProcessor(new ConsoleLogRecordExporter())
+    );
+    logsAPI.logs.setGlobalLoggerProvider(loggerProvider);
+    registerInstrumentations({
+        tracerProvider: provider,
+        instrumentations: [
+            ...getNodeAutoInstrumentations(),
+            // Express instrumentation expects HTTP layer to be instrumented
+            new HttpInstrumentation(),
+            new ExpressInstrumentation(),
+        ],
+    });
+}
+
 
 const logger = require('./logger');
 
