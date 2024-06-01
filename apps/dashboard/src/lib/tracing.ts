@@ -11,6 +11,13 @@ provider.register({
 const exporter = new ConsoleSpanExporter();
 const spanProcessor = new SimpleSpanProcessor(exporter);
 provider.addSpanProcessor(spanProcessor);
+provider.register();
 
-export const { getTracer } = provider;
-export const tracer = getTracer('escrow-dashboard');
+
+function getTracer(name: string, version?: string): any {
+    return provider.getTracer(name, version);
+}
+
+const tracer = getTracer('escrow-dashboard');
+
+export { tracer };
