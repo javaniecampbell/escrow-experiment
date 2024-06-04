@@ -14,6 +14,7 @@ interface StoreState {
   markMilestonePreviewed: (milestoneId: MilestoneId | null) => void;
   requestPayout: (projectId: ProjectId | null) => void;
   markMilestoneDelivered: (milestoneId: MilestoneId | null) => void;
+  releaseEscrow: (milestoneId: MilestoneId | null) => void;
 }
 
 
@@ -65,6 +66,16 @@ const useStore = create<StoreState>((set) => ({
       milestones: state.milestones.map((milestone) => {
         if (milestone.id === milestoneId) {
           milestone.delivered = true;
+        }
+        return milestone;
+      }),
+    }));
+  },
+  releaseEscrow: (milestoneId) => {
+    set((state) => ({
+      milestones: state.milestones.map((milestone) => {
+        if (milestone.id === milestoneId) {
+          milestone.paidOut = true;
         }
         return milestone;
       }),
