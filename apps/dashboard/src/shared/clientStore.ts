@@ -1,7 +1,7 @@
 // clientStore.js
 import { create } from 'zustand';
 import { initialClients, initialProjects, initialBillingHistory, initialSupportMessages } from './initialData';
-import { Client, Project, BillingHistoryEntry, SupportMessage, ProjectId, ClientId } from './app.types';
+import { Client, Project, BillingHistoryEntry, SupportMessage, ProjectId, ClientId, BillingHistoryEntryId } from './app.types';
 
 interface ClientStoreState {
     clients: Client[];
@@ -132,7 +132,7 @@ interface BillingStoreState {
     updateBillingEntry: (updatedEntry: BillingHistoryEntry) => void;
     setSelectedBillingEntry: (billingEntry: BillingHistoryEntry) => void;
     clearSelectedBillingEntry: () => void;
-
+    deleteBillingEntry: (billingEntryId: BillingHistoryEntryId) => void;
     fetchBillingEntries: (cLientId: ClientId) => void;
 }
 
@@ -182,7 +182,13 @@ const useBillingStore = create<BillingStoreState>((set) => ({
             set((state) => ({ billingEntries: state.billingEntries }));
             console.error('Error fetching billing entries:', error);
         }
-    }
+    },
+    // Function to delete a billing entry
+    deleteBillingEntry: (billingEntryId: BillingHistoryEntryId) => {
+        set((state) => ({
+            billingEntries: state.billingEntries.filter((entry) => entry.id !== billingEntryId),
+        }));
+    },
 }));
 
 export { useProjectStore, useBillingStore };
