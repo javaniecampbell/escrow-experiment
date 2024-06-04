@@ -142,6 +142,16 @@ const useBillingStore = create<BillingStoreState>((set) => ({
         }));
     },
 
+    // Function to update the selected billing entry, finds it in the history, and updates it to the billing entries
+    updateBillingEntry: (updatedEntry: BillingHistoryEntry) => {
+        set((state) => ({
+            billingEntries: state.billingEntries.map((entry) =>
+                entry.id === updatedEntry.id ? updatedEntry : entry
+            ),
+        }));
+    },
+
+
     // Function to set the selected billing entry
     setSelectedBillingEntry: (billingEntry: BillingHistoryEntry) =>
         set({ selectedBillingEntry: billingEntry }),
