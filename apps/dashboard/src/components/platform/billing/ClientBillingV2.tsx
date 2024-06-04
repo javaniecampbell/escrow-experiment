@@ -1,15 +1,18 @@
 // ClientBilling.js
-import useStore from "@/shared/clientStore";
+import useStore, { useBillingStore } from "@/shared/clientStore";
 import React, { useState, useEffect } from "react";
 
 const ClientBillingV2 = () => {
   // const [billingHistory, setBillingHistory] = useState([]);
   const { billingHistory } = useStore();
+  const clientId = 1; // Replace with the actual client ID
+  const fetchBillingEntries = useBillingStore((state) => state.fetchBillingEntries);
 
   useEffect(() => {
     // Fetch and set the client's billing history
     // You can use an API call to retrieve billing data
-  }, []);
+    fetchBillingEntries(clientId);
+  }, [clientId, fetchBillingEntries]);
 
   return (
     <div className="p-4 border border-gray-300 rounded">
@@ -26,7 +29,7 @@ const ClientBillingV2 = () => {
         <tbody>
           {billingHistory.map((entry) => (
             <tr key={entry.id}>
-              <td className="text-justify">{entry.date}</td>
+              <td className="text-justify">{entry.date?.toLocaleString()}</td>
               <td className="text-justify">{entry.description}</td>
               <td className="text-justify">{entry.amount}</td>
               <td className="text-justify">{entry.status}</td>

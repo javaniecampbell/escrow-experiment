@@ -1,7 +1,7 @@
 // clientStore.js
 import { create } from 'zustand';
 import { initialClients, initialProjects, initialBillingHistory, initialSupportMessages } from './initialData';
-import { Client, Project, BillingHistoryEntry, SupportMessage, ProjectId } from './app.types';
+import { Client, Project, BillingHistoryEntry, SupportMessage, ProjectId, ClientId } from './app.types';
 
 interface ClientStoreState {
     clients: Client[];
@@ -132,6 +132,8 @@ interface BillingStoreState {
     updateBillingEntry: (updatedEntry: BillingHistoryEntry) => void;
     setSelectedBillingEntry: (billingEntry: BillingHistoryEntry) => void;
     clearSelectedBillingEntry: () => void;
+
+    fetchBillingEntries: (cLientId: ClientId) => void;
 }
 
 // Create a Zustand store for managing billing entries
@@ -162,6 +164,25 @@ const useBillingStore = create<BillingStoreState>((set) => ({
 
     // Function to clear the selected billing entry
     clearSelectedBillingEntry: () => set({ selectedBillingEntry: null }),
+    fetchBillingEntries: async (clientId: ClientId) => {
+        try {
+
+            // Make an API call to fetch billing entries for the client
+            const response = await fetch('/api/billing-entries', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ clientId }),
+            });
+
+            const entries = await response.json();
+            set({ billingEntries: entries });
+        } catch (error) {
+            set((state) => ({ billingEntries: state.billingEntries }));
+            console.error('Error fetching billing entries:', error);
+        }
+    }
 }));
 
 export { useProjectStore, useBillingStore };
