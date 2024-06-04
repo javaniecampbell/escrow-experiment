@@ -1,9 +1,10 @@
 // ClientFiles.js
 import React from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
+import { Milestone, Project } from "@/shared/app.types";
 
 const ClientFiles = () => {
-  const { clientProjects } = useStore();
+  const { projects: clientProjects } = useStore();
   const [selectedProject, setSelectedProject] = React.useState("");
   const [selectedMilestone, setSelectedMilestone] = React.useState("");
 
@@ -46,9 +47,9 @@ const ClientFiles = () => {
             <option value="" disabled>
               Select Milestone
             </option>
-            {clientProjects
-              .find((project) => project.id === selectedProject)
-              .milestones.map((milestone) => (
+            {clientProjects && clientProjects?
+            .find((project:Project) => project.id === selectedProject)
+              .milestones.map((milestone: Milestone) => (
                 <option key={milestone.id} value={milestone.id}>
                   {milestone.name}
                 </option>
