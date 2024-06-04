@@ -29,6 +29,7 @@ export type Project = {
     recentActivity: string[];
     status: string;
     clientId: number;
+    messages: string[];
 };
 
 export type Milestone = {
