@@ -128,6 +128,10 @@ const useProjectStore = create<ProjectStoreState>((set) => ({
 interface BillingStoreState {
     billingEntries: BillingHistoryEntry[];
     selectedBillingEntry: BillingHistoryEntry | null;
+    addBillingEntry: (newBillingEntry: BillingHistoryEntry) => void;
+    updateBillingEntry: (updatedEntry: BillingHistoryEntry) => void;
+    setSelectedBillingEntry: (billingEntry: BillingHistoryEntry) => void;
+    clearSelectedBillingEntry: () => void;
 }
 
 // Create a Zustand store for managing billing entries
