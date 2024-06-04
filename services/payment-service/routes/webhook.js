@@ -18,20 +18,24 @@ module.exports = ({ tracer }) => {
         //TODO: Ensure the integrity of the event by verifying the signature
         // Handle the event
         switch (event.type) {
-            case 'payment_intent.succeeded':
+            case 'payment_intent.succeeded':{
                 span.addEvent('payment_intent_succeeded', { amount: event.data.object.amount })
                 const paymentIntent = event.data.object;
                 console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
                 // Then define and call a function to handle the successful payment intent.
                 break;
-            case 'payment_method.attached':
+            }
+            case 'payment_method.attached':{
                 span.addEvent('payment_method_attached', { paymentMethod: event.data.object })
                 const paymentMethod = event.data.object;
                 // Then define and call a function to handle the new payment method.
                 break;
-            default:
+            }
+            default:{
                 span.addEvent('unhandled_event', { type: event.type });
                 logger.info(`Unhandled event type ${event.type}`);
+                break;
+            }
         }
         span.end();
         logger.info('Webhook successfully captured', { requestId, dataSize: event.length });
