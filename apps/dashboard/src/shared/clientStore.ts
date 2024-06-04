@@ -1,7 +1,7 @@
 // clientStore.js
 import { create } from 'zustand';
 import { initialClients, initialProjects, initialBillingHistory, initialSupportMessages } from './initialData';
-import { Client, Project, BillingHistoryEntry, SupportMessage } from './app.types';
+import { Client, Project, BillingHistoryEntry, SupportMessage, ProjectId } from './app.types';
 
 interface ClientStoreState {
     clients: Client[];
@@ -74,6 +74,7 @@ const useClientStore = create<ClientStoreState>((set) => ({
             }),
         }));
     },
+    // might need the projectId & milestoneId
     releaseEscrow: (milestoneId: number | string) => {
         set((state) => ({
             projects: state.projects.map((p) => {
@@ -95,6 +96,9 @@ const useClientStore = create<ClientStoreState>((set) => ({
 interface ProjectStoreState {
     projects: Project[];
     selectedProject: Project | null;
+    selectProject: (projectId: ProjectId) => void;
+    clearSelectedProject: () => void;
+    addProject: (newProject: Project) => void;
 }
 
 // Create a Zustand store for managing projects
@@ -103,7 +107,7 @@ const useProjectStore = create<ProjectStoreState>((set) => ({
     selectedProject: null, // Store the selected project
 
     // Function to select a project
-    selectProject: (projectId: number) => {
+    selectProject: (projectId: ProjectId) => {
         set((state) => ({
             selectedProject: state.projects.find((p) => p.id === projectId),
         }));
