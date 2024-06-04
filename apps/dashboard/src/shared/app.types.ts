@@ -25,7 +25,7 @@ export type Project = {
     balance: number;
     inEscrow: number;
     totalPayouts: number;
-    milestones: Milestone[];
+    milestones?: Milestone[];
     recentActivity: string[];
     status: string;
     clientId: number;
