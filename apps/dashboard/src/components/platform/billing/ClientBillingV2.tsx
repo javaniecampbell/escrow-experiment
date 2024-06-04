@@ -1,12 +1,24 @@
 // ClientBilling.js
+import { BillingHistoryEntry } from "@/shared/app.types";
 import useStore, { useBillingStore } from "@/shared/clientStore";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 const ClientBillingV2 = () => {
   // const [billingHistory, setBillingHistory] = useState([]);
   const { billingHistory } = useStore();
   const clientId = 1; // Replace with the actual client ID
   const fetchBillingEntries = useBillingStore((state) => state.fetchBillingEntries);
+  const deleteBillingEntry = useBillingStore((state) => state.deleteBillingEntry);
+
+  const handleDeleteBillingEntry = (selectedBillingEntry: BillingHistoryEntry) => {
+    if (!selectedBillingEntry) {
+      // Handle the case when no billing entry is selected
+      return;
+    }
+
+    // Call the deleteBillingEntry function to delete the selected billing entry
+    deleteBillingEntry(selectedBillingEntry.id);
+  };
 
   useEffect(() => {
     // Fetch and set the client's billing history
@@ -24,6 +36,7 @@ const ClientBillingV2 = () => {
             <th className="w-1/4 text-justify">Description</th>
             <th className="w-1/4 text-justify">Amount</th>
             <th className="w-1/4 text-justify">Status</th>
+            <th className="w-1/4 text-justify">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -33,6 +46,14 @@ const ClientBillingV2 = () => {
               <td className="text-justify">{entry.description}</td>
               <td className="text-justify">{entry.amount}</td>
               <td className="text-justify">{entry.status}</td>
+              <td className="text-justify">
+                <button
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                  onClick={() => handleDeleteBillingEntry(entry)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
