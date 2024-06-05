@@ -18,4 +18,22 @@
     <ProjectReference Include="..\EscrowPlatform.ServiceDefaults\EscrowPlatform.ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Common\" />
+    <Folder Include="Application\DTOs\" />
+    <Folder Include="Application\Errors\" />
+    <Folder Include="Application\Extensions\" />
+    <Folder Include="Application\Models\" />
+    <Folder Include="Application\Interfaces\" />
+    <Folder Include="Application\Services\" />
+    <Folder Include="Domain\Entities\" />
+    <Folder Include="Domain\Interfaces\" />
+    <Folder Include="Infrastructure\Extensions\" />
+    <Folder Include="Infrastructure\Persistence\Configuration\" />
+    <Folder Include="Infrastructure\Persistence\Context\" />
+    <Folder Include="Infrastructure\Persistence\Repositories\" />
+    <Folder Include="Middlewares\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>
