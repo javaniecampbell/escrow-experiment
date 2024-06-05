@@ -5,15 +5,23 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var database = builder.AddPostgres("escrowdb");
 var storage = builder.AddAzureStorage("escrowstorage");
+var cosmosdb = builder.AddAzureCosmosDB("NotificationsCosmosConnection");
+var notificationCosmosDb = cosmosdb.AddDatabase("escrownotificationsdb");
 
 if (builder.Environment.IsDevelopment())
 {
+	notificationCosmosDb.RunAsEmulator();
 	storage.RunAsEmulator();
 }
 
 var blobStorage = storage.AddBlobs("escrowblobstorage");
 
-var notificationServiceApi = builder.AddProject<Projects.NotificationService_Api>("notificationservice-api");
+var notificationServiceApi = builder.AddProject<Projects.NotificationService_Api>("notificationservice-api")
+	.WithExternalHttpEndpoints()
+	.WithHttpEndpoint()
+	.WithHttpsEndpoint()
+	.WithReference(notificationCosmosDb)
+	.WithOtlpExporter();
 
 var paymentServiceApi = builder.AddNpmApp("paymentservice-api","../payment-service", "dev")
 	.WithHttpEndpoint(env: "PORT")
