@@ -10,7 +10,7 @@ builder.AddServiceDefaults();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.AddCosmosDbContext<NotificationDbContext>("NotificationsCosmosConnection", "escrownotificationsdb");
+builder.AddCosmosDbContext<NotificationDbContext>("notificationsCosmos", "escrownotificationsdb");
 //builder.Services.AddDbContext<NotificationDbContext>(options =>
 //{
 //    // options.UseInMemoryDatabase("NotificationService");

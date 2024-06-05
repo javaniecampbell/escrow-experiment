@@ -5,7 +5,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var database = builder.AddPostgres("escrowdb");
 var storage = builder.AddAzureStorage("escrowstorage");
-var cosmosdb = builder.AddAzureCosmosDB("NotificationsCosmosConnection");
+var cosmosdb = builder.AddAzureCosmosDB("notificationsCosmos");
 var notificationCosmosDb = cosmosdb.AddDatabase("escrownotificationsdb");
 
 if (builder.Environment.IsDevelopment())
@@ -17,9 +17,6 @@ if (builder.Environment.IsDevelopment())
 var blobStorage = storage.AddBlobs("escrowblobstorage");
 
 var notificationServiceApi = builder.AddProject<Projects.NotificationService_Api>("notificationservice-api")
-	.WithExternalHttpEndpoints()
-	.WithHttpEndpoint()
-	.WithHttpsEndpoint()
 	.WithReference(notificationCosmosDb)
 	.WithOtlpExporter();
 
