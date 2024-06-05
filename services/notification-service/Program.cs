@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using NotificationService.Api.Infrastructure.Persistence.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -6,8 +9,15 @@ builder.AddServiceDefaults();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();  
-
+builder.Services.AddControllers();
+builder.AddCosmosDbContext<NotificationDbContext>("NotificationsCosmosConnection", "escrownotificationsdb");
+//builder.Services.AddDbContext<NotificationDbContext>(options =>
+//{
+//    // options.UseInMemoryDatabase("NotificationService");
+//    // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+//    // use postgres
+//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+//});
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -28,7 +38,7 @@ var summaries = new[]
 
 app.MapGet($"{baseUrl}/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
