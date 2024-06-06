@@ -23,6 +23,11 @@ var paymentServiceApi = builder.AddNpmApp("paymentservice-api","../payment-servi
 	.WithReference(notificationServiceApi)
 	// How to add environment variables in .dotnet aspire
 	.WithEnvironment("AZURE_STORAGE_CONNECTION_STRING",blobStorage)
+	.WithEnvironment("AZURE_CONTAINER_NAME", "digitalAssets")
+	.WithEnvironment("STRIPE_SECRET_KEY","")
+	.WithEnvironment("STRIPE_WEBHOOK_SECRET","")
+	.WithEnvironment("SHOULD_REDIRECT_PAYMENT_SESSION", "true")
+	.WithEnvironment("AZURE_CONTAINER_NAME", "digitalAssets")
 	.PublishAsDockerFile();
 
 var dashboardFrontend = builder.AddNpmApp("dashboard-nextjs", "../../apps/dashboard", "dev")
@@ -30,6 +35,8 @@ var dashboardFrontend = builder.AddNpmApp("dashboard-nextjs", "../../apps/dashbo
 	.WithExternalHttpEndpoints()
 	.WithReference(paymentServiceApi)
 	.WithReference(notificationServiceApi)
+	.WithEnvironment("NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", "")
+	.WithEnvironment("CLERK_SECRET_KEY", "")
 	.WithOtlpExporter()
 	.PublishAsDockerFile();
 
