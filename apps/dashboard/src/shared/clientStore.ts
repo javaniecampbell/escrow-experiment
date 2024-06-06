@@ -1,7 +1,7 @@
 // clientStore.js
 import { create } from 'zustand';
 import { initialClients, initialProjects, initialBillingHistory, initialSupportMessages } from './initialData';
-import { Client, Project, BillingHistoryEntry, SupportMessage } from './app.types';
+import { Client, Project, BillingHistoryEntry, SupportMessage, ProjectId, ClientId, BillingHistoryEntryId } from './app.types';
 
 interface ClientStoreState {
     clients: Client[];
@@ -74,6 +74,7 @@ const useClientStore = create<ClientStoreState>((set) => ({
             }),
         }));
     },
+    // might need the projectId & milestoneId
     releaseEscrow: (milestoneId: number | string) => {
         set((state) => ({
             projects: state.projects.map((p) => {
@@ -95,6 +96,9 @@ const useClientStore = create<ClientStoreState>((set) => ({
 interface ProjectStoreState {
     projects: Project[];
     selectedProject: Project | null;
+    selectProject: (projectId: ProjectId) => void;
+    clearSelectedProject: () => void;
+    addProject: (newProject: Project) => void;
 }
 
 // Create a Zustand store for managing projects
@@ -103,7 +107,7 @@ const useProjectStore = create<ProjectStoreState>((set) => ({
     selectedProject: null, // Store the selected project
 
     // Function to select a project
-    selectProject: (projectId: number) => {
+    selectProject: (projectId: ProjectId) => {
         set((state) => ({
             selectedProject: state.projects.find((p) => p.id === projectId),
         }));
@@ -124,6 +128,12 @@ const useProjectStore = create<ProjectStoreState>((set) => ({
 interface BillingStoreState {
     billingEntries: BillingHistoryEntry[];
     selectedBillingEntry: BillingHistoryEntry | null;
+    addBillingEntry: (newBillingEntry: BillingHistoryEntry) => void;
+    updateBillingEntry: (updatedEntry: BillingHistoryEntry) => void;
+    setSelectedBillingEntry: (billingEntry: BillingHistoryEntry) => void;
+    clearSelectedBillingEntry: () => void;
+    deleteBillingEntry: (billingEntryId: BillingHistoryEntryId) => void;
+    fetchBillingEntries: (cLientId: ClientId) => void;
 }
 
 // Create a Zustand store for managing billing entries
@@ -138,12 +148,47 @@ const useBillingStore = create<BillingStoreState>((set) => ({
         }));
     },
 
+    // Function to update the selected billing entry, finds it in the history, and updates it to the billing entries
+    updateBillingEntry: (updatedEntry: BillingHistoryEntry) => {
+        set((state) => ({
+            billingEntries: state.billingEntries.map((entry) =>
+                entry.id === updatedEntry.id ? updatedEntry : entry
+            ),
+        }));
+    },
+
+
     // Function to set the selected billing entry
     setSelectedBillingEntry: (billingEntry: BillingHistoryEntry) =>
         set({ selectedBillingEntry: billingEntry }),
 
     // Function to clear the selected billing entry
     clearSelectedBillingEntry: () => set({ selectedBillingEntry: null }),
+    fetchBillingEntries: async (clientId: ClientId) => {
+        try {
+
+            // Make an API call to fetch billing entries for the client
+            const response = await fetch('/api/billing-entries', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ clientId }),
+            });
+
+            const entries = await response.json();
+            set({ billingEntries: entries });
+        } catch (error) {
+            set((state) => ({ billingEntries: state.billingEntries }));
+            console.error('Error fetching billing entries:', error);
+        }
+    },
+    // Function to delete a billing entry
+    deleteBillingEntry: (billingEntryId: BillingHistoryEntryId) => {
+        set((state) => ({
+            billingEntries: state.billingEntries.filter((entry) => entry.id !== billingEntryId),
+        }));
+    },
 }));
 
 export { useProjectStore, useBillingStore };

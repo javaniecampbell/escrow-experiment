@@ -1,12 +1,12 @@
 // ClientMessages.js
 import React, { useState } from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
 
 const ClientMessages = () => {
-  const { clientProjects } = useStore();
+  const { projects: clientProjects } = useStore();
   const [selectedProject, setSelectedProject] = useState("");
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<string[]>([]);
 
   // Handle sending a message
   const handleSendMessage = () => {
@@ -54,7 +54,7 @@ const ClientMessages = () => {
           <h3 className="text-md font-semibold">Send Message</h3>
           <textarea
             className="border rounded w-full p-2"
-            rows="4"
+            rows={4}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type your message here..."

@@ -1,9 +1,9 @@
 // ClientRecentActivity.js
 import React from "react";
-import useStore from "@/shared/store";
+import useStore from "@/shared/clientStore";
 
 const ClientRecentActivity = () => {
-  const { clientProjects } = useStore();
+  const { projects: clientProjects } = useStore();
 
   return (
     <div className="p-4 border border-gray-300 rounded">

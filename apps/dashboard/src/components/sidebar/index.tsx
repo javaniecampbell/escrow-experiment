@@ -7,6 +7,7 @@ import { Attributes } from "@opentelemetry/api";
 type Props = {
   id: string;
   type: "agency" | "client" | "subaccount";
+  isOpen?: boolean;
 };
 
 /**
@@ -18,7 +19,7 @@ type Props = {
  *
  * @returns {Promise<JSX.Element>} The sidebar component.
  */
-const Sidebar = ({ id, type }: Props) => {
+const Sidebar = ({ id, type, isOpen }: Props) => {
   const [user, setUser] = useState<User | null>(null);
   const [isWhiteLabeledAgency, setIsWhiteLabeledAgency] = useState(false);
   const [sideBarLogo, setSideBarLogo] = useState<string | null | undefined>(
@@ -97,7 +98,7 @@ const Sidebar = ({ id, type }: Props) => {
   return (
     <>
       <MenuOptions
-        defaultOpen={true}
+        defaultOpen={isOpen}
         subAccounts={subAccounts ?? []}
         sidebarOption={sidebarOptions ?? []}
         sidebarLogo={sideBarLogo ?? ""}
@@ -106,7 +107,7 @@ const Sidebar = ({ id, type }: Props) => {
         id={id}
       />
       <MenuOptions
-        defaultOpen={true}
+        defaultOpen={isOpen}
         subAccounts={subAccounts ?? []}
         sidebarOption={sidebarOptions ?? []}
         sidebarLogo={sideBarLogo ?? ""}

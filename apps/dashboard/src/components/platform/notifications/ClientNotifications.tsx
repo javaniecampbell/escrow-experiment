@@ -2,7 +2,9 @@
 import React, { useState } from "react";
 
 const ClientNotifications = () => {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<
+    { id: number; message: string }[]
+  >([]);
 
   // Function to simulate receiving notifications
   const receiveNotification = () => {
@@ -24,7 +26,7 @@ const ClientNotifications = () => {
         Receive Notification
       </button>
       <ul>
-        {notifications.map((notification) => (
+        {notifications.map((notification: { id: number; message: string }) => (
           <li key={notification.id} className="mb-2">
             {notification.message}
           </li>

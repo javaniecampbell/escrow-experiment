@@ -86,8 +86,8 @@ export const initialMilestones = [{
 }] satisfies Milestone[];
 // Sample data for projects
 export const initialProjects = [
-    { id: 1, title: 'Project 1', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', balance: 100, inEscrow: 100, totalPayouts: 0, milestones: initialMilestones ?? [], status: 'Active', clientId: 1 },
-    { id: 2, title: 'Project 2', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', balance: 0, inEscrow: 0, totalPayouts: 100, milestones: [], status: 'Completed', clientId: 2 },
+    { id: 1, title: 'Project 1', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', balance: 100, inEscrow: 100, totalPayouts: 0, milestones: initialMilestones ?? [], recentActivity: [], status: 'Active', clientId: 1, messages: [], },
+    { id: 2, title: 'Project 2', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', balance: 0, inEscrow: 0, totalPayouts: 100, milestones: [], recentActivity: [], status: 'Completed', clientId: 2, messages: [], },
     // Add more projects as needed
 ];
 // Sample data for billing history

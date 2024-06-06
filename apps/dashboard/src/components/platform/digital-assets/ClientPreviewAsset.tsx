@@ -1,9 +1,9 @@
 // ClientPreviewAsset.js
 import React, { useState } from "react";
-import useStore from "@shared/store";
+import useStore from "@/shared/clientStore";
 
 const ClientPreviewAsset = () => {
-  const { clientProjects, markMilestonePreviewed } = useStore();
+  const { projects: clientProjects, markMilestonePreviewed } = useStore();
   const [selectedMilestone, setSelectedMilestone] = useState("");
   const [previewed, setPreviewed] = useState(false);
 
