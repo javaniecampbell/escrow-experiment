@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var database = builder.AddPostgres("escrowdb");
+var database = builder.AddPostgres("postgres").AddDatabase("escrowservice");
 var storage = builder.AddAzureStorage("escrowstorage");
 var cosmosdb = builder.AddAzureCosmosDB("notificationsCosmos");
 var notificationCosmosDb = cosmosdb.AddDatabase("escrownotificationsdb");
@@ -20,14 +20,14 @@ var notificationServiceApi = builder.AddProject<Projects.NotificationService_Api
 	.WithReference(notificationCosmosDb)
 	.WithOtlpExporter();
 
-var paymentServiceApi = builder.AddNpmApp("paymentservice-api","../payment-service", "dev")
+var paymentServiceApi = builder.AddNpmApp("paymentservice-api", "../payment-service", "dev")
 	.WithHttpEndpoint(env: "PORT")
 	.WithExternalHttpEndpoints()
 	.WithReference(database)
 	.WithEnvironment("DATABSE_URL", database)
 	.WithReference(notificationServiceApi)
 	// How to add environment variables in .dotnet aspire
-	.WithEnvironment("AZURE_STORAGE_CONNECTION_STRING",blobStorage)
+	.WithEnvironment("AZURE_STORAGE_CONNECTION_STRING", blobStorage)
 	.PublishAsDockerFile();
 
 var dashboardFrontend = builder.AddNpmApp("dashboard-nextjs", "../../apps/dashboard", "dev")
