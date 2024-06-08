@@ -10,18 +10,29 @@ builder.AddServiceDefaults();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.AddCosmosDbContext<NotificationDbContext>("notificationsCosmos", "escrownotificationsdb");
 
-builder.EnrichCosmosDbContext<NotificationDbContext>();
-// builder.Services.AddNpgsqlDbContext<NotificationDbContext>("notificationsNpgsql");
+if (builder.Environment.IsProduction())
+{
+	builder.AddCosmosDbContext<NotificationDbContext>("notificationsCosmos", "escrownotificationsdb");
+	builder.EnrichCosmosDbContext<NotificationDbContext>();
 
-//builder.Services.AddDbContext<NotificationDbContext>(options =>
-//{
-//    // options.UseInMemoryDatabase("NotificationService");
-//    // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-//    // use postgres
-//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-//});
+	// builder.Services.AddNpgsqlDbContext<NotificationDbContext>("notificationsNpgsql");
+
+	//builder.Services.AddDbContext<NotificationDbContext>(options =>
+	//{
+	//    // options.UseInMemoryDatabase("NotificationService");
+	//    // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+	//    // use postgres
+	//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+	//});
+}else{
+	builder.Services.AddDbContext<NotificationDbContext>(options =>
+	{
+		options.UseInMemoryDatabase("NotificationService");
+	});
+}
+
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -29,28 +40,28 @@ var baseUrl = "/api";
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
 var summaries = new[]
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+	"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
 app.MapGet($"{baseUrl}/weatherforecast", () =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+	var forecast = Enumerable.Range(1, 5).Select(index =>
+		new WeatherForecast
+		(
+			DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+			Random.Shared.Next(-20, 55),
+			summaries[Random.Shared.Next(summaries.Length)]
+		))
+		.ToArray();
+	return forecast;
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
@@ -64,5 +75,5 @@ app.Run();
 
 public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+	public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
