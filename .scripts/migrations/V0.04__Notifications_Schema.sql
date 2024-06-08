@@ -1,4 +1,4 @@
-CREATE TABLE Notifications
+CREATE TABLE NotificationsV2
 (
     NotificationId INT PRIMARY KEY IDENTITY(1,1),
     UserId INT,
