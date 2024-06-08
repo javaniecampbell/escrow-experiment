@@ -6,18 +6,19 @@ public class Notification
     public int UserId { get; set; }
     public int EscrowId { get; set; }
 
-    public DateTimeOffset Timestamp { get; set; }
+    public DateTime Timestamp { get; set; }
     public string Message { get; set; }
 
     public bool IsRead { get; set; }
 
-    public NotificationType NotificationType { get; set; }
+    public string NotificationType { get; set; }
+    //public NotificationType NotificationType { get; set; }
     public bool IsDeleted { get; set; }
 
-    public DateTimeOffset CreatedAt { get; set; }
-    public DateTimeOffset? UpdatedAt { get; set; }
-    public DateTimeOffset? DeletedAt { get; set; }
-    public DateTimeOffset? ReadAt { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public DateTime? ReadAt { get; set; }
 
     public int CreatedBy { get; set; }
     public int? UpdatedBy { get; set; }
@@ -27,11 +28,12 @@ public class Notification
 
     public Notification()
     {
-        CreatedAt = DateTimeOffset.UtcNow;
-        UpdatedAt = DateTimeOffset.UtcNow;
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
         Message = string.Empty;
         IsRead = false;
         IsDeleted = false;
+        NotificationType = string.Empty;
     }
 
     public Notification(int userId, int escrowId, string message)
@@ -40,6 +42,5 @@ public class Notification
         UserId = userId;
         EscrowId = escrowId;
         Message = message;
-
     }
 }
