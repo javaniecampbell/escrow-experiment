@@ -4,16 +4,18 @@ namespace NotificationService.Api.Application.Common
 {
 	public class NotificationGenerator
 	{
-		public Notification GenerateProjectUpdateNotification(string message, int projectId, string userId)
+		public Notification GenerateProjectUpdateNotification(string message, string projectId, string userId)
 		{
 			// Generate and return a project update notification
-			return new Notification
+			var notification = new Notification
 			{
+				UserId = userId,
+				//Type = NotificationType.ProjectUpdate,
+				NotificationType = "Project U[date",
 				Message = message,
-				//ProjectId = projectId,
-				//UserId = userId,
-				// Set other notification properties as needed
+				ProjectId = projectId
 			};
+			return notification;
 		}
 
 		// Add methods for generating other notification types
