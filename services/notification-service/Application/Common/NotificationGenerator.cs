@@ -11,9 +11,9 @@ namespace NotificationService.Api.Application.Common
 			{
 				UserId = userId,
 				//Type = NotificationType.ProjectUpdate,
-				NotificationType = "Project U[date",
+				NotificationType = "Project Update",
 				Message = message,
-				ProjectId = projectId
+				//ProjectId = projectId
 			};
 			return notification;
 		}
