@@ -36,13 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Common\" />
     <Folder Include="Application\DTOs\" />
     <Folder Include="Application\Errors\" />
-    <Folder Include="Application\Extensions\" />
-    <Folder Include="Application\Models\" />
     <Folder Include="Application\Interfaces\" />
-    <Folder Include="Application\Services\" />
     <Folder Include="Domain\Interfaces\" />
     <Folder Include="Infrastructure\Extensions\" />
     <Folder Include="Infrastructure\Persistence\Configuration\" />
