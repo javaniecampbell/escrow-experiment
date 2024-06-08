@@ -23,6 +23,21 @@
     "build:dashboard": "yarn workspace dashboard build",
     "start:dashboard": "yarn workspace dashboard start",
     "lint:dashboard": "yarn workspace dashboard lint",
-    "test:dashbaord": "yarn workspace dashboard test"
+    "test:dashboard": "yarn workspace dashboard test",
+    "dev:payment-service": "yarn workspace payment-service dev",
+    "build:payment-service": "yarn workspace payment-service build",
+    "start:payment-service": "yarn workspace payment-service start",
+    "lint:payment-service": "yarn workspace payment-service lint",
+    "test:payment-service": "yarn workspace payment-service test",
+    "dev:iteration-service": "yarn workspace iteration-service dev",
+    "build:iteration-service": "yarn workspace iteration-service build",
+    "start:iteration-service": "yarn workspace iteration-service start",
+    "lint:iteration-service": "yarn workspace iteration-service lint",
+    "test:iteration-service": "yarn workspace iteration-service test",
+    "dev:crm-service": "yarn workspace crm-service dev",
+    "build:crm-service": "yarn workspace crm-service build",
+    "start:crm-service": "yarn workspace crm-service start",
+    "lint:crm-service": "yarn workspace crm-service lint",
+    "test:crm-service": "yarn workspace crm-service test"
   }
 }
