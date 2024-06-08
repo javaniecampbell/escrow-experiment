@@ -3,8 +3,8 @@
 public class Notification
 {
     public int NotificationId { get; set; }
-    public int UserId { get; set; }
-    public int EscrowId { get; set; }
+    public string UserId { get; set; }
+    public string EscrowId { get; set; }
 
     public DateTime Timestamp { get; set; }
     public string Message { get; set; }
@@ -20,10 +20,10 @@ public class Notification
     public DateTime? DeletedAt { get; set; }
     public DateTime? ReadAt { get; set; }
 
-    public int CreatedBy { get; set; }
-    public int? UpdatedBy { get; set; }
-    public int? DeletedBy { get; set; }
-    public int? ReadBy { get; set; }
+    public string CreatedBy { get; set; }
+    public string? UpdatedBy { get; set; }
+    public string? DeletedBy { get; set; }
+    public string? ReadBy { get; set; }
 
 
     public Notification()
@@ -34,13 +34,17 @@ public class Notification
         IsRead = false;
         IsDeleted = false;
         NotificationType = string.Empty;
+        UserId = string.Empty;
+        CreatedBy = string.Empty;
+        EscrowId = string.Empty;
     }
 
-    public Notification(int userId, int escrowId, string message)
+    public Notification(string userId, string escrowId, string message)
     : this()
     {
         UserId = userId;
         EscrowId = escrowId;
         Message = message;
+        CreatedBy = userId;
     }
 }
