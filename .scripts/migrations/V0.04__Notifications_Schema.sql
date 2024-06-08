@@ -21,6 +21,10 @@ CREATE TABLE NotificationTypes
 CREATE TABLE ProjectUpdateNotifications
 (
     NotificationId INT PRIMARY KEY IDENTITY(1,1),
-    ProjectId INT,
+    UserId INT,
+    Message NVARCHAR(MAX),
+    Timestamp DATETIME,
+    IsRead BIT,
+    ProjectId INT
 );
 -- Add foreign key constraints, indexes, etc. as needed
