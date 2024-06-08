@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NotificationService.Api.Hubs;
 using NotificationService.Api.Infrastructure.Persistence.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.AddServiceDefaults();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
 if (builder.Environment.IsProduction())
@@ -69,6 +71,7 @@ app.MapGet($"{baseUrl}/weatherforecast", () =>
 app.UseHttpsRedirection();
 app.UseHsts();
 
+app.MapHub<NotificationsHub>("/notificationsHub");
 app.MapControllers();
 
 app.Run();
