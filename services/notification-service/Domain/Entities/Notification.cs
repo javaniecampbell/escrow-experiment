@@ -1,11 +1,14 @@
-﻿namespace Notifications.Api.Domain.Entities;
+﻿
+namespace Notifications.Api.Domain.Entities;
 
 public class Notification
 {
-    public int NotificationId { get; set; }
+    public string NotificationId { get; set; }
     public string UserId { get; set; }
+    public virtual User User { get; set; }
     public string EscrowId { get; set; }
 
+    public string Title { get; set; }
     public DateTime Timestamp { get; set; }
     public string Message { get; set; }
 
@@ -28,8 +31,10 @@ public class Notification
     public string? ProjectId { get; set; }
     public Notification()
     {
+        NotificationId = string.Empty;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
+        Title = string.Empty;
         Message = string.Empty;
         IsRead = false;
         IsDeleted = false;
@@ -37,13 +42,15 @@ public class Notification
         UserId = string.Empty;
         CreatedBy = string.Empty;
         EscrowId = string.Empty;
+        User = new User();
     }
 
-    public Notification(string userId, string escrowId, string message, string? projectId)
+    public Notification(string userId, string escrowId,string title, string message, string? projectId)
     : this()
     {
         UserId = userId;
         EscrowId = escrowId;
+        Title = title;
         Message = message;
         CreatedBy = userId;
         ProjectId = projectId;
