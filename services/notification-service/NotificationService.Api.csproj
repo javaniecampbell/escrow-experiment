@@ -43,7 +43,6 @@
     <Folder Include="Application\Interfaces\" />
     <Folder Include="Domain\Interfaces\" />
     <Folder Include="Infrastructure\Extensions\" />
-    <Folder Include="Infrastructure\Persistence\Configuration\" />
     <Folder Include="Infrastructure\Persistence\Repositories\" />
     <Folder Include="Middlewares\" />
     <Folder Include="Extensions\" />
