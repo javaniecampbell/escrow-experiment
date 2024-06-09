@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Notifications.Api.Application.Extensions;
 using Notifications.Api.Hubs;
+using Notifications.Api.Infrastructure.Extensions;
 using Notifications.Api.Infrastructure.Persistence.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -12,6 +15,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
+// custom configuration
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 
 if (builder.Environment.IsProduction())
 {
