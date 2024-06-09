@@ -1,4 +1,4 @@
-﻿namespace NotificationService.Api.Domain.Entities;
+﻿namespace Notifications.Api.Domain.Entities;
 
 public class Notification
 {

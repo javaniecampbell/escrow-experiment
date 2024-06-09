@@ -8,6 +8,7 @@
     <UserSecretsId>5fd01d1f-9253-4630-a949-db993c80293e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <!--<AssemblyName>Notifications.Api</AssemblyName>-->
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using NotificationService.Api.Hubs;
-using NotificationService.Api.Infrastructure.Persistence.Context;
+using Notifications.Api.Hubs;
+using Notifications.Api.Infrastructure.Persistence.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,7 +1,7 @@
-﻿using NotificationService.Api.Application.Services;
-using NotificationService.Api.Domain.Entities;
+﻿using Notifications.Api.Application.Services;
+using Notifications.Api.Domain.Entities;
 
-namespace NotificationService.Api.Application.Common
+namespace Notifications.Api.Application.Common
 {
 	public enum NotificationType
 	{

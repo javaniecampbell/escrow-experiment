@@ -1,6 +1,6 @@
-﻿using NotificationService.Api.Domain.Entities;
+﻿using Notifications.Api.Domain.Entities;
 
-namespace NotificationService.Api.Application.Extensions
+namespace Notifications.Api.Application.Extensions
 {
 	public static class NotificationExtensions
 	{
