@@ -15,17 +15,6 @@ public class NotificationDbContext : DbContext
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-
 		modelBuilder.ApplyConfigurationsFromAssembly(typeof(NotificationDbContext).Assembly);
-
-		modelBuilder.Entity<NotificationSetting>()
-	 .HasKey(n => n.NotificationSettingId);
-
-
-		modelBuilder.Entity<NotificationSetting>()
-		.HasOne(n => n.User)
-		.WithOne(u => u.NotificationSetting)
-		.HasForeignKey<NotificationSetting>(n => n.UserId);
-
 	}
 }
