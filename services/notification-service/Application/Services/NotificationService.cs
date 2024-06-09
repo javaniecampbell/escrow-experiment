@@ -113,6 +113,51 @@ namespace NotificationService.Api.Application.Services
 				.ToListAsync();
 		}
 
+		// GetBillingNotificationsAsync extension
+		public async Task<IEnumerable<Notification>> GetBillingNotificationsAsync(string userId, int billingId)
+		{
+			return await _context.Notifications
+				.Where(n => n.UserId == userId 
+				//&& n.BillingId == billingId
+				)
+				.OrderByDescending(n => n.CreatedAt)
+				.ToListAsync();
+		}
+
+		// GetMessageNotificationsAsync extension
+		public async Task<IEnumerable<Notification>> GetMessageNotificationsAsync(string userId, int messageId)
+		{
+			return await _context.Notifications
+				.Where(n => n.UserId == userId 
+				//&& n.MessageId == messageId
+				)
+				.OrderByDescending(n => n.CreatedAt)
+				.ToListAsync();
+		}
+
+		// GetCustomNotificationsAsync extension
+		public async Task<IEnumerable<Notification>> GetCustomNotificationsAsync(string userId, string customIdentifier)
+		{
+			return await _context.Notifications
+				.Where(n => n.UserId == userId 
+				//&& n.CustomIdentifier == customIdentifier
+				)
+				.OrderByDescending(n => n.CreatedAt)
+				.ToListAsync();
+		}
+
+		// GetProjectUpdateNotificationsAsync extension
+		public async Task<IEnumerable<Notification>> GetProjectUpdateNotificationsAsync(string userId, string projectId)
+		{
+			return await _context.Notifications
+				.Where(n => n.UserId == userId 
+				&& n.ProjectId == projectId 
+				//&& n.Type == NotificationType.ProjectUpdate
+				)
+				.OrderByDescending(n => n.CreatedAt)
+				.ToListAsync();
+		}
+
 		public async Task NavigateToProjectAsync(int projectId)
 		{
 			// Implement the logic to navigate to the relevant project using projectId.
