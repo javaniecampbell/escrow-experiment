@@ -9,6 +9,8 @@ namespace NotificationService.Api.Infrastructure.Persistence.Configuration
 	{
 		public void Configure(EntityTypeBuilder<User> builder)
 		{
+			builder.ToTable("Users");
+
 			builder
 			.HasKey(u => u.Id);
 
