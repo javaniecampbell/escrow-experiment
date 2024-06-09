@@ -78,5 +78,47 @@ namespace NotificationService.Api.Application.Services
 				await _context.SaveChangesAsync();
 			}
 		}
+
+		public async Task<IEnumerable<Notification>> GetNotificationsAsync(string userId)
+		{
+			return await _context.Notifications
+				.Where(n => n.UserId == userId)
+				.OrderByDescending(n => n.CreatedAt)
+				.ToListAsync();
+		}
+
+		public async Task<IEnumerable<Notification>> GetUnreadNotificationsOrderedByCreateAtAsync(string userId)
+		{
+			return await _context.Notifications
+				.Where(n => n.UserId == userId && !n.IsRead)
+				.OrderByDescending(n => n.CreatedAt)
+				.ToListAsync();
+		}
+
+		public async Task MarkNotificationAsReadAsync(string notificationId)
+		{
+			var notification = await _context.Notifications.FindAsync(notificationId);
+			if (notification != null)
+			{
+				notification.IsRead = true;
+				await _context.SaveChangesAsync();
+			}
+		}
+
+		public async Task<IEnumerable<Notification>> GetProjectNotificationsAsync(string userId, string projectId)
+		{
+			return await _context.Notifications
+				.Where(n => n.UserId == userId && n.ProjectId == projectId)
+				.OrderByDescending(n => n.CreatedAt)
+				.ToListAsync();
+		}
+
+		public async Task NavigateToProjectAsync(int projectId)
+		{
+			// Implement the logic to navigate to the relevant project using projectId.
+			// This could involve redirecting the user to the project's page or taking some other action.
+			// You can use routing or other relevant mechanisms based on your application structure.
+		}
+
 	}
 }

@@ -25,7 +25,7 @@ public class Notification
     public string? DeletedBy { get; set; }
     public string? ReadBy { get; set; }
 
-
+    public string? ProjectId { get; set; }
     public Notification()
     {
         CreatedAt = DateTime.UtcNow;
@@ -39,12 +39,13 @@ public class Notification
         EscrowId = string.Empty;
     }
 
-    public Notification(string userId, string escrowId, string message)
+    public Notification(string userId, string escrowId, string message, string? projectId)
     : this()
     {
         UserId = userId;
         EscrowId = escrowId;
         Message = message;
         CreatedBy = userId;
+        ProjectId = projectId;
     }
 }
