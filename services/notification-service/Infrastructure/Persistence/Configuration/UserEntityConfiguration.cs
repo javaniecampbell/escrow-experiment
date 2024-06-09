@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Notifications.Api.Domain.Entities;
 using System.Reflection.Emit;
 
-namespace NotificationService.Api.Infrastructure.Persistence.Configuration
+namespace Notifications.Api.Infrastructure.Persistence.Configuration
 {
 	public class UserEntityConfiguration : IEntityTypeConfiguration<User>
 	{
