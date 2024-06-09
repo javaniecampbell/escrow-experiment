@@ -40,7 +40,6 @@
   <ItemGroup>
     <Folder Include="Application\DTOs\" />
     <Folder Include="Application\Errors\" />
-    <Folder Include="Application\Interfaces\" />
     <Folder Include="Domain\Interfaces\" />
     <Folder Include="Infrastructure\Persistence\Repositories\" />
     <Folder Include="Middlewares\" />

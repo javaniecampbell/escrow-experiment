@@ -4,6 +4,7 @@ using Notifications.Api.Application.Extensions;
 using Notifications.Api.Domain.Entities;
 using Notifications.Api.Hubs;
 using Notifications.Api.Infrastructure.Persistence.Context;
+using NotificationService.Api.Application.Interfaces;
 
 namespace Notifications.Api.Application.Services
 {
@@ -11,11 +12,15 @@ namespace Notifications.Api.Application.Services
 	{
 		private readonly IHubContext<NotificationsHub> _hubContext;
 		private readonly NotificationDbContext _context;
+		private readonly ILogger _logger;
+		private readonly INotificationRepository _notificationRepository;
 
-		public NotificationService(IHubContext<NotificationsHub> hubContext, NotificationDbContext context)
+		public NotificationService(IHubContext<NotificationsHub> hubContext, NotificationDbContext context, INotificationRepository notificationRepository, ILogger<NotificationService> logger)
 		{
 			_hubContext = hubContext;
 			_context = context;
+			_logger = logger;
+			_notificationRepository = notificationRepository;
 		}
 
 		public async Task SendNotificationAsync(Notification notification, string userId)
@@ -23,6 +28,7 @@ namespace Notifications.Api.Application.Services
 			// Save the notification to the database
 			_context.Notifications.Add(notification);
 			await _context.SaveChangesAsync();
+			_notificationRepository.Create(notification);
 
 			// Send the notification to the user
 			await _hubContext.Clients.User(userId).SendAsync("ReceiveNotification", notification);
@@ -32,11 +38,14 @@ namespace Notifications.Api.Application.Services
 		public async Task MarkNotificationAsReadAsync(int notificationId)
 		{
 			var notification = await _context.Notifications.FindAsync(notificationId);
+			// var notification = _notificationRepository.GetNotification(notificationId);
 			if (notification != null)
 			{
 				notification.MarkAsRead();
 				await _context.SaveChangesAsync();
 			}
+
+			//_notificationRepository.MarkAsRead(notificationId);
 		}
 
 		public async Task<IEnumerable<Notification>> GetUnreadNotificationsAsync(string userId)
@@ -44,6 +53,8 @@ namespace Notifications.Api.Application.Services
 			return await _context.Notifications
 				.Where(n => n.UserId == userId && !n.IsRead)
 				.ToListAsync();
+
+			// return _notificationRepository.GetUnreadNotifications(userId);
 		}
 
 		public async Task<IEnumerable<Notification>> GetAllNotificationsAsync(string userId)
@@ -51,6 +62,8 @@ namespace Notifications.Api.Application.Services
 			return await _context.Notifications
 				.Where(n => n.UserId == userId)
 				.ToListAsync();
+
+			// return _notificationRepository.GetAllNotifications(userId);
 		}
 
 		public async Task EnableNotificationTypeAsync(string userId, string type)
@@ -58,12 +71,15 @@ namespace Notifications.Api.Application.Services
 			var user = await _context.Users.Include(u => u.NotificationSetting)
 				.FirstOrDefaultAsync(u => u.Id == userId);
 
+			// var user = _notificationRepository.GetUser(userId);
 			if (user != null)
 			{
 				user.NotificationSetting ??= new NotificationSetting();
 				user.NotificationSetting.EnableNotificationType(type);
 				await _context.SaveChangesAsync();
 			}
+
+			// _notificationRepository.EnableNotificationType(userId, type);
 		}
 
 		public async Task DisableNotificationTypeAsync(string userId, string type)
@@ -71,11 +87,15 @@ namespace Notifications.Api.Application.Services
 			var user = await _context.Users.Include(u => u.NotificationSetting)
 				.FirstOrDefaultAsync(u => u.Id == userId);
 
+			// var user = _notificationRepository.GetUser(userId);
+
 			if (user != null)
 			{
 				user.NotificationSetting ??= new NotificationSetting();
 				user.NotificationSetting.DisableNotificationType(type);
 				await _context.SaveChangesAsync();
+
+				// _notificationRepository.DisableNotificationType(userId, type);
 			}
 		}
 
@@ -85,6 +105,8 @@ namespace Notifications.Api.Application.Services
 				.Where(n => n.UserId == userId)
 				.OrderByDescending(n => n.CreatedAt)
 				.ToListAsync();
+
+			// return _notificationRepository.GetNotificationsOrderedByCreatedAt(userId);
 		}
 
 		public async Task<IEnumerable<Notification>> GetUnreadNotificationsOrderedByCreateAtAsync(string userId)
@@ -93,16 +115,21 @@ namespace Notifications.Api.Application.Services
 				.Where(n => n.UserId == userId && !n.IsRead)
 				.OrderByDescending(n => n.CreatedAt)
 				.ToListAsync();
+
+			// return _notificationRepository.GetUnreadNotificationsOrderedByCreateAt(userId);
 		}
 
 		public async Task MarkNotificationAsReadAsync(string notificationId)
 		{
 			var notification = await _context.Notifications.FindAsync(notificationId);
+			// var notification = _notificationRepository.GetNotification(notificationId);
 			if (notification != null)
 			{
 				notification.IsRead = true;
 				await _context.SaveChangesAsync();
 			}
+
+			// _notificationRepository.MarkAsRead(notificationId);
 		}
 
 		public async Task<IEnumerable<Notification>> GetProjectNotificationsAsync(string userId, string projectId)
@@ -111,6 +138,8 @@ namespace Notifications.Api.Application.Services
 				.Where(n => n.UserId == userId && n.ProjectId == projectId)
 				.OrderByDescending(n => n.CreatedAt)
 				.ToListAsync();
+
+			// return _notificationRepository.GetProjectNotifications(userId, projectId);
 		}
 
 		// GetBillingNotificationsAsync extension
@@ -122,6 +151,8 @@ namespace Notifications.Api.Application.Services
 				)
 				.OrderByDescending(n => n.CreatedAt)
 				.ToListAsync();
+
+			// return _notificationRepository.GetBillingNotifications(userId, billingId);
 		}
 
 		// GetMessageNotificationsAsync extension
@@ -133,6 +164,8 @@ namespace Notifications.Api.Application.Services
 				)
 				.OrderByDescending(n => n.CreatedAt)
 				.ToListAsync();
+
+			// return _notificationRepository.GetMessageNotifications(userId, messageId);
 		}
 
 		// GetCustomNotificationsAsync extension
@@ -144,6 +177,8 @@ namespace Notifications.Api.Application.Services
 				)
 				.OrderByDescending(n => n.CreatedAt)
 				.ToListAsync();
+
+			// return _notificationRepository.GetCustomNotifications(userId, customIdentifier);
 		}
 
 		// GetProjectUpdateNotificationsAsync extension
@@ -156,6 +191,8 @@ namespace Notifications.Api.Application.Services
 				)
 				.OrderByDescending(n => n.CreatedAt)
 				.ToListAsync();
+
+			// return _notificationRepository.GetProjectUpdateNotifications(userId, projectId);
 		}
 
 		public async Task NavigateToProjectAsync(int projectId)
@@ -174,6 +211,10 @@ namespace Notifications.Api.Application.Services
 		internal Notification GenerateNotification(NotificationType notificationType)
 		{
 			// Generates a new notification using the notification service and saves it to the database.
+
+			// var notification = _notificationGenerator.GenerateFromType(notificationType); 
+
+			// _notificationRepository.Create(notification);
 
 			return new Notification();
 		}
