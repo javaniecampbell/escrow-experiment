@@ -3,17 +3,6 @@ using Notifications.Api.Domain.Entities;
 
 namespace Notifications.Api.Application.Common
 {
-	public enum NotificationType
-	{
-		ProjectUpdate,
-		BillingReminder,
-		NewMessage,
-		MilestoneCompleted,
-		MessageReceived,
-		NewProjectAssigned,
-		DocumentUploaded,
-		Custom
-	}
 	public class NotificationGenerator
 	{
 		public Notification GenerateProjectUpdateNotificationForProject(string message, string projectId, string userId)
