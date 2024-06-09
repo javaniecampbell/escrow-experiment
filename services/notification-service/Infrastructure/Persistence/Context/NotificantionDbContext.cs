@@ -21,14 +21,6 @@ public class NotificationDbContext : DbContext
 		modelBuilder.Entity<NotificationSetting>()
 	 .HasKey(n => n.NotificationSettingId);
 
-		modelBuilder.Entity<User>()
-		.HasKey(u => u.Id);
-
-		modelBuilder.Entity<User>()
-		.HasOne(u => u.NotificationSetting)
-		.WithOne(n => n.User)
-		.HasForeignKey<NotificationSetting>(n => n.UserId);
-
 
 		modelBuilder.Entity<NotificationSetting>()
 		.HasOne(n => n.User)
