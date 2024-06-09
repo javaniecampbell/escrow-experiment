@@ -1,23 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NotificationService.Api.Infrastructure.Persistence.Context;
+using Notifications.Api.Application.Services;
+using Notifications.Api.Domain.Entities;
+using Notifications.Api.Infrastructure.Persistence.Context;
 
-namespace NotificationService.Api.Controllers;
+namespace Notifications.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class NotificationsController : ControllerBase
 {
     private readonly NotificationDbContext _dbContext;
+	private readonly NotificationService _notificationService;
 	private readonly ILogger<NotificationsController> _logger;
 
-	public NotificationsController(NotificationDbContext dbContext,ILogger<NotificationsController> logger)
+	public NotificationsController(NotificationDbContext dbContext, NotificationService notificationService, ILogger<NotificationsController> logger)
     {
-        _dbContext = dbContext;
 		_logger = logger;
+        _dbContext = dbContext;
+		_notificationService = notificationService; 
 	}
 
-    [HttpGet("{userId}")]
-    public IActionResult GetNotifications(int userId)
+	// GET: api/notifications/{userId}
+	[HttpGet("{userId}")]
+    public IActionResult GetNotifications(string userId)
     {
         _logger.LogInformation("Fetching notifications for user");
         try
@@ -36,5 +41,62 @@ public class NotificationsController : ControllerBase
             return StatusCode(500, "Internal server error");
         }
     }
+
+	// GET: api/notifications
+	[HttpGet]
+	public ActionResult<IEnumerable<Notification>> GetNotifications()
+	{
+		var notifications = _dbContext.Notifications.ToList();
+		return Ok(notifications);
+	}
+
+	// GET: api/notifications/unread
+	[HttpGet("unread")]
+	public ActionResult<IEnumerable<Notification>> GetUnreadNotifications()
+	{
+		var unreadNotifications = _dbContext.Notifications.Where(n => !n.IsRead).ToList();
+		return Ok(unreadNotifications);
+	}
+
+	// POST: api/notifications/markasread/{id}
+	[HttpPost("markasread/{id}")]
+	public IActionResult MarkNotificationAsRead(int id)
+	{
+		var notification = _dbContext.Notifications.FirstOrDefault(n => n.Id == id);
+		if (notification == null)
+		{
+			return NotFound();
+		}
+
+		// Check if the notification is already read
+		if (!notification.IsRead)
+		{
+			// Mark the notification as read and persist the change
+			notification.MarkAsRead(_dbContext);
+			return Ok(new { message = "Notification marked as read." });
+		}
+
+		return Ok(new { message = "Notification is already read." });
+	}
+
+	// Implement other actions for managing notifications as needed
+
+	// POST: api/notifications/generate
+	[HttpPost("generate")]
+	public IActionResult GenerateNotification([FromBody] NotificationType notificationType)
+	{
+		// Generate the notification using your notification generator
+		var notification = _notificationService.GenerateNotification(notificationType);
+		if (notification == null)
+		{
+			return BadRequest(new { message = "Failed to generate notification." });
+		}
+
+		// Save the generated notification to the database
+		_dbContext.Notifications.Add(notification);
+		_dbContext.SaveChanges();
+
+		return Ok(new { message = "Notification generated and saved." });
+	}
 }
 

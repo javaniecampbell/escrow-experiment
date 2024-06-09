@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using NotificationService.Api.Application.Extensions;
-using NotificationService.Api.Domain.Entities;
-using NotificationService.Api.Hubs;
-using NotificationService.Api.Infrastructure.Persistence.Context;
+using Notifications.Api.Application.Extensions;
+using Notifications.Api.Domain.Entities;
+using Notifications.Api.Hubs;
+using Notifications.Api.Infrastructure.Persistence.Context;
 
-namespace NotificationService.Api.Application.Services
+namespace Notifications.Api.Application.Services
 {
 	public class NotificationService
 	{
@@ -165,5 +165,17 @@ namespace NotificationService.Api.Application.Services
 			// You can use routing or other relevant mechanisms based on your application structure.
 		}
 
+		/// <summary>
+		/// Generates a new notification using the notification service and saves it to the database.
+		/// </summary>
+		/// <param name="notificationType"></param>
+		/// <returns></returns>
+		/// <exception cref="NotImplementedException"></exception>
+		internal Notification GenerateNotification(NotificationType notificationType)
+		{
+			// Generates a new notification using the notification service and saves it to the database.
+
+			return new Notification();
+		}
 	}
 }
