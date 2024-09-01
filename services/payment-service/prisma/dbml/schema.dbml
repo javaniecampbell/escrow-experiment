@@ -22,6 +22,8 @@ Table milestones {
   description String
   amount Decimal
   status String
+  paymentStatus String
+  paidAmount Decimal
   digitalAssets digitalassets [not null]
   project projects
 }
@@ -32,6 +34,7 @@ Table projects {
   totalAmount Decimal
   milestones milestones [not null]
   payments Payment [not null]
+  stripeAccountId String
 }
 
 Table Payment {
