@@ -1,6 +1,7 @@
 import { Tracer } from '@opentelemetry/api';
 import { config } from 'dotenv';
 import { Router } from 'express';
+import prisma from '../utils/prisma';
 const router = Router();
 
 if (process.env.NODE_ENV !== 'production') {
@@ -13,7 +14,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
  * @param {Tracer} tracer OpenTelemetry Tracer
  * @returns 
  */
-export default ({ tracer }) => {
+export default ({ tracer }: { tracer: Tracer }) => {
     router.post("/create-checkout-session", async (req, res) => {
         // Assume req.body contains amount and projectId
         const { amount, projectId } = req.body;
@@ -63,14 +64,17 @@ export default ({ tracer }) => {
             // Step 1: Fetch milestone details from the database
             const milestone = await prisma.milestone.findUnique({
                 where: {
-                    id: milestoneId,
+                    milestoneId: Number(milestoneId),
                 },
             });
+            if (!milestone?.amount) {
+                return res.status(404).json({ error: 'Milestone not found' });
+            }
 
             // Step 2: Implement Stripe Connect logic to initiate payment
             // Replace the following line with your Stripe integration code
             const paymentIntent = await stripe.paymentIntents.create({
-                amount: milestone.amount * 100, // Amount in cents
+                amount: Number(milestone.amount) * 100, // Amount in cents
                 currency: 'usd',
                 // Other payment details...
             });
@@ -82,7 +86,6 @@ export default ({ tracer }) => {
             res.status(500).json({ error: 'Unable to initiate payment' });
         }
     });
-
     router.post('/release-funds', async (req, res) => {
         try {
             const { milestoneId } = req.body;

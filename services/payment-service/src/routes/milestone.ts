@@ -9,7 +9,7 @@ import { milestone as _milestone } from '../utils/prisma';
  * @param {Tracer} tracer 
  * @returns router
  */
-export default ({ tracer }) => {
+export default ({ tracer }: { tracer: Tracer }) => {
 
   router.post('/add-milestone', async (req, res) => {
     const requestId = request.header('x-request-id') || v4();

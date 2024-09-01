@@ -8,7 +8,7 @@ import { v4 } from 'uuid';
  * @param {Tracer} tracer OpenTelemetry Tracer 
  * @returns router
  */
-export default ({ tracer }) => {
+export default ({ tracer }: { tracer: Tracer }) => {
     router.post('/', raw({ type: 'application/json' }), (request, response) => {
         const requestId = request.header('x-request-id') || v4();
         logger.info('Received Webhook Event request', { requestId, path: request.path });

@@ -3,20 +3,20 @@ import { Router } from 'express';
 const router = Router();
 import { loadavg as _loadavg, cpus as _cpus } from 'os';
 import { HealthCheckContext } from '@ddaw/healthcheck-sdk';
-import { error as _error } from '../utils/logger';
+import logger from '../utils/logger';
 
 import { checkDatabaseConnection, checkCacheStatus, DatabaseHealthCheck, CacheHealthCheck } from '../utils/healthchecks';
 
 import { CacheHealthCheckStrategy, DatabaseHealthCheckStrategy, ThirdPartyHealthCheckStrategy } from '../healthchecks';
 
-import { subscribe } from '../service/healthCheckStream';
-
+import healthCheckStream from '../services/healthCheckStream';
+const { subscribe } = healthCheckStream;
 /**
  * Endpoints for Health checks
  * @param {Tracer} tracer OpenTelemetry Tracer
  * @returns router
  */
-export default ({ tracer }) => {
+export default ({ tracer }: { tracer: Tracer }) => {
   const headers = [
     { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
     { 'Pragma': 'no-cache' },
@@ -159,7 +159,7 @@ export default ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      _error('Health check failed', err);
+      logger.error('Health check failed', err);
       res.status(503).json({ message: 'Health check failed' });
     }
 
@@ -219,7 +219,7 @@ export default ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      _error('Health check failed', err);
+      logger.error('Health check failed', err);
       res.status(503).json({ message: 'Health check failed' });
     }
 
@@ -265,7 +265,7 @@ export default ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      _error('Health check failed', err);
+      logger.error('Health check failed', err);
       res.status(503).json({ message: 'Health check failed' });
     }
 
@@ -311,7 +311,7 @@ export default ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      _error('Health check failed', err);
+      logger.error('Health check failed', err);
       res.status(503).json({ message: 'Health check failed' });
     }
 
@@ -358,7 +358,7 @@ export default ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      _error('Health check failed', err);
+      logger.error('Health check failed', err);
       res.status(503).json({ status: 'fail', message: 'Health check failed' });
     }
 
@@ -380,7 +380,7 @@ export default ({ tracer }) => {
       },
       error: (error) => {
         res.status(500);
-        _error('Health check failed', error);
+        logger.error('Health check failed', error);
         res.write(`event: error\ndata: ${JSON.stringify({ error: 'Health check failed' })}\n\n`);
         res.end();
       },

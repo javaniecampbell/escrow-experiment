@@ -11,7 +11,7 @@ import logger from '../utils/logger';
  * @param {Tracer} tracer OpenTelemetry Tracer
  * @returns router
  */
-export default ({ tracer }) => {
+export default ({ tracer }: { tracer: Tracer }) => {
 
   router.get('/', async (req, res) => {
     // const { projectName, description, milestones } = req.body;

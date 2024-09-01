@@ -1,7 +1,7 @@
 import { Tracer } from '@opentelemetry/api';
 import { Router } from 'express';
 const router = Router();
-import { generateExpiringLink } from '../service/index';
+import { generateExpiringLink } from '../services/index';
 import { info, error as _error } from '../utils/logger';
 import { v4 } from 'uuid';
 
