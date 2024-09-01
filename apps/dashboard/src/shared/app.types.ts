@@ -128,6 +128,13 @@ export type Notification = {
     timestamp: string;
 };
 
+export type NotificationPreference = {
+    projectUpdates: boolean,
+    billingReminders: boolean,
+    newMessages: boolean,
+    emailUpdates: boolean,
+};
+
 export type ClientId = number | string;
 export type ProjectId = number | string;
 export type MilestoneId = number | string;
