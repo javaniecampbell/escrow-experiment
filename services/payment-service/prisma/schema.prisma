@@ -28,6 +28,7 @@ model Milestone {
   milestoneId   Int            @id @map("milestoneid")
   projectId     Int?           @map("projectid")
   milestoneName String?        @map("milestonename") @db.VarChar(255)
+  description   String?        @map("description") @db.Text
   amount        Decimal?       @db.Decimal(10, 2)
   status        String?        @db.VarChar(50)
   digitalAssets DigitalAsset[]
@@ -41,8 +42,18 @@ model Project {
   projectName String?     @map("projectname") @db.VarChar(255)
   totalAmount Decimal?    @map("totalamount") @db.Decimal(10, 2)
   milestones  Milestone[]
+  payments    Payment[]
 
   @@map("projects")
+}
+
+model Payment {
+  id        Int     @id @default(autoincrement())
+  amount    Float
+  date      String
+  status    String
+  projectId Int
+  project   Project @relation(fields: [projectId], references: [projectId], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum Role {

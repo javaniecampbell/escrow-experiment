@@ -135,6 +135,25 @@ export type NotificationPreference = {
     emailUpdates: boolean,
 };
 
+export type Payment = {
+    id: PaymentId,
+    date: string | Date;
+    amount: number;
+    status: string;
+    clientId: number;
+};
+
+export type ClientProject = {
+    id: ClientId,
+    name: string,
+    status: string,
+    balance: number
+    milestones: Milestone[],
+    payments: Payment[],
+}
+
+
+export type PaymentId = number | string;
 export type ClientId = number | string;
 export type ProjectId = number | string;
 export type MilestoneId = number | string;
