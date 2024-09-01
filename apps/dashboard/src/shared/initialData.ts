@@ -143,3 +143,8 @@ const sideBarItems = [
         link: '/agency/settings'
     }
 ];
+
+export const initialSampleNotifications = [
+    { id: 1, message: "New project update", timestamp: "2 hours ago" },
+    { id: 2, message: "Billing reminder", timestamp: "1 day ago" }
+];

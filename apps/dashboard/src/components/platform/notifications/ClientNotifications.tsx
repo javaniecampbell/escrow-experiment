@@ -6,8 +6,7 @@ import NotificationSettings from "./NotificationSettings";
 
 const ClientNotifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>([
-    { id: 1, message: "New project update", timestamp: "2 hours ago" },
-    { id: 2, message: "Billing reminder", timestamp: "1 day ago" },
+  
   ]);
 
   // Function to simulate receiving notifications
@@ -40,7 +39,7 @@ const ClientNotifications = () => {
 
       <div>
         <h3 className="text-lg font-semibold mt-4">Notification Center</h3>
-        <NotificationCenter notifications={notifications} />
+        <NotificationCenter />
       </div>
 
       <div>
