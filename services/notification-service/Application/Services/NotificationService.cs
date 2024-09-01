@@ -214,7 +214,7 @@ namespace Notifications.Api.Application.Services
 
 			// var notification = _notificationGenerator.GenerateFromType(notificationType); 
 
-			// _notificationRepository.Create(notification);
+			// _notificationRepository.SaveNotification(notification);
 
 			return new Notification();
 		}

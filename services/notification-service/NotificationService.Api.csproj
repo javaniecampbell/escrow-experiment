@@ -43,7 +43,6 @@
     <Folder Include="Application\DTOs\" />
     <Folder Include="Application\Errors\" />
     <Folder Include="Domain\Interfaces\" />
-    <Folder Include="Infrastructure\Persistence\Repositories\" />
     <Folder Include="Middlewares\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
