@@ -1,23 +1,25 @@
-import { $queryRaw } from './prisma';
-import { info, error as _error } from './logger';
+import primsa from './prisma';
+import logger from './logger';
 import { HealthCheck } from '@ddaw/healthcheck-sdk';
-
+import os from 'node:os';
 /**
  * This function is used to check the database connection
  * @returns {Promise<boolean>} boolean of the database connection
  */
-function checkDatabaseConnection() {
+function checkDatabaseConnection(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
         try {
             // Check if the database connection is available
-            const query = await $queryRaw`SELECT 1 AS DB_STATUS`;
-            info('Database connection status:', query.db_status);
-            const connectionStatus = query.length > 0 ? true : false;
+            const query = await primsa.$queryRaw`SELECT 1 AS DB_STATUS`;
+            logger.info('Database connection status:', (query as any).db_status);
+            const connectionStatus = (query as any).length > 0 ? true : false;
             resolve(connectionStatus);
         } catch (error) {
-            _error('Unexpected error for database connection', error);
-            // reject(false);
-            reject(error);
+            if (error instanceof Error) {
+                logger.error('Unexpected error for database connection', error);
+                // reject(false);
+                reject(error);
+            }
         }
     });
 }
@@ -26,16 +28,18 @@ function checkDatabaseConnection() {
  * This function is used to check the cache status
  * @returns {Promise<boolean>} boolean of the cache status
  */
-function checkCacheStatus() {
+function checkCacheStatus(): Promise<boolean> {
     return new Promise((resolve, reject) => {
         try {
-            info('Cache connection establish');
+            logger.info('Cache connection establish');
             // Check if the cache is available
             resolve(true);
         } catch (error) {
-            _error('Unexpected error for establishing cache connection', error);
-            // reject(false);
-            reject(error);
+            if (error instanceof Error) {
+                logger.error('Unexpected error for establishing cache connection', error);
+                // reject(false);
+                reject(error);
+            }
         }
 
     });
@@ -45,16 +49,18 @@ function checkCacheStatus() {
  * This function is used to check if the application is running
  * @returns {Promise<boolean>} boolean of the application status
  */
-function checkIfAppIsRunning() {
+function checkIfAppIsRunning(): Promise<boolean> {
     var isAppRunning = false;
     return new Promise((resolve, reject) => {
         try {
-            info('Application is running');
+            logger.info('Application is running');
             isAppRunning = true;
             resolve(isAppRunning);
         } catch (error) {
-            _error('Application is not running', error);
-            reject(isAppRunning);
+            if (error instanceof Error) {
+                logger.error('Application is not running', error);
+                reject(error);
+            }
         }
     })
 }
@@ -100,18 +106,18 @@ async function initThirdPartyServices() {
  */
 function checkIfAppIsStarted() {
     var isAppStarted = false;
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
-            info('Application is started');
-            const databaseAvailable = initDatabase();
-            const cacheAvailable = initCache();
-            const thirdPartyServicesAvailable = initThirdPartyServices();
+            logger.info('Application is started');
+            const databaseAvailable = await initDatabase();
+            const cacheAvailable = await initCache();
+            const thirdPartyServicesAvailable = await initThirdPartyServices();
             if (databaseAvailable && cacheAvailable && thirdPartyServicesAvailable) {
                 isAppStarted = true;
             }
             resolve(isAppStarted);
         } catch (error) {
-            _error('Application is not started', error);
+            logger.error('Application is not started', error);
             reject(isAppStarted);
         }
     })
@@ -143,7 +149,7 @@ class DatabaseHealthCheck extends HealthCheck {
             this.isHealthy = false;
             this.details = { error: err.message };
         }
-        return this;
+        // return this;
 
     }
 }
@@ -164,7 +170,7 @@ class CacheHealthCheck extends HealthCheck {
             this.isHealthy = false;
             this.details = { error: err.message };
         }
-        return this;
+        // return this;
 
     }
 }
@@ -182,7 +188,7 @@ class ThirdPartyHealthCheck extends HealthCheck {
     }
 }
 
-export default {
+export {
     DatabaseHealthCheck,
     CacheHealthCheck,
     ThirdPartyHealthCheck,

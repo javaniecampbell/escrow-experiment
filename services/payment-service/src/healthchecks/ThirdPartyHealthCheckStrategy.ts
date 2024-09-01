@@ -1,7 +1,7 @@
 import { HealthCheckStrategy } from '@ddaw/healthcheck-sdk';
 import { initThirdPartyServices } from '../utils/healthchecks';
 
-class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
+export class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
     constructor() {
         super();
         this.componentName = 'api';
@@ -40,5 +40,5 @@ class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
     }
 }
 
-const _ThirdPartyHealthCheckStrategy = ThirdPartyHealthCheckStrategy;
-export { _ThirdPartyHealthCheckStrategy as ThirdPartyHealthCheckStrategy };
+// const _ThirdPartyHealthCheckStrategy = ThirdPartyHealthCheckStrategy;
+// export { _ThirdPartyHealthCheckStrategy as ThirdPartyHealthCheckStrategy };

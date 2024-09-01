@@ -1,6 +1,6 @@
 import { HealthCheckStrategy } from '@ddaw/healthcheck-sdk';
 import { checkCacheStatus } from '../utils/healthchecks';
-class CacheHealthCheckStrategy extends HealthCheckStrategy {
+export class CacheHealthCheckStrategy extends HealthCheckStrategy {
     /**
      * Run the health check and return the instance for chaining
      * @returns {Promise<HealthCheckStrategy>} The health check instance
@@ -39,5 +39,5 @@ class CacheHealthCheckStrategy extends HealthCheckStrategy {
     }
 }
 
-const _CacheHealthCheckStrategy = CacheHealthCheckStrategy;
-export { _CacheHealthCheckStrategy as CacheHealthCheckStrategy };
+// const _CacheHealthCheckStrategy = CacheHealthCheckStrategy;
+// export { _CacheHealthCheckStrategy as CacheHealthCheckStrategy };

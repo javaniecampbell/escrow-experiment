@@ -1,7 +1,7 @@
 import { HealthCheckStrategy } from '@ddaw/healthcheck-sdk';
 import { checkDatabaseConnection } from '../utils/healthchecks';
 
-class DatabaseHealthCheckStrategy extends HealthCheckStrategy {
+export class DatabaseHealthCheckStrategy extends HealthCheckStrategy {
     constructor() {
         super();
         this.componentName = 'database';
@@ -40,5 +40,5 @@ class DatabaseHealthCheckStrategy extends HealthCheckStrategy {
     }
 }
 
-const _DatabaseHealthCheckStrategy = DatabaseHealthCheckStrategy;
-export { _DatabaseHealthCheckStrategy as DatabaseHealthCheckStrategy };
+// const _DatabaseHealthCheckStrategy = DatabaseHealthCheckStrategy;
+// export { _DatabaseHealthCheckStrategy as DatabaseHealthCheckStrategy };
