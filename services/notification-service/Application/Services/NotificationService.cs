@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Notifications.Api.Application.Extensions;
+using Notifications.Api.Application.Interfaces;
 using Notifications.Api.Domain.Entities;
 using Notifications.Api.Hubs;
 using Notifications.Api.Infrastructure.Persistence.Context;
-using NotificationService.Api.Application.Interfaces;
 
 namespace Notifications.Api.Application.Services
 {
@@ -28,7 +28,7 @@ namespace Notifications.Api.Application.Services
 			// Save the notification to the database
 			_context.Notifications.Add(notification);
 			await _context.SaveChangesAsync();
-			_notificationRepository.Create(notification);
+			//_notificationRepository.Create(notification);
 
 			// Send the notification to the user
 			await _hubContext.Clients.User(userId).SendAsync("ReceiveNotification", notification);

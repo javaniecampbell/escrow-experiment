@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Notifications.Api.Application.Services;
+using Notifications.Api.Application.Extensions;
 using Notifications.Api.Domain.Entities;
 using Notifications.Api.Infrastructure.Persistence.Context;
 
@@ -60,9 +61,9 @@ public class NotificationsController : ControllerBase
 
 	// POST: api/notifications/markasread/{id}
 	[HttpPost("markasread/{id}")]
-	public IActionResult MarkNotificationAsRead(int id)
+	public IActionResult MarkNotificationAsRead(string id)
 	{
-		var notification = _dbContext.Notifications.FirstOrDefault(n => n.Id == id);
+		var notification = _dbContext.Notifications.FirstOrDefault(n => n.NotificationId == id);
 		if (notification == null)
 		{
 			return NotFound();
@@ -72,7 +73,8 @@ public class NotificationsController : ControllerBase
 		if (!notification.IsRead)
 		{
 			// Mark the notification as read and persist the change
-			notification.MarkAsRead(_dbContext);
+			notification.MarkAsRead();
+			_dbContext.SaveChanges();
 			return Ok(new { message = "Notification marked as read." });
 		}
 
