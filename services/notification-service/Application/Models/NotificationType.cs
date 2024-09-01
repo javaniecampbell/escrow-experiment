@@ -1,4 +1,4 @@
-﻿namespace NotificationService.Api.Application.Models
+﻿namespace Notifications.Api.Application.Models
 {
     public enum NotificationType
     {

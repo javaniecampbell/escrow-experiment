@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService.Api", "services\notification-service\NotificationService.Api.csproj", "{3CC112A2-97A5-494E-87E5-C802C9CA84B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscrowPlatform.AppHost", "services\EscrowPlatform.AppHost\EscrowPlatform.AppHost.csproj", "{70A459B5-9206-4E87-9FD3-79306F77B3F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EscrowPlatform.AppHost", "services\EscrowPlatform.AppHost\EscrowPlatform.AppHost.csproj", "{70A459B5-9206-4E87-9FD3-79306F77B3F1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EscrowPlatform.ServiceDefaults", "services\EscrowPlatform.ServiceDefaults\EscrowPlatform.ServiceDefaults.csproj", "{9C2F64B1-9379-46AE-9A38-CC9BEEA0E7C4}"
 EndProject
