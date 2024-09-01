@@ -35,6 +35,7 @@ Table projects {
   milestones milestones [not null]
   payments Payment [not null]
   stripeAccountId String
+  clientId String
 }
 
 Table Payment {
