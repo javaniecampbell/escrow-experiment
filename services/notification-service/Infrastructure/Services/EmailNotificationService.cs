@@ -1,10 +1,11 @@
-﻿using SendGrid;
+﻿using Notifications.Api.Application.Interfaces;
+using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
 
-namespace Notifications.Api.Application.Interfaces
+namespace Notifications.Api.Infrastructure.Services
 {
     public class EmailNotificationService : IEmailNotificationService
     {
