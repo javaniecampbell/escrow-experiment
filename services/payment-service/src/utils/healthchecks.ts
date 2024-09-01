@@ -146,10 +146,12 @@ class DatabaseHealthCheck extends HealthCheck {
             this.isHealthy = await checkDatabaseConnection();
             this.details = { message: 'Database connection successful' };
         } catch (err) {
-            this.isHealthy = false;
-            this.details = { error: err.message };
+            if (err instanceof Error) {
+                this.isHealthy = false;
+                this.details = { error: err.message };
+            }
         }
-        // return this;
+        return this;
 
     }
 }
@@ -167,10 +169,12 @@ class CacheHealthCheck extends HealthCheck {
             this.isHealthy = await checkCacheStatus();
             this.details = { message: 'Cache connection successful' };
         } catch (err) {
-            this.isHealthy = false;
-            this.details = { error: err.message };
+            if (err instanceof Error) {
+                this.isHealthy = false;
+                this.details = { error: err.message };
+            }
         }
-        // return this;
+        return this;
 
     }
 }
@@ -182,9 +186,12 @@ class ThirdPartyHealthCheck extends HealthCheck {
             this.isHealthy = await initThirdPartyServices();
             this.details = { message: 'Third-party services are healthy' };
         } catch (err) {
-            this.isHealthy = false;
-            this.details = { error: err.message };
+            if (err instanceof Error) {
+                this.isHealthy = false;
+                this.details = { error: err.message };
+            }
         }
+        return this
     }
 }
 

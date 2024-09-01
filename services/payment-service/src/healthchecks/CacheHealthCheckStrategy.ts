@@ -24,16 +24,18 @@ export class CacheHealthCheckStrategy extends HealthCheckStrategy {
                 time: new Date().toISOString(),
             };
         } catch (err) {
-            this.isHealthy = false;
-            this.details = {
-                status: 'fail',
-                componentId: 'cache', // Replace with your component ID
-                componentType: 'datastore',
-                observedValue: this.getStatus(), // You can include any relevant observed value
-                observedUnit: 'boolean', // Include the observed unit if applicable
-                output: err.message,
-                time: new Date().toISOString(),
-            };
+            if (err instanceof Error) {
+                this.isHealthy = false;
+                this.details = {
+                    status: 'fail',
+                    componentId: 'cache', // Replace with your component ID
+                    componentType: 'datastore',
+                    observedValue: this.getStatus(), // You can include any relevant observed value
+                    observedUnit: 'boolean', // Include the observed unit if applicable
+                    output: err.message,
+                    time: new Date().toISOString(),
+                };
+            }
         }
         return this;
     }

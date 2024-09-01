@@ -43,7 +43,7 @@ const healthCheckStream = new Observable((observer) => {
             }),
             map((healthCheckData) => {
 
-                const eventType = healthCheckData.status === 'pass' ? 'HEALTHY' : healthCheckData.status === 'fail' ? 'UNHEALTHY' : healthCheckData.status === 'warn' ? 'DEGRADED' : healthCheckData.checks.some(check => check.status === 'fail') ? 'UNHEALTHY' : 'DEGRADED';
+                const eventType = healthCheckData.status === 'pass' ? 'HEALTHY' : healthCheckData.status === 'fail' ? 'UNHEALTHY' : healthCheckData.status === 'warn' ? 'DEGRADED' : healthCheckData.checks.some(check => (check as any).status === 'fail') ? 'UNHEALTHY' : 'DEGRADED';
                 observer.next({ eventType, data: healthCheckData });
             }),
             catchError(async (error) => {
