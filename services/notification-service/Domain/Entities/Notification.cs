@@ -29,7 +29,11 @@ public class Notification
     public string? ReadBy { get; set; }
 
     public string? ProjectId { get; set; }
-    public Notification()
+	public string? CustomIdentifier { get; set; }
+	public string? MessageId { get; set; }
+	public string? BillingId { get; set; }
+
+	public Notification()
     {
         NotificationId = string.Empty;
         CreatedAt = DateTime.UtcNow;
@@ -42,7 +46,7 @@ public class Notification
         UserId = string.Empty;
         CreatedBy = string.Empty;
         EscrowId = string.Empty;
-        User = new User();
+        User = new User(); 
     }
 
     public Notification(string userId, string escrowId,string title, string message, string? projectId)
