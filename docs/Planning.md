@@ -1070,7 +1070,7 @@ interface Project {
 }
 
 interface Requirement {
-  type: 'functional' | 'non-functional';
+  type: "functional" | "non-functional";
   description: string;
   // Add other relevant properties
 }
@@ -1129,6 +1129,7 @@ You can use this class and the corresponding data models to organize and manage 
 Note that you may need to extend or modify these data models based on your specific project requirements and the additional properties or relationships you need to capture.
 
 ---
+
 Context limit reach uncommitted prompts below:
 
 Prompt: Let's create a class that allows to break up the generated into the following:
@@ -1149,3 +1150,11 @@ Ensure to create data models with all attributes to store each type listed above
 - C#
 
 Prompt: We will be giving this method generated output in this chat so ensure it can break it down from text using the format in the chat history
+
+// How continue is done when incomplete response is detected seems like semantic caching and long-term memory at play by retrieving the incomplete chat message and sending it again appending the additional chat message to the end of the next one
+
+{"message":"Let's continue the next steps and include partially implemented or not fully implemented let's bring those to completion","chatId":"GbWH4ZidNKn","chatIdToken":"cb26c926098a8aac544d4572e90416798a76ec1d57036274eb3ba0fab5de6a97","isNew":false,"action":{"type":"continue","userMessageId":"kgVIHXlID6ydSyqls849D","assistantMessageId":"sdOCAfycJRg1FvhXC05Mn"}}
+
+// rate limiting
+
+{"remaining":185,"reset":1724889600000,"limit":200}
