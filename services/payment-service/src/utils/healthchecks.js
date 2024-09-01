@@ -1,4 +1,4 @@
-const prisma = require('../utils/prisma');
+const prisma = require('./prisma');
 const logger = require('./logger');
 const { HealthCheck } = require('@ddaw/healthcheck-sdk');
 
