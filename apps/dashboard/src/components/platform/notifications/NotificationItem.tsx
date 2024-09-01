@@ -1,12 +1,13 @@
 // Notification.tsx
 
+import { Notification } from "@/shared/app.types";
 import React from "react";
 
 type NotificationProps = {
   notification: Notification;
 };
 
-const Notification = ({ notification }: NotificationProps) => {
+const NotificationItem = ({ notification }: NotificationProps) => {
   return (
     <div className="notification">
       <p>{notification.message}</p>
@@ -15,4 +16,4 @@ const Notification = ({ notification }: NotificationProps) => {
   );
 };
 
-export default Notification;
+export default NotificationItem;
