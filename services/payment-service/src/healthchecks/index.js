@@ -1,8 +1,8 @@
-const { DatabaseHealthCheckStrategy } = require('./DatabaseHealthCheckStrategy');
-const { CacheHealthCheckStrategy } = require('./CacheHealthCheckStrategy');
-const { ThirdPartyHealthCheckStrategy } = require('./ThirdPartyHealthCheckStrategy');
+import { DatabaseHealthCheckStrategy } from './DatabaseHealthCheckStrategy';
+import { CacheHealthCheckStrategy } from './CacheHealthCheckStrategy';
+import { ThirdPartyHealthCheckStrategy } from './ThirdPartyHealthCheckStrategy';
 
-module.exports = {
+export default {
     DatabaseHealthCheckStrategy,
     CacheHealthCheckStrategy,
     ThirdPartyHealthCheckStrategy,

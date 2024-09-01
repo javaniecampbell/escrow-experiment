@@ -1,15 +1,15 @@
-const { Tracer } = require('@opentelemetry/api');
-const express = require('express');
-const router = express.Router();
-const logger = require('../utils/logger');
-const { v4 } = require('uuid');
+import { Tracer } from '@opentelemetry/api';
+import { Router, raw } from 'express';
+const router = Router();
+import logger from '../utils/logger';
+import { v4 } from 'uuid';
 /**
  * Endpoints for Handling Stripe Webhooks
  * @param {Tracer} tracer OpenTelemetry Tracer 
  * @returns router
  */
-module.exports = ({ tracer }) => {
-    router.post('/', express.raw({ type: 'application/json' }), (request, response) => {
+export default ({ tracer }) => {
+    router.post('/', raw({ type: 'application/json' }), (request, response) => {
         const requestId = request.header('x-request-id') || v4();
         logger.info('Received Webhook Event request', { requestId, path: request.path });
 

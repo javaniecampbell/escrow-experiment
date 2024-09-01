@@ -1,10 +1,10 @@
-const { Tracer } = require('@opentelemetry/api');
-const dotenv = require('dotenv');
-const express = require('express');
-const router = express.Router();
+import { Tracer } from '@opentelemetry/api';
+import { config } from 'dotenv';
+import { Router } from 'express';
+const router = Router();
 
 if (process.env.NODE_ENV !== 'production') {
-    dotenv.config();
+    config();
 }
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -13,7 +13,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
  * @param {Tracer} tracer OpenTelemetry Tracer
  * @returns 
  */
-module.exports = ({ tracer }) => {
+export default ({ tracer }) => {
     router.post("/create-checkout-session", async (req, res) => {
         // Assume req.body contains amount and projectId
         const { amount, projectId } = req.body;

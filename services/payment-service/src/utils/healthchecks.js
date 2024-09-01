@@ -1,6 +1,6 @@
-const prisma = require('./prisma');
-const logger = require('./logger');
-const { HealthCheck } = require('@ddaw/healthcheck-sdk');
+import { $queryRaw } from './prisma';
+import { info, error as _error } from './logger';
+import { HealthCheck } from '@ddaw/healthcheck-sdk';
 
 /**
  * This function is used to check the database connection
@@ -10,12 +10,12 @@ function checkDatabaseConnection() {
     return new Promise(async (resolve, reject) => {
         try {
             // Check if the database connection is available
-            const query = await prisma.$queryRaw`SELECT 1 AS DB_STATUS`;
-            logger.info('Database connection status:', query.db_status);
+            const query = await $queryRaw`SELECT 1 AS DB_STATUS`;
+            info('Database connection status:', query.db_status);
             const connectionStatus = query.length > 0 ? true : false;
             resolve(connectionStatus);
         } catch (error) {
-            logger.error('Unexpected error for database connection', error);
+            _error('Unexpected error for database connection', error);
             // reject(false);
             reject(error);
         }
@@ -29,11 +29,11 @@ function checkDatabaseConnection() {
 function checkCacheStatus() {
     return new Promise((resolve, reject) => {
         try {
-            logger.info('Cache connection establish');
+            info('Cache connection establish');
             // Check if the cache is available
             resolve(true);
         } catch (error) {
-            logger.error('Unexpected error for establishing cache connection', error);
+            _error('Unexpected error for establishing cache connection', error);
             // reject(false);
             reject(error);
         }
@@ -49,11 +49,11 @@ function checkIfAppIsRunning() {
     var isAppRunning = false;
     return new Promise((resolve, reject) => {
         try {
-            logger.info('Application is running');
+            info('Application is running');
             isAppRunning = true;
             resolve(isAppRunning);
         } catch (error) {
-            logger.error('Application is not running', error);
+            _error('Application is not running', error);
             reject(isAppRunning);
         }
     })
@@ -102,7 +102,7 @@ function checkIfAppIsStarted() {
     var isAppStarted = false;
     return new Promise((resolve, reject) => {
         try {
-            logger.info('Application is started');
+            info('Application is started');
             const databaseAvailable = initDatabase();
             const cacheAvailable = initCache();
             const thirdPartyServicesAvailable = initThirdPartyServices();
@@ -111,7 +111,7 @@ function checkIfAppIsStarted() {
             }
             resolve(isAppStarted);
         } catch (error) {
-            logger.error('Application is not started', error);
+            _error('Application is not started', error);
             reject(isAppStarted);
         }
     })
@@ -182,7 +182,7 @@ class ThirdPartyHealthCheck extends HealthCheck {
     }
 }
 
-module.exports = {
+export default {
     DatabaseHealthCheck,
     CacheHealthCheck,
     ThirdPartyHealthCheck,

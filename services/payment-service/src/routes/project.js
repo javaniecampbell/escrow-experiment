@@ -1,17 +1,17 @@
-const { Tracer } = require('@opentelemetry/api');
-const express = require('express');
-const { v4 } = require('uuid');
-const router = express.Router();
+import { Tracer } from '@opentelemetry/api';
+import { Router } from 'express';
+import { v4 } from 'uuid';
+const router = Router();
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const prisma = require('../utils/prisma');
-const logger = require('../utils/logger');
+import prisma from '../utils/prisma';
+import logger from '../utils/logger';
 /**
  * Endpoints for Project management
  * @param {Tracer} tracer OpenTelemetry Tracer
  * @returns router
  */
-module.exports = ({ tracer }) => {
+export default ({ tracer }) => {
 
   router.get('/', async (req, res) => {
     // const { projectName, description, milestones } = req.body;

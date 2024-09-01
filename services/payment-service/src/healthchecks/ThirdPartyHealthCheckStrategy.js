@@ -1,5 +1,5 @@
-const { HealthCheckStrategy } = require('@ddaw/healthcheck-sdk');
-const { initThirdPartyServices } = require('../utils/healthchecks');
+import { HealthCheckStrategy } from '@ddaw/healthcheck-sdk';
+import { initThirdPartyServices } from '../utils/healthchecks';
 
 class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
     constructor() {
@@ -40,4 +40,5 @@ class ThirdPartyHealthCheckStrategy extends HealthCheckStrategy {
     }
 }
 
-module.exports.ThirdPartyHealthCheckStrategy = ThirdPartyHealthCheckStrategy;
+const _ThirdPartyHealthCheckStrategy = ThirdPartyHealthCheckStrategy;
+export { _ThirdPartyHealthCheckStrategy as ThirdPartyHealthCheckStrategy };

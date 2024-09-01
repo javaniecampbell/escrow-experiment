@@ -1,26 +1,22 @@
-const { Tracer } = require('@opentelemetry/api');
-const express = require('express');
-const router = express.Router();
-const os = require('os');
-const { HealthCheckContext } = require('@ddaw/healthcheck-sdk');
-const logger = require('../utils/logger');
+import { Tracer } from '@opentelemetry/api';
+import { Router } from 'express';
+const router = Router();
+import { loadavg as _loadavg, cpus as _cpus } from 'os';
+import { HealthCheckContext } from '@ddaw/healthcheck-sdk';
+import { error as _error } from '../utils/logger';
 
-const { checkDatabaseConnection, checkCacheStatus, DatabaseHealthCheck, CacheHealthCheck } = require('../utils/healthchecks');
+import { checkDatabaseConnection, checkCacheStatus, DatabaseHealthCheck, CacheHealthCheck } from '../utils/healthchecks';
 
-const {
-  CacheHealthCheckStrategy,
-  DatabaseHealthCheckStrategy,
-  ThirdPartyHealthCheckStrategy
-} = require('../healthchecks');
+import { CacheHealthCheckStrategy, DatabaseHealthCheckStrategy, ThirdPartyHealthCheckStrategy } from '../healthchecks';
 
-const healthCheckStream = require('../service/healthCheckStream');
+import { subscribe } from '../service/healthCheckStream';
 
 /**
  * Endpoints for Health checks
  * @param {Tracer} tracer OpenTelemetry Tracer
  * @returns router
  */
-module.exports = ({ tracer }) => {
+export default ({ tracer }) => {
   const headers = [
     { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
     { 'Pragma': 'no-cache' },
@@ -55,10 +51,10 @@ module.exports = ({ tracer }) => {
         },
         {
           name: 'cpu',
-          status: os.loadavg()[0] / os.cpus().length > 0.8 ? 'fail' : 'pass',
-          value: os.loadavg()[0] / os.cpus().length,
-          loadavg: os.loadavg(),
-          cpus: os.cpus(),
+          status: _loadavg()[0] / _cpus().length > 0.8 ? 'fail' : 'pass',
+          value: _loadavg()[0] / _cpus().length,
+          loadavg: _loadavg(),
+          cpus: _cpus(),
         },
         {
           name: 'uptime',
@@ -163,7 +159,7 @@ module.exports = ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      logger.error('Health check failed', err);
+      _error('Health check failed', err);
       res.status(503).json({ message: 'Health check failed' });
     }
 
@@ -223,7 +219,7 @@ module.exports = ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      logger.error('Health check failed', err);
+      _error('Health check failed', err);
       res.status(503).json({ message: 'Health check failed' });
     }
 
@@ -269,7 +265,7 @@ module.exports = ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      logger.error('Health check failed', err);
+      _error('Health check failed', err);
       res.status(503).json({ message: 'Health check failed' });
     }
 
@@ -315,7 +311,7 @@ module.exports = ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      logger.error('Health check failed', err);
+      _error('Health check failed', err);
       res.status(503).json({ message: 'Health check failed' });
     }
 
@@ -362,7 +358,7 @@ module.exports = ({ tracer }) => {
         res.status(503).json(responseData);
       }
     } catch (err) {
-      logger.error('Health check failed', err);
+      _error('Health check failed', err);
       res.status(503).json({ status: 'fail', message: 'Health check failed' });
     }
 
@@ -377,14 +373,14 @@ module.exports = ({ tracer }) => {
       res.set(header);
     });
 
-    const healthCheckSubscription = healthCheckStream.subscribe({
+    const healthCheckSubscription = subscribe({
       next: ({ eventType, data }) => {
 
         res.write(`event: ${eventType}\ndata: ${JSON.stringify(data)}\n\n`);
       },
       error: (error) => {
         res.status(500);
-        logger.error('Health check failed', error);
+        _error('Health check failed', error);
         res.write(`event: error\ndata: ${JSON.stringify({ error: 'Health check failed' })}\n\n`);
         res.end();
       },

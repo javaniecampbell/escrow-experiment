@@ -1,31 +1,27 @@
 require('dotenv').config();
-const { SimpleSpanProcessor, BasicTracerProvider } = require('@opentelemetry/sdk-trace-base');
-const { Resource } = require('@opentelemetry/resources');
-const { SEMRESATTRS_SERVICE_NAME, SEMRESATTRS_SERVICE_VERSION } = require('@opentelemetry/semantic-conventions');
-const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
-const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
-const { credentials } = require('@grpc/grpc-js');
-const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
-const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-grpc');
-const { OTLPLogExporter } = require('@opentelemetry/exporter-logs-otlp-grpc');
-const { PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics');
-const { NodeSDK } = require('@opentelemetry/sdk-node');
+import { SimpleSpanProcessor, BasicTracerProvider } from '@opentelemetry/sdk-trace-base';
+import { Resource } from '@opentelemetry/resources';
+import { SEMRESATTRS_SERVICE_NAME, SEMRESATTRS_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
+import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
+import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
+import { credentials } from '@grpc/grpc-js';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-grpc';
+import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-grpc';
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
+import { NodeSDK } from '@opentelemetry/sdk-node';
 // const { OTLPTraceExporter: HttpOTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 
 /* Start of development configuration imports */
-const { Tracer } = require('@opentelemetry/api');
-const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
-const { diag, DiagConsoleLogger, DiagLogLevel, trace } = require('@opentelemetry/api');
-const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
-const { registerInstrumentations } = require('@opentelemetry/instrumentation');
-const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
+import { Tracer } from '@opentelemetry/api';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { diag, DiagConsoleLogger, DiagLogLevel, trace } from '@opentelemetry/api';
+import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
+import { registerInstrumentations } from '@opentelemetry/instrumentation';
+import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-base';
 
-const {
-    LoggerProvider,
-    SimpleLogRecordProcessor,
-    ConsoleLogRecordExporter,
-} = require('@opentelemetry/sdk-logs');
-const logsAPI = require('@opentelemetry/api-logs');
+import { LoggerProvider, SimpleLogRecordProcessor, ConsoleLogRecordExporter } from '@opentelemetry/sdk-logs';
+import { logs } from '@opentelemetry/api-logs';
 /* End of development configuration imports */
 
 
@@ -38,7 +34,7 @@ diag.setLogger(new DiagConsoleLogger(), isDevelopment ? DiagLogLevel.INFO : Diag
 
 
 const otlpServer = process.env.OTEL_EXPORTER_OTLP_ENDPOINT
-|| 'http://localhost:4317';
+    || 'http://localhost:4317';
 
 // Configure the tracer
 const provider = new NodeTracerProvider({
@@ -60,28 +56,28 @@ if (otlpServer) {
         envDetectorSync,
         hostDetectorSync,
         processDetectorSync,
-      } = require("@opentelemetry/resources")
+    } = require("@opentelemetry/resources")
 
-      /**
-       * A detector that returns attributes from the environment.
-       * @param {DetectorSync} detector 
-       * @returns {Detector}
-       */
-      function awaitAttributes(detector) {
+    /**
+     * A detector that returns attributes from the environment.
+     * @param {DetectorSync} detector 
+     * @returns {Detector}
+     */
+    function awaitAttributes(detector) {
         return {
             /**
              * A function that returns a promise that resolves with the attributes
              * @param {ResourceDetectionConfig} config 
              * @returns {Promise<IResource>}
              */
-          async detect(config){
-            const resource = detector.detect(config)
-            await resource.waitForAsyncAttributes?.()
-      
-            return resource
-          },
+            async detect(config) {
+                const resource = detector.detect(config)
+                await resource.waitForAsyncAttributes?.()
+
+                return resource
+            },
         }
-      }
+    }
 
     // Configure OTLP exporter
     const isHttps = otlpServer.startsWith('https://');
@@ -152,7 +148,7 @@ if (otlpServer) {
     loggerProvider.addLogRecordProcessor(
         new SimpleLogRecordProcessor(new ConsoleLogRecordExporter())
     );
-    logsAPI.logs.setGlobalLoggerProvider(loggerProvider);
+    logs.setGlobalLoggerProvider(loggerProvider);
     registerInstrumentations({
         tracerProvider: provider,
         instrumentations: [
@@ -163,7 +159,7 @@ if (otlpServer) {
         ],
     });
 }
-const logger = require('./logger');
+import logger from './logger';
 if (sdk) {
     sdk.start();
     logger.info('Tracer successfully started');
@@ -210,4 +206,4 @@ process.on('uncaughtException', (err) => {
  * @type {Tracer}
  */
 // Export the tracer
-module.exports = { tracer: isDevelopment ? provider.getTracer('payment-service') : trace.getTracer('payment-service') };
+export const tracer = isDevelopment ? provider.getTracer('payment-service') : trace.getTracer('payment-service');

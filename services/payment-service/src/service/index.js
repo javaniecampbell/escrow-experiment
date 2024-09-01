@@ -1,6 +1,6 @@
-const dotenv = require('dotenv');
-dotenv.config();
-const { BlobServiceClient, generateAccountSASQueryParameters, ContainerSASPermissions } = require('@azure/storage-blob');
+import { config } from 'dotenv';
+config();
+import { BlobServiceClient, generateAccountSASQueryParameters, ContainerSASPermissions } from '@azure/storage-blob';
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const AZURE_CONTAINER_NAME = process.env.AZURE_CONTAINER_NAME;
 // Upload file to Azure Blob Storage
@@ -26,6 +26,6 @@ function generateExpiringLink(blobName, expireMinutes = 0) {
 }
 
 
-module.exports = {
+export default {
     generateExpiringLink
 };

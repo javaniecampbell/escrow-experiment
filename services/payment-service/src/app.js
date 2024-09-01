@@ -1,26 +1,26 @@
 
-const { tracer } = require("./utils/tracing");
-const express = require("express");
-const path = require('path');
-const cookieParser = require("cookie-parser");
+import { tracer } from "./utils/tracing";
+import express, { json, urlencoded } from "express";
+import path from 'path';
+import cookieParser from "cookie-parser";
 
-const logger = require("morgan");
+import logger from "morgan";
 
-const cors = require('cors');
+import cors from 'cors';
 
-const indexRouter = require("./routes/index");
-const paymentRouter = require("./routes/payment");
-const webhookRouter = require("./routes/webhook");
-const projectRouter = require("./routes/project");
-const milestoneRouter = require("./routes/milestone");
-const digitalAssetRouter = require("./routes/digitalAsset");
+import indexRouter from "./routes/index";
+import paymentRouter from "./routes/payment";
+import webhookRouter from "./routes/webhook";
+import projectRouter from "./routes/project";
+import milestoneRouter from "./routes/milestone";
+import digitalAssetRouter from "./routes/digitalAsset";
 
 const app = express();
 
 app.use(cors());
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.disable('x-powered-by');
 // app.use(express.static(path.join(__dirname, 'public')));
@@ -37,4 +37,4 @@ app.use('/api/milestones', milestoneRouter({ tracer }));
 app.use('/api/milestones', milestoneRouter({ tracer }));
 app.use('/api/assets', digitalAssetRouter({ tracer }));
 
-module.exports = app;
+export default app;

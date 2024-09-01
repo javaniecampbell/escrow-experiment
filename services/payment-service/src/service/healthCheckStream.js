@@ -1,13 +1,9 @@
-const { interval, Observable, of } = require('rxjs');
-const { map, concatMap, catchError } = require('rxjs/operators');
+import { interval, Observable, of } from 'rxjs';
+import { map, concatMap, catchError } from 'rxjs/operators';
 // const { performHealthChecks } = require('./healthChecks');
-const { HealthCheckContext } = require('@ddaw/healthcheck-sdk');
-const {
-    CacheHealthCheckStrategy,
-    DatabaseHealthCheckStrategy,
-    ThirdPartyHealthCheckStrategy
-} = require('../healthchecks');
-const logger = require('../utils/logger');
+import { HealthCheckContext } from '@ddaw/healthcheck-sdk';
+import { CacheHealthCheckStrategy, DatabaseHealthCheckStrategy, ThirdPartyHealthCheckStrategy } from '../healthchecks';
+import logger from '../utils/logger';
 
 // Create a HealthCheckContext instance
 const healthCheckContext = new HealthCheckContext();
@@ -78,4 +74,4 @@ const healthCheckStream = new Observable((observer) => {
     return () => intervalSubscription.unsubscribe();
 });
 
-module.exports = healthCheckStream;
+export default healthCheckStream;

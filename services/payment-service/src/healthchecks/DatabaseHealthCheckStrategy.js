@@ -1,5 +1,5 @@
-const { HealthCheckStrategy } = require('@ddaw/healthcheck-sdk');
-const { checkDatabaseConnection } = require('../utils/healthchecks');
+import { HealthCheckStrategy } from '@ddaw/healthcheck-sdk';
+import { checkDatabaseConnection } from '../utils/healthchecks';
 
 class DatabaseHealthCheckStrategy extends HealthCheckStrategy {
     constructor() {
@@ -40,4 +40,5 @@ class DatabaseHealthCheckStrategy extends HealthCheckStrategy {
     }
 }
 
-module.exports.DatabaseHealthCheckStrategy = DatabaseHealthCheckStrategy;
+const _DatabaseHealthCheckStrategy = DatabaseHealthCheckStrategy;
+export { _DatabaseHealthCheckStrategy as DatabaseHealthCheckStrategy };

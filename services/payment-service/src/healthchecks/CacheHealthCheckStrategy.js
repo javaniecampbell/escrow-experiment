@@ -1,5 +1,5 @@
-const { HealthCheckStrategy } = require('@ddaw/healthcheck-sdk');
-const { checkCacheStatus } = require('../utils/healthchecks');
+import { HealthCheckStrategy } from '@ddaw/healthcheck-sdk';
+import { checkCacheStatus } from '../utils/healthchecks';
 class CacheHealthCheckStrategy extends HealthCheckStrategy {
     /**
      * Run the health check and return the instance for chaining
@@ -39,4 +39,5 @@ class CacheHealthCheckStrategy extends HealthCheckStrategy {
     }
 }
 
-module.exports.CacheHealthCheckStrategy = CacheHealthCheckStrategy;
+const _CacheHealthCheckStrategy = CacheHealthCheckStrategy;
+export { _CacheHealthCheckStrategy as CacheHealthCheckStrategy };

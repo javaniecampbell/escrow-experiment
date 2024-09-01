@@ -1,20 +1,20 @@
-const { Tracer } = require('@opentelemetry/api');
-const express = require('express');
-const router = express.Router();
-const { generateExpiringLink } = require('../service/index')
-const logger = require('../utils/logger');
-const { v4 } = require('uuid');
+import { Tracer } from '@opentelemetry/api';
+import { Router } from 'express';
+const router = Router();
+import { generateExpiringLink } from '../service/index';
+import { info, error as _error } from '../utils/logger';
+import { v4 } from 'uuid';
 
 /**
  * Endponts for Digital Assets management
  * @param {Tracer} tracer OpenTelemetry Tracer
  * @returns router
  */
-module.exports = ({ tracer }) => {
+export default ({ tracer }) => {
 
   router.get('/get-asset-link', async (req, res) => {
     const requestId = req.header('x-request-id') || v4();
-    logger.info('Received asset preview request', { requestId, path: req.path });
+    info('Received asset preview request', { requestId, path: req.path });
     const span = tracer.startSpan('generate_asset_link', { attributes: { requestId } });
     try {
       const { assetId } = req.query;
@@ -26,7 +26,7 @@ module.exports = ({ tracer }) => {
       // Step 2: Return the expiring link as a response
       res.status(200).json({ downloadLink: expiringLink });
     } catch (error) {
-      logger.error('Error generating asset link:', error);
+      _error('Error generating asset link:', error);
       span.addError('Error generating asset link', { error: error.message });
       span.end();
       res.status(500).json({ error: 'Unable to generate asset link' });
