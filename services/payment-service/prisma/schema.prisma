@@ -31,6 +31,8 @@ model Milestone {
   description   String?        @map("description") @db.Text
   amount        Decimal?       @db.Decimal(10, 2)
   status        String?        @db.VarChar(50)
+  paymentStatus String?        @db.VarChar(50)
+  paidAmount    Decimal?       @db.Decimal(10, 2)
   digitalAssets DigitalAsset[]
   project       Project?       @relation(fields: [projectId], references: [projectId], onDelete: NoAction, onUpdate: NoAction)
 
@@ -38,11 +40,12 @@ model Milestone {
 }
 
 model Project {
-  projectId   Int         @id @map("projectid")
-  projectName String?     @map("projectname") @db.VarChar(255)
-  totalAmount Decimal?    @map("totalamount") @db.Decimal(10, 2)
-  milestones  Milestone[]
-  payments    Payment[]
+  projectId       Int         @id @map("projectid")
+  projectName     String?     @map("projectname") @db.VarChar(255)
+  totalAmount     Decimal?    @map("totalamount") @db.Decimal(10, 2)
+  milestones      Milestone[]
+  payments        Payment[]
+  stripeAccountId String?     @map("stripeaccountid") @db.VarChar(255)
 
   @@map("projects")
 }
