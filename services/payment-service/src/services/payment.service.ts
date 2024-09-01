@@ -1,7 +1,10 @@
 // services/PaymentService.ts
 
+import { PayoutSpecification } from '../specifications/payout.specification';
 import prisma from '../utils/prisma';
 import stripeClient from '../utils/stripe';
+import { NotificationService } from './notification.service';
+
 export const PaymentService = {
     getPaymentsForProject: (projectId: number) => {
         return prisma.payment.findMany({
@@ -25,17 +28,22 @@ export const PaymentService = {
             if (!milestone) {
                 throw new Error('Milestone not found');
             }
-            if (milestone.status !== 'completed') {
-                throw new Error('Milestone is not completed');
-            }
 
-            if (milestone.paymentStatus !== 'pending') {
-                throw new Error('Milestone payment status is not pending');
+            // Check if the milestone satisfies the specification
+            if (!PayoutSpecification.isSatisfiedBy(milestone)) {
+                throw new Error('Milestone does not meet payout criteria');
             }
+            // if (milestone.status !== 'completed') {
+            //     throw new Error('Milestone is not completed');
+            // }
 
-            if (milestone?.amount === 0) {
-                throw new Error('Milestone amount is 0');
-            }
+            // if (milestone.paymentStatus !== 'pending') {
+            //     throw new Error('Milestone payment status is not pending');
+            // }
+
+            // if (milestone?.amount === 0) {
+            //     throw new Error('Milestone amount is 0');
+            // }
 
             // Calculate the amount to be paid out (you may have your own logic here)
             const payoutAmount = Number(milestone?.amount ?? 0) - Number(milestone?.paidAmount ?? 0);
@@ -45,7 +53,7 @@ export const PaymentService = {
                 amount: Math.round(payoutAmount * 100), // Amount in cents
                 currency: 'usd', // Change to your desired currency
                 method: 'standard', // You can use 'instant' for instant payouts
-                destination: milestone.project.stripeAccountId, // Stripe account ID of the recipient
+                destination: milestone?.project?.stripeAccountId!, // Stripe account ID of the recipient
             });
 
             // Update the milestone status and payment status in the database
@@ -64,13 +72,13 @@ export const PaymentService = {
             // You can use your notification service here
             const notification = {
                 type: 'payout_request',
-                message: `Payout request for milestone ${milestone.name} has been initiated.`,
-                recipientId: milestone.project.clientId, // ID of the client/user
+                message: `Payout request for milestone ${milestone.milestoneName} has been initiated.`,
+                recipientId: milestone?.project?.clientId!, // ID of the client/user
             };
 
             // Implement logic to send the notification to the user
             // Example: notificationService.sendNotification(notification);
-
+            NotificationService.sendNotification(notification);
             return payout;
         } catch (error) {
             throw new Error(`Error requesting payout: ${error.message}`);
