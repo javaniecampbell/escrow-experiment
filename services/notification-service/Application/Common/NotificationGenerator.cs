@@ -3,7 +3,7 @@ using Notifications.Api.Domain.Entities;
 
 namespace Notifications.Api.Application.Common
 {
-	public class NotificationGenerator
+	public class NotificationGenerator : INotificationGenerator
 	{
 		public Notification GenerateProjectUpdateNotificationForProject(string message, string projectId, string userId)
 		{
