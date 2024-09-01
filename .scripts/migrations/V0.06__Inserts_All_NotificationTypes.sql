@@ -1,0 +1,21 @@
+INSERT INTO NotificationTypes (TypeName, TypeDescription)
+VALUES
+    ('MilestoneCompleted', 'Notification for completed milestones'),
+    ('NewClientMessage', 'Notification for new client messages'),
+    ('NewProjectAssigned', 'Notification for new project assignments'),
+    ('MilestoneDue', 'Notification for upcoming milestone due dates'),
+    ('MilestoneCompleted', 'Notification for completed milestones'),
+    ('NewClientMessage', 'Notification for new client messages'),
+    ('PaymentReceived', 'Notification for received payments'),
+    ('NewTaskAssigned', 'Notification for new task assignments'),
+    ('TaskCompleted', 'Notification for completed tasks'),
+    ('FileUploaded', 'Notification for uploaded files'),
+    ('TaskDue', 'Notification for upcoming task due dates'),
+    ('ProjectCompletion', 'Notification for project completion'),
+    ('ProjectDeadline', 'Notification for project deadlines'),
+    ('InvoiceGenerated', 'Notification for generated invoices'),
+    ('InvoicePaid', 'Notification for paid invoices'),
+    ('ReviewRequested', 'Notification for review requests'),
+    ('ReviewSubmitted', 'Notification for submitted reviews'),
+    ('NewUserRegistration', 'Notification for new user registrations'),
+;
