@@ -11,10 +11,10 @@ namespace Notifications.Api.Controllers;
 public class NotificationsController : ControllerBase
 {
     private readonly NotificationDbContext _dbContext;
-	private readonly NotificationService _notificationService;
+	private readonly INotificationService _notificationService;
 	private readonly ILogger<NotificationsController> _logger;
 
-	public NotificationsController(NotificationDbContext dbContext, NotificationService notificationService, ILogger<NotificationsController> logger)
+	public NotificationsController(NotificationDbContext dbContext, INotificationService notificationService, ILogger<NotificationsController> logger)
     {
 		_logger = logger;
         _dbContext = dbContext;

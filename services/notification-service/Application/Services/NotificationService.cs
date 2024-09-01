@@ -8,7 +8,7 @@ using Notifications.Api.Infrastructure.Persistence.Context;
 
 namespace Notifications.Api.Application.Services
 {
-	public class NotificationService
+	public class NotificationService : INotificationService
 	{
 		private readonly IHubContext<NotificationsHub> _hubContext;
 		private readonly NotificationDbContext _context;
@@ -146,7 +146,7 @@ namespace Notifications.Api.Application.Services
 		public async Task<IEnumerable<Notification>> GetBillingNotificationsAsync(string userId, int billingId)
 		{
 			return await _context.Notifications
-				.Where(n => n.UserId == userId 
+				.Where(n => n.UserId == userId
 				//&& n.BillingId == billingId
 				)
 				.OrderByDescending(n => n.CreatedAt)
@@ -159,7 +159,7 @@ namespace Notifications.Api.Application.Services
 		public async Task<IEnumerable<Notification>> GetMessageNotificationsAsync(string userId, int messageId)
 		{
 			return await _context.Notifications
-				.Where(n => n.UserId == userId 
+				.Where(n => n.UserId == userId
 				//&& n.MessageId == messageId
 				)
 				.OrderByDescending(n => n.CreatedAt)
@@ -172,7 +172,7 @@ namespace Notifications.Api.Application.Services
 		public async Task<IEnumerable<Notification>> GetCustomNotificationsAsync(string userId, string customIdentifier)
 		{
 			return await _context.Notifications
-				.Where(n => n.UserId == userId 
+				.Where(n => n.UserId == userId
 				//&& n.CustomIdentifier == customIdentifier
 				)
 				.OrderByDescending(n => n.CreatedAt)
@@ -185,8 +185,8 @@ namespace Notifications.Api.Application.Services
 		public async Task<IEnumerable<Notification>> GetProjectUpdateNotificationsAsync(string userId, string projectId)
 		{
 			return await _context.Notifications
-				.Where(n => n.UserId == userId 
-				&& n.ProjectId == projectId 
+				.Where(n => n.UserId == userId
+				&& n.ProjectId == projectId
 				//&& n.Type == NotificationType.ProjectUpdate
 				)
 				.OrderByDescending(n => n.CreatedAt)
@@ -208,7 +208,7 @@ namespace Notifications.Api.Application.Services
 		/// <param name="notificationType"></param>
 		/// <returns></returns>
 		/// <exception cref="NotImplementedException"></exception>
-		internal Notification GenerateNotification(NotificationType notificationType)
+		public Notification GenerateNotification(NotificationType notificationType)
 		{
 			// Generates a new notification using the notification service and saves it to the database.
 
