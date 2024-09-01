@@ -46,6 +46,7 @@ model Project {
   milestones      Milestone[]
   payments        Payment[]
   stripeAccountId String?     @map("stripeaccountid") @db.VarChar(255)
+  clientId        String?     @map("clientid") @db.VarChar(255)
 
   @@map("projects")
 }
