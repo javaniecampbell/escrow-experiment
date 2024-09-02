@@ -30,6 +30,7 @@ model Milestone {
   milestoneName String?        @map("milestonename") @db.VarChar(255)
   description   String?        @map("description") @db.Text
   amount        Decimal?       @db.Decimal(10, 2)
+  dueDate       DateTime?      @map("duedate") @db.Timestamp(6)
   status        String?        @db.VarChar(50)
   paymentStatus String?        @db.VarChar(50)
   paidAmount    Decimal?       @db.Decimal(10, 2)

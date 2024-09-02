@@ -21,6 +21,7 @@ Table milestones {
   milestoneName String
   description String
   amount Decimal
+  dueDate DateTime
   status String
   paymentStatus String
   paidAmount Decimal
