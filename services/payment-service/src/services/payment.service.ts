@@ -1,10 +1,15 @@
 // services/PaymentService.ts
 
-import { PayoutSpecification } from '../specifications/payout.specification';
+import { PayoutSpecification, MilestoneAmountGreaterThanThreshold, ProjectStatusAllowsPayout } from '../specifications/payout.specification';
 import prisma from '../utils/prisma';
 import stripeClient from '../utils/stripe';
 import { NotificationService } from './notification.service';
 
+const ProjectStatusAllowsPayoutSpec = new ProjectStatusAllowsPayout(
+);
+const payoutThreshold = 1000;
+const MilestoneAmountGreaterThanThresholdSpec = new MilestoneAmountGreaterThanThreshold(payoutThreshold);
+const complexSpecification = new PayoutSpecification().and(ProjectStatusAllowsPayoutSpec).and(MilestoneAmountGreaterThanThresholdSpec);
 export const PaymentService = {
     getPaymentsForProject: (projectId: number) => {
         return prisma.payment.findMany({
@@ -28,11 +33,6 @@ export const PaymentService = {
             if (!milestone) {
                 throw new Error('Milestone not found');
             }
-
-            // Check if the milestone satisfies the specification
-            if (!PayoutSpecification.isSatisfiedBy(milestone)) {
-                throw new Error('Milestone does not meet payout criteria');
-            }
             // if (milestone.status !== 'completed') {
             //     throw new Error('Milestone is not completed');
             // }
@@ -44,6 +44,12 @@ export const PaymentService = {
             // if (milestone?.amount === 0) {
             //     throw new Error('Milestone amount is 0');
             // }
+
+            // Check if the milestone satisfies the specification
+            if (!complexSpecification.isSatisfiedBy(milestone)) {
+                throw new Error('Milestone does not meet payout criteria');
+            }
+
 
             // Calculate the amount to be paid out (you may have your own logic here)
             const payoutAmount = Number(milestone?.amount ?? 0) - Number(milestone?.paidAmount ?? 0);
@@ -59,7 +65,7 @@ export const PaymentService = {
             // Update the milestone status and payment status in the database
             await prisma.milestone.update({
                 where: {
-                    id: milestoneId,
+                    milestoneId: milestoneId,
                 },
                 data: {
                     status: 'paid', // Update the status to 'paid'
