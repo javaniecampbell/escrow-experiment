@@ -46,6 +46,10 @@ model Milestone {
   status        String?        @db.VarChar(50)
   paymentStatus String?        @db.VarChar(50)
   paidAmount    Decimal?       @db.Decimal(10, 2)
+  startDate     DateTime // Start date of the milestone
+  endDate       DateTime // End date of the milestone
+  createdAt     DateTime       @default(now()) // Timestamp when the milestone was created
+  updatedAt     DateTime       @updatedAt // Timestamp when the milestone was last updated
   digitalAssets DigitalAsset[]
   project       Project?       @relation(fields: [projectId], references: [projectId], onDelete: NoAction, onUpdate: NoAction)
   feedbacks     Feedback[]
@@ -56,9 +60,12 @@ model Milestone {
 }
 
 model Iteration {
-  id Int @id @default(autoincrement())
+  id          String    @id @default(cuid())
   // Add fields to track iteration details
-
+  description String // Description of the iteration
+  status      String // Status of the iteration (e.g., "Completed", "Pending")
+  createdAt   DateTime  @default(now()) // Timestamp when the iteration was created
+  updatedAt   DateTime  @updatedAt // Timestamp when the iteration was last updated
   // Define relationships
   feedback    Feedback  @relation(fields: [feedbackId], references: [id])
   feedbackId  String
@@ -66,28 +73,49 @@ model Iteration {
   milestoneId String
 }
 
+model Client {
+  id               String @id @default(cuid())
+  firstName        String
+  lastName         String
+  email            String
+  phone            String
+  stripeCustomerId String
+  // ... other client fields ...
+
+  projects Project[] // A client can have multiple projects.
+  invoices Invoice[] // A client can have multiple invoices for different projects.
+}
+
 model Project {
   projectId       String      @id @default(cuid()) @map("projectid")
   projectName     String      @map("projectname") @db.VarChar(255)
   totalAmount     Decimal?    @map("totalamount") @db.Decimal(10, 2)
-  milestones      Milestone[]
+  milestones      Milestone[] // A project can have multiple milestones.
   payments        Payment[]
   stripeAccountId String?     @map("stripeaccountid") @db.VarChar(255)
   clientId        String?     @map("clientid") @db.VarChar(255)
-  invoices        Invoice[]
+  invoices        Invoice[] // Each project can have multiple invoices.
+  client          Client?     @relation(fields: [clientId], references: [id])
 
   @@map("projects")
 }
 
 model Invoice {
-  id Int @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   // Add fields to store invoice details, such as total amount and payment status
+  invoiceNo String // Unique invoice number
+  amount    Float // Total amount for the invoice
+  status    String // Status of the invoice (e.g., "Paid", "Unpaid")
+  createdAt DateTime @default(now()) // Timestamp when the invoice was created
+  updatedAt DateTime @updatedAt // Timestamp when the invoice was last updated
 
   // Define relationships, e.g., belongsTo Project or Milestone
-  belongsTo   Project    @relation(fields: [projectId], references: [projectId])
-  projectId   String
+  belongsTo   Project?   @relation(fields: [projectId], references: [projectId])
+  projectId   String? // Invoice is related to a project.
   linksTo     Milestone? @relation(fields: [milestoneId], references: [milestoneId])
-  milestoneId String?
+  milestoneId String? // Invoice is related to a milestone.
+  client      Client?    @relation(fields: [clientId], references: [id])
+  clientId    String?
 }
 
 model Payment {
