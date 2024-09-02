@@ -11,7 +11,7 @@ const Payment = () => {
     try {
       // Make a payment request and handle the response
       // Example: Call an API endpoint to initiate the payment process
-      const response = await fetch("/api/payment", {
+      const response = await fetch("/api/payments/pay", {
         method: "POST",
         body: JSON.stringify({ amount: paymentAmount }),
         headers: {
