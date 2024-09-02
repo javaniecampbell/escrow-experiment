@@ -1,30 +1,39 @@
 // src/components/platform/billing/Payment.tsx
 
 import React, { useState } from "react";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 const Payment = () => {
+  const stripe = useStripe();
+  const elements = useElements();
   const [paymentAmount, setPaymentAmount] = useState(0);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
-  const handlePayment = async () => {
+  const handlePayment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     // Implement payment processing logic here
     // This could involve integrating with a payment gateway or wallet system
     try {
       // Make a payment request and handle the response
-      // Example: Call an API endpoint to initiate the payment process
-      const response = await fetch("/api/payments/pay", {
-        method: "POST",
-        body: JSON.stringify({ amount: paymentAmount }),
-        headers: {
-          "Content-Type": "application/json",
+      if (!stripe || !elements) {
+        // Stripe.js hasn't yet loaded.
+        // Make sure to disable form submission until Stripe.js has loaded.
+        return;
+      }
+      const result = await stripe.confirmPayment({
+        //`Elements` instance that was used to create the Payment Element
+        elements,
+        confirmParams: {
+          return_url: "https://example.com/order/123/complete",
         },
       });
-
-      if (response.ok) {
-        // Payment successful, display a success message
-        alert("Payment successful!");
+      if (result.error) {
+        // Show error to your customer (for example, insufficient funds)
+        setPaymentError(result?.error?.message! ?? "Payment failed");
       } else {
-        // Payment failed, display an error message
-        alert("Payment failed. Please try again.");
+        // Your customer will be redirected to your `return_url`. For some payment
+        // methods like iDEAL, your customer will be redirected to an intermediate
+        // site first to authorize the payment, then redirected to the `return_url`.
       }
     } catch (error) {
       console.error("Payment error:", error);
@@ -35,13 +44,24 @@ const Payment = () => {
   return (
     <div>
       <h1>Make a Payment</h1>
-      <input
-        type="number"
-        placeholder="Enter payment amount"
-        value={paymentAmount}
-        onChange={(e) => setPaymentAmount(parseFloat(e.target.value))}
-      />
-      <button onClick={handlePayment}>Pay Now</button>
+      <form onSubmit={handlePayment}>
+        <div>
+          <input
+            type="number"
+            placeholder="Enter payment amount"
+            value={paymentAmount}
+            onChange={(e) => setPaymentAmount(parseFloat(e.target.value))}
+          />
+        </div>
+        <div>
+          <label htmlFor="card-element">Card Details:</label>
+          <CardElement id="card-element" />
+        </div>
+        <button type="submit" disabled={!stripe}>
+          Pay Now
+        </button>
+      </form>
+      {paymentError && <div>Error: {paymentError}</div>}
     </div>
   );
 };
