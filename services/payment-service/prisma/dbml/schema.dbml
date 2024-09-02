@@ -8,16 +8,25 @@ Project "Freelance Escrow Platform" {
 }
 
 Table digitalassets {
-  assetId Int [pk]
-  milestoneId Int
+  assetId String [pk]
+  milestoneId String
   assetUrl String
   expiryDate DateTime
   milestone milestones
 }
 
+Table Feedback {
+  id String [pk]
+  description String [not null]
+  type String [not null]
+  milestone milestones [not null]
+  milestoneId String [not null]
+  Iteration Iteration [not null]
+}
+
 Table milestones {
-  milestoneId Int [pk]
-  projectId Int
+  milestoneId String [pk]
+  projectId String
   milestoneName String
   description String
   amount Decimal
@@ -27,16 +36,36 @@ Table milestones {
   paidAmount Decimal
   digitalAssets digitalassets [not null]
   project projects
+  feedbacks Feedback [not null]
+  iterations Iteration [not null]
+  invoices Invoice [not null]
+}
+
+Table Iteration {
+  id Int [pk, increment]
+  feedback Feedback [not null]
+  feedbackId String [not null]
+  milestone milestones [not null]
+  milestoneId String [not null]
 }
 
 Table projects {
-  projectId Int [pk]
-  projectName String
+  projectId String [pk]
+  projectName String [not null]
   totalAmount Decimal
   milestones milestones [not null]
   payments Payment [not null]
   stripeAccountId String
   clientId String
+  invoices Invoice [not null]
+}
+
+Table Invoice {
+  id Int [pk, increment]
+  belongsTo projects [not null]
+  projectId String [not null]
+  linksTo milestones
+  milestoneId String
 }
 
 Table Payment {
@@ -44,7 +73,7 @@ Table Payment {
   amount Float [not null]
   date String [not null]
   status String [not null]
-  projectId Int [not null]
+  projectId String [not null]
   project projects [not null]
 }
 
@@ -452,7 +481,17 @@ Enum Plan {
 
 Ref: digitalassets.milestoneId > milestones.milestoneId [delete: No Action]
 
+Ref: Feedback.milestoneId > milestones.milestoneId [delete: No Action]
+
 Ref: milestones.projectId > projects.projectId [delete: No Action]
+
+Ref: Iteration.feedbackId > Feedback.id
+
+Ref: Iteration.milestoneId > milestones.milestoneId
+
+Ref: Invoice.projectId > projects.projectId
+
+Ref: Invoice.milestoneId > milestones.milestoneId
 
 Ref: Payment.projectId > projects.projectId [delete: No Action]
 

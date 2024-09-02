@@ -15,8 +15,8 @@ datasource db {
 }
 
 model DigitalAsset {
-  assetId     Int        @id @map("assetid")
-  milestoneId Int?       @map("milestoneid")
+  assetId     String     @id @default(cuid()) @map("assetid")
+  milestoneId String?    @map("milestoneid")
   assetUrl    String?    @map("asseturl") @db.VarChar(255)
   expiryDate  DateTime?  @map("expirydate") @db.Timestamp(6)
   milestone   Milestone? @relation(fields: [milestoneId], references: [milestoneId], onDelete: NoAction, onUpdate: NoAction)
@@ -24,9 +24,21 @@ model DigitalAsset {
   @@map("digitalassets")
 }
 
+model Feedback {
+  id          String @id @default(cuid())
+  description String
+  type        String
+  // Add any other fields you need to capture feedback details
+
+  // Define relationships
+  milestone   Milestone   @relation(fields: [milestoneId], references: [milestoneId], onDelete: NoAction, onUpdate: NoAction)
+  milestoneId String
+  Iteration   Iteration[]
+}
+
 model Milestone {
-  milestoneId   Int            @id @map("milestoneid")
-  projectId     Int?           @map("projectid")
+  milestoneId   String         @id @default(cuid()) @map("milestoneid")
+  projectId     String?        @map("projectid")
   milestoneName String?        @map("milestonename") @db.VarChar(255)
   description   String?        @map("description") @db.Text
   amount        Decimal?       @db.Decimal(10, 2)
@@ -36,20 +48,46 @@ model Milestone {
   paidAmount    Decimal?       @db.Decimal(10, 2)
   digitalAssets DigitalAsset[]
   project       Project?       @relation(fields: [projectId], references: [projectId], onDelete: NoAction, onUpdate: NoAction)
+  feedbacks     Feedback[]
+  iterations    Iteration[]
+  invoices      Invoice[]
 
   @@map("milestones")
 }
 
+model Iteration {
+  id Int @id @default(autoincrement())
+  // Add fields to track iteration details
+
+  // Define relationships
+  feedback    Feedback  @relation(fields: [feedbackId], references: [id])
+  feedbackId  String
+  milestone   Milestone @relation(fields: [milestoneId], references: [milestoneId])
+  milestoneId String
+}
+
 model Project {
-  projectId       Int         @id @map("projectid")
-  projectName     String?     @map("projectname") @db.VarChar(255)
+  projectId       String      @id @default(cuid()) @map("projectid")
+  projectName     String      @map("projectname") @db.VarChar(255)
   totalAmount     Decimal?    @map("totalamount") @db.Decimal(10, 2)
   milestones      Milestone[]
   payments        Payment[]
   stripeAccountId String?     @map("stripeaccountid") @db.VarChar(255)
   clientId        String?     @map("clientid") @db.VarChar(255)
+  invoices        Invoice[]
 
   @@map("projects")
+}
+
+model Invoice {
+  id Int @id @default(autoincrement())
+  // Add fields to store invoice details, such as total amount and payment status
+
+  // Define relationships, e.g., belongsTo Project or Milestone
+  belongsTo   Project    @relation(fields: [projectId], references: [projectId])
+  projectId   String
+  linksTo     Milestone? @relation(fields: [milestoneId], references: [milestoneId])
+  milestoneId String?
 }
 
 model Payment {
@@ -57,7 +95,7 @@ model Payment {
   amount    Float
   date      String
   status    String
-  projectId Int
+  projectId String
   project   Project @relation(fields: [projectId], references: [projectId], onDelete: NoAction, onUpdate: NoAction)
 }
 
