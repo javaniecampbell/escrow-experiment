@@ -35,6 +35,23 @@ export async function createIteration(
   }
 }
 
+// Calculate the total number of iterations for a feedback
+export async function calculateTotalIterations(feedbackId: string) {
+  try {
+    // Use Prisma to count the iterations related to the feedback
+    const iterations = await prisma.iteration.count({
+      where: {
+        feedbackId,
+      },
+    });
+
+    return iterations;
+  } catch (error) {
+    console.error("Error calculating total iterations:", error);
+    throw error;
+  }
+}
+
 export const IterationService = {
   // Get all iterations for a feedback
   async getAllIterationsForFeedback(feedbackId: string) {
