@@ -19,7 +19,7 @@ export default ({ tracer }) => {
     try {
       const { assetId } = req.query;
       // Step 1: Generate an expiring link for the asset from Azure Storage
-      const expiringLink = generateExpiringLink(assetId, 1000 * 60 * 60 * 24);
+      const expiringLink = generateExpiringLink(assetId as string, 1000 * 60 * 60 * 24);
       span.addEvent('preview_link_generated', { requestId, assetId, expiringLink });
 
       span.end();
