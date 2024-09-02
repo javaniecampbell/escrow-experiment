@@ -25,7 +25,7 @@ model DigitalAsset {
 }
 
 model Feedback {
-  id                   String      @id @default(cuid())
+  id                   String      @id @default(cuid()) @map("feedbackid")
   description          String
   type                 String
   // Add any other fields you need to capture feedback details
