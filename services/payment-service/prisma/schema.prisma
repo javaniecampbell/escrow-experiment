@@ -25,15 +25,17 @@ model DigitalAsset {
 }
 
 model Feedback {
-  id          String @id @default(cuid())
-  description String
-  type        String
+  id                   String      @id @default(cuid())
+  description          String
+  type                 String
   // Add any other fields you need to capture feedback details
-
+  additionalIterations Boolean?    @map("additionaliterations") @db.Boolean
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
   // Define relationships
-  milestone   Milestone   @relation(fields: [milestoneId], references: [milestoneId], onDelete: NoAction, onUpdate: NoAction)
-  milestoneId String
-  Iteration   Iteration[]
+  milestone            Milestone   @relation(fields: [milestoneId], references: [milestoneId], onDelete: NoAction, onUpdate: NoAction)
+  milestoneId          String
+  Iteration            Iteration[]
 }
 
 model Milestone {

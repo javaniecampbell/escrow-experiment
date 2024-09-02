@@ -19,6 +19,9 @@ Table Feedback {
   id String [pk]
   description String [not null]
   type String [not null]
+  additionalIterations Boolean
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
   milestone milestones [not null]
   milestoneId String [not null]
   Iteration Iteration [not null]
@@ -34,6 +37,10 @@ Table milestones {
   status String
   paymentStatus String
   paidAmount Decimal
+  startDate DateTime [not null]
+  endDate DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
   digitalAssets digitalassets [not null]
   project projects
   feedbacks Feedback [not null]
@@ -42,11 +49,26 @@ Table milestones {
 }
 
 Table Iteration {
-  id Int [pk, increment]
+  id String [pk]
+  description String [not null]
+  status String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
   feedback Feedback [not null]
   feedbackId String [not null]
   milestone milestones [not null]
   milestoneId String [not null]
+}
+
+Table Client {
+  id String [pk]
+  firstName String [not null]
+  lastName String [not null]
+  email String [not null]
+  phone String [not null]
+  stripeCustomerId String [not null]
+  projects projects [not null]
+  invoices Invoice [not null]
 }
 
 Table projects {
@@ -58,14 +80,22 @@ Table projects {
   stripeAccountId String
   clientId String
   invoices Invoice [not null]
+  client Client
 }
 
 Table Invoice {
   id Int [pk, increment]
-  belongsTo projects [not null]
-  projectId String [not null]
+  invoiceNo String [not null]
+  amount Float [not null]
+  status String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  belongsTo projects
+  projectId String
   linksTo milestones
   milestoneId String
+  client Client
+  clientId String
 }
 
 Table Payment {
@@ -489,9 +519,13 @@ Ref: Iteration.feedbackId > Feedback.id
 
 Ref: Iteration.milestoneId > milestones.milestoneId
 
+Ref: projects.clientId > Client.id
+
 Ref: Invoice.projectId > projects.projectId
 
 Ref: Invoice.milestoneId > milestones.milestoneId
+
+Ref: Invoice.clientId > Client.id
 
 Ref: Payment.projectId > projects.projectId [delete: No Action]
 
