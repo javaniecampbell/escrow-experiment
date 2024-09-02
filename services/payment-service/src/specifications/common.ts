@@ -1,6 +1,6 @@
 // Specification interface
 export abstract class Specification<T> implements ISpecification<T> {
-    abstract isSatisfiedBy(candidate: T): boolean;
+    abstract isSatisfiedBy(candidate: T): boolean | Promise<boolean>;
 
     and(other: Specification<T>): Specification<T> {
         return new AndSpecification(this, other);
@@ -23,7 +23,7 @@ export abstract class Specification<T> implements ISpecification<T> {
     }
 }
 export interface ISpecification<T> {
-    isSatisfiedBy(candidate: T): boolean;
+    isSatisfiedBy(candidate: T): boolean | Promise<boolean>;
     and(other: ISpecification<T>): ISpecification<T>;
     andNot(other: ISpecification<T>): ISpecification<T>;
     or(other: ISpecification<T>): ISpecification<T>;
@@ -32,7 +32,7 @@ export interface ISpecification<T> {
 }
 
 export abstract class CompositeSpecification<T> implements ISpecification<T> {
-    abstract isSatisfiedBy(candidate: T): boolean;
+    abstract isSatisfiedBy(candidate: T): boolean | Promise<boolean>;
 
     and(other: ISpecification<T>): ISpecification<T> {
         return new AndSpecification(this, other);
@@ -54,7 +54,7 @@ export abstract class CompositeSpecification<T> implements ISpecification<T> {
         return new NotSpecification(this);
     }
 
-    abstract toExpression(): (candidate: T) => boolean;
+    abstract toExpression(): (candidate: T) => boolean | Promise<boolean>;
 }
 
 export class AndSpecification<T> extends CompositeSpecification<T> {
@@ -62,11 +62,11 @@ export class AndSpecification<T> extends CompositeSpecification<T> {
         super();
     }
 
-    isSatisfiedBy(candidate: T): boolean {
+    isSatisfiedBy(candidate: T): boolean | Promise<boolean> {
         return this.leftCondition.isSatisfiedBy(candidate) && this.rightCondition.isSatisfiedBy(candidate);
     }
 
-    toExpression(): (candidate: T) => boolean {
+    toExpression(): (candidate: T) => boolean | Promise<boolean> {
         const leftExpression = (this.leftCondition as CompositeSpecification<T>).toExpression();
         const rightExpression = (this.rightCondition as CompositeSpecification<T>).toExpression();
 
@@ -79,11 +79,11 @@ export class AndNotSpecification<T> extends CompositeSpecification<T> {
         super();
     }
 
-    isSatisfiedBy(candidate: T): boolean {
+    isSatisfiedBy(candidate: T): boolean | Promise<boolean> {
         return this.leftCondition.isSatisfiedBy(candidate) && !this.rightCondition.isSatisfiedBy(candidate);
     }
 
-    toExpression(): (candidate: T) => boolean {
+    toExpression(): (candidate: T) => boolean | Promise<boolean> {
         const leftExpression = (this.leftCondition as CompositeSpecification<T>).toExpression();
         const rightExpression = (this.rightCondition as CompositeSpecification<T>).toExpression();
 
@@ -96,11 +96,11 @@ export class OrSpecification<T> extends CompositeSpecification<T> {
         super();
     }
 
-    isSatisfiedBy(candidate: T): boolean {
+    isSatisfiedBy(candidate: T): boolean | Promise<boolean> {
         return this.leftCondition.isSatisfiedBy(candidate) || this.rightCondition.isSatisfiedBy(candidate);
     }
 
-    toExpression(): (candidate: T) => boolean {
+    toExpression(): (candidate: T) => boolean | Promise<boolean> {
         const leftExpression = (this.leftCondition as CompositeSpecification<T>).toExpression();
         const rightExpression = (this.rightCondition as CompositeSpecification<T>).toExpression();
 
@@ -113,11 +113,11 @@ export class OrNotSpecification<T> extends CompositeSpecification<T> {
         super();
     }
 
-    isSatisfiedBy(candidate: T): boolean {
+    isSatisfiedBy(candidate: T): boolean | Promise<boolean> {
         return this.leftCondition.isSatisfiedBy(candidate) || !this.rightCondition.isSatisfiedBy(candidate);
     }
 
-    toExpression(): (candidate: T) => boolean {
+    toExpression(): (candidate: T) => boolean | Promise<boolean> {
         const leftExpression = (this.leftCondition as CompositeSpecification<T>).toExpression();
         const rightExpression = (this.rightCondition as CompositeSpecification<T>).toExpression();
 
@@ -130,11 +130,11 @@ export class NotSpecification<T> extends CompositeSpecification<T> {
         super();
     }
 
-    isSatisfiedBy(candidate: T): boolean {
+    isSatisfiedBy(candidate: T): boolean | Promise<boolean> {
         return !this.wrapped.isSatisfiedBy(candidate);
     }
 
-    toExpression(): (candidate: T) => boolean {
+    toExpression(): (candidate: T) => boolean | Promise<boolean> {
         const wrappedExpression = (this.wrapped as CompositeSpecification<T>).toExpression();
 
         return (candidate: T) => !wrappedExpression(candidate);
