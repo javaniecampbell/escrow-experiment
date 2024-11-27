@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Notifications.Api.Application.Extensions;
+using Notifications.Api.Application.Interfaces;
 using Notifications.Api.Domain.Entities;
 using Notifications.Api.Hubs;
 using Notifications.Api.Infrastructure.Persistence.Context;
-using NotificationService.Api.Application.Interfaces;
 
 namespace Notifications.Api.Application.Services
 {
-	public class NotificationService
+	public class NotificationService : INotificationService
 	{
 		private readonly IHubContext<NotificationsHub> _hubContext;
 		private readonly NotificationDbContext _context;
@@ -28,7 +28,7 @@ namespace Notifications.Api.Application.Services
 			// Save the notification to the database
 			_context.Notifications.Add(notification);
 			await _context.SaveChangesAsync();
-			_notificationRepository.Create(notification);
+			//_notificationRepository.Create(notification);
 
 			// Send the notification to the user
 			await _hubContext.Clients.User(userId).SendAsync("ReceiveNotification", notification);
@@ -146,7 +146,7 @@ namespace Notifications.Api.Application.Services
 		public async Task<IEnumerable<Notification>> GetBillingNotificationsAsync(string userId, int billingId)
 		{
 			return await _context.Notifications
-				.Where(n => n.UserId == userId 
+				.Where(n => n.UserId == userId
 				//&& n.BillingId == billingId
 				)
 				.OrderByDescending(n => n.CreatedAt)
@@ -159,7 +159,7 @@ namespace Notifications.Api.Application.Services
 		public async Task<IEnumerable<Notification>> GetMessageNotificationsAsync(string userId, int messageId)
 		{
 			return await _context.Notifications
-				.Where(n => n.UserId == userId 
+				.Where(n => n.UserId == userId
 				//&& n.MessageId == messageId
 				)
 				.OrderByDescending(n => n.CreatedAt)
@@ -172,7 +172,7 @@ namespace Notifications.Api.Application.Services
 		public async Task<IEnumerable<Notification>> GetCustomNotificationsAsync(string userId, string customIdentifier)
 		{
 			return await _context.Notifications
-				.Where(n => n.UserId == userId 
+				.Where(n => n.UserId == userId
 				//&& n.CustomIdentifier == customIdentifier
 				)
 				.OrderByDescending(n => n.CreatedAt)
@@ -185,8 +185,8 @@ namespace Notifications.Api.Application.Services
 		public async Task<IEnumerable<Notification>> GetProjectUpdateNotificationsAsync(string userId, string projectId)
 		{
 			return await _context.Notifications
-				.Where(n => n.UserId == userId 
-				&& n.ProjectId == projectId 
+				.Where(n => n.UserId == userId
+				&& n.ProjectId == projectId
 				//&& n.Type == NotificationType.ProjectUpdate
 				)
 				.OrderByDescending(n => n.CreatedAt)
@@ -208,13 +208,13 @@ namespace Notifications.Api.Application.Services
 		/// <param name="notificationType"></param>
 		/// <returns></returns>
 		/// <exception cref="NotImplementedException"></exception>
-		internal Notification GenerateNotification(NotificationType notificationType)
+		public Notification GenerateNotification(NotificationType notificationType)
 		{
 			// Generates a new notification using the notification service and saves it to the database.
 
 			// var notification = _notificationGenerator.GenerateFromType(notificationType); 
 
-			// _notificationRepository.Create(notification);
+			// _notificationRepository.SaveNotification(notification);
 
 			return new Notification();
 		}

@@ -8,28 +8,103 @@ Project "Freelance Escrow Platform" {
 }
 
 Table digitalassets {
-  assetId Int [pk]
-  milestoneId Int
+  assetId String [pk]
+  milestoneId String
   assetUrl String
   expiryDate DateTime
   milestone milestones
 }
 
+Table Feedback {
+  id String [pk]
+  description String [not null]
+  type String [not null]
+  additionalIterations Boolean
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  milestone milestones [not null]
+  milestoneId String [not null]
+  Iteration Iteration [not null]
+}
+
 Table milestones {
-  milestoneId Int [pk]
-  projectId Int
+  milestoneId String [pk]
+  projectId String
   milestoneName String
+  description String
   amount Decimal
+  dueDate DateTime
   status String
+  paymentStatus String
+  paidAmount Decimal
+  startDate DateTime [not null]
+  endDate DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
   digitalAssets digitalassets [not null]
   project projects
+  feedbacks Feedback [not null]
+  iterations Iteration [not null]
+  invoices Invoice [not null]
+}
+
+Table Iteration {
+  id String [pk]
+  description String [not null]
+  status String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  feedback Feedback [not null]
+  feedbackId String [not null]
+  milestone milestones [not null]
+  milestoneId String [not null]
+}
+
+Table Client {
+  id String [pk]
+  firstName String [not null]
+  lastName String [not null]
+  email String [not null]
+  phone String [not null]
+  stripeCustomerId String [not null]
+  projects projects [not null]
+  invoices Invoice [not null]
 }
 
 Table projects {
-  projectId Int [pk]
-  projectName String
+  projectId String [pk]
+  projectName String [not null]
   totalAmount Decimal
   milestones milestones [not null]
+  payments Payment [not null]
+  stripeAccountId String
+  clientId String
+  invoices Invoice [not null]
+  client Client
+}
+
+Table Invoice {
+  id Int [pk, increment]
+  invoiceNo String [not null]
+  amount Float [not null]
+  status String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  belongsTo projects
+  projectId String
+  linksTo milestones
+  milestoneId String
+  client Client
+  clientId String
+}
+
+Table Payment {
+  id Int [pk, increment]
+  amount Float [not null]
+  date String [not null]
+  status String [not null]
+  projectId String [not null]
+  project projects [not null]
 }
 
 Table User {
@@ -436,7 +511,23 @@ Enum Plan {
 
 Ref: digitalassets.milestoneId > milestones.milestoneId [delete: No Action]
 
+Ref: Feedback.milestoneId > milestones.milestoneId [delete: No Action]
+
 Ref: milestones.projectId > projects.projectId [delete: No Action]
+
+Ref: Iteration.feedbackId > Feedback.id
+
+Ref: Iteration.milestoneId > milestones.milestoneId
+
+Ref: projects.clientId > Client.id
+
+Ref: Invoice.projectId > projects.projectId
+
+Ref: Invoice.milestoneId > milestones.milestoneId
+
+Ref: Invoice.clientId > Client.id
+
+Ref: Payment.projectId > projects.projectId [delete: No Action]
 
 Ref: User.agencyId > Agency.id [delete: Cascade]
 

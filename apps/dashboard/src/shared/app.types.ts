@@ -121,6 +121,39 @@ export type User = {
     Permissions?: Permission[];
 };
 
+
+export type Notification = {
+    id: NotificationId;
+    message: string;
+    timestamp: string;
+};
+
+export type NotificationPreference = {
+    projectUpdates: boolean,
+    billingReminders: boolean,
+    newMessages: boolean,
+    emailUpdates: boolean,
+};
+
+export type Payment = {
+    id: PaymentId,
+    date: string | Date;
+    amount: number;
+    status: string;
+    clientId: number;
+};
+
+export type ClientProject = {
+    id: ClientId,
+    name: string,
+    status: string,
+    balance: number
+    milestones: Milestone[],
+    payments: Payment[],
+}
+
+
+export type PaymentId = number | string;
 export type ClientId = number | string;
 export type ProjectId = number | string;
 export type MilestoneId = number | string;
@@ -132,3 +165,4 @@ export type PermissionId = number | string;
 export type SubAccountId = number | string;
 export type AgencyId = number | string;
 export type UserId = number | string;
+export type NotificationId = number | string;

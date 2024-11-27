@@ -1,10 +1,13 @@
 // ClientNotifications.js
 import React, { useState } from "react";
+import NotificationCenter from "./NotificationCenter";
+import { Notification } from "@/shared/app.types";
+import NotificationSettings from "./NotificationSettings";
 
 const ClientNotifications = () => {
-  const [notifications, setNotifications] = useState<
-    { id: number; message: string }[]
-  >([]);
+  const [notifications, setNotifications] = useState<Notification[]>([
+  
+  ]);
 
   // Function to simulate receiving notifications
   const receiveNotification = () => {
@@ -12,6 +15,7 @@ const ClientNotifications = () => {
     const newNotification = {
       id: Date.now(),
       message: "New milestone added to your project!",
+      timestamp: "Just now",
     };
     setNotifications([...notifications, newNotification]);
   };
@@ -26,12 +30,22 @@ const ClientNotifications = () => {
         Receive Notification
       </button>
       <ul>
-        {notifications.map((notification: { id: number; message: string }) => (
+        {notifications.map((notification: Notification) => (
           <li key={notification.id} className="mb-2">
             {notification.message}
           </li>
         ))}
       </ul>
+
+      <div>
+        <h3 className="text-lg font-semibold mt-4">Notification Center</h3>
+        <NotificationCenter />
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold mt-4">Notification Settings</h3>
+        <NotificationSettings />
+      </div>
     </div>
   );
 };

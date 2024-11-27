@@ -1,4 +1,4 @@
-﻿namespace NotificationService.Api.Application.Interfaces
+﻿namespace Notifications.Api.Application.Interfaces
 {
 	public interface IRepository
 	{

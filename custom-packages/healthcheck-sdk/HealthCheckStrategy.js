@@ -12,9 +12,11 @@ class HealthCheckStrategy {
         }
         this.isHealthy = true;
         this.details = {};
+        this.componentName = '';
+        this.measurementName = '';
     }
     async check() {
-        throw new Error('check method must be implemented');
+        return this;
     }
     getStatus() {
         return this.isHealthy;

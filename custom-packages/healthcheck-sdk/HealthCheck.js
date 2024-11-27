@@ -39,6 +39,7 @@ class HealthCheck {
     async check() {
         // Base implementation does nothing
         // Subclasses should override this method
+        return this;
     }
 
     getStatus() {

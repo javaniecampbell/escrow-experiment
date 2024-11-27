@@ -39,6 +39,6 @@ COPY --from=base /app/node_modules ./node_modules
 COPY --from=base /app/prisma ./prisma
 COPY --from=base /app/package.json ./package.json
 # COPY --from=base /app/package-lock.json ./package-lock.json
-COPY . .
+COPY ./dist .
 # HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl -f http://localhost:3000/_health/ || exit 1
 CMD [ "node", "-r", "./utils/tracing.js","./bin/www" ]

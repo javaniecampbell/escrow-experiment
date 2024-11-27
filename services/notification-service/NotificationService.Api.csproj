@@ -8,6 +8,8 @@
     <UserSecretsId>5fd01d1f-9253-4630-a949-db993c80293e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>Notifications.Api</RootNamespace>
     <!--<AssemblyName>Notifications.Api</AssemblyName>-->
   </PropertyGroup>
 
@@ -29,6 +31,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+    <PackageReference Include="SendGrid" Version="9.29.3" />
+    <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
@@ -41,7 +45,6 @@
     <Folder Include="Application\DTOs\" />
     <Folder Include="Application\Errors\" />
     <Folder Include="Domain\Interfaces\" />
-    <Folder Include="Infrastructure\Persistence\Repositories\" />
     <Folder Include="Middlewares\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
