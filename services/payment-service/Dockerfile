@@ -1,6 +1,7 @@
 # Now the framework
 # You need to install dependencies for the app to run
-FROM node:20.9.0-alpine AS base
+# FROM node:20.9.0-alpine AS base
+FROM node:22.11.0-alpine AS base
 WORKDIR /app
 COPY package.json ./
 # COPY package-lock.json ./
@@ -31,7 +32,8 @@ CMD ["npm", "run","dev"]
 # You to copy the source code into the container
 # you need to tell what networking items are needed
 
-FROM node:20.9.0-alpine AS production
+# FROM node:20.9.0-alpine AS production
+FROM node:22.11.0-alpine AS production
 EXPOSE 3000
 ENV NODE_ENV=production
 WORKDIR /app
