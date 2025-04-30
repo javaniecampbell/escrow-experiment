@@ -23,7 +23,11 @@ const Payment = () => {
       const result = await stripe.confirmPayment({
         //`Elements` instance that was used to create the Payment Element
         elements,
+
         confirmParams: {
+          mandate_data: {
+            action: "payment",
+          },
           return_url: "https://example.com/order/123/complete",
         },
       });
